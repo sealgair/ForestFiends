@@ -52,7 +52,7 @@ animations = [ {
 [sub_resource type="RectangleShape2D" id=9]
 extents = Vector2( 8, 8 )
 
-[node name="Player" type="Area2D"]
+[node name="Player" type="KinematicBody2D"]
 position = Vector2( 128, 240 )
 script = ExtResource( 2 )
 __meta__ = {
@@ -63,7 +63,6 @@ __meta__ = {
 scale = Vector2( 2, 2 )
 frames = SubResource( 8 )
 animation = "walk"
-frame = 1
 playing = true
 centered = false
 
