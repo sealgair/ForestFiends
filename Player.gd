@@ -2,6 +2,7 @@ extends Area2D
 
 export var speed = 100
 var screen_size
+signal hit
 
 func _ready():
 	screen_size = get_viewport_rect().size
@@ -17,9 +18,9 @@ func _process(delta):
 		$AnimatedSprite.flip_h = false
 	
 	if velocity.length() > 0:
-		$AnimatedSprite.play("walk")
+		$AnimatedSprite.animation = "walk"
 	else:
-		$AnimatedSprite.play("idle")
+		$AnimatedSprite.animation = "idle"
 	
 	position += velocity * speed * delta
 	position.x = wrapf(position.x, -size.x, screen_size.x)
