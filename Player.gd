@@ -1,6 +1,7 @@
 extends KinematicBody2D
 
 export (int) var player = 1
+export (int) var palette = null
 
 var inputs = {}
 var run_speed = 100
@@ -13,6 +14,7 @@ signal hit
 var velocity = Vector2()
 var jumping = false
 var size = Vector2(16, 16) # todo: dynamic
+var attackNode = weakref(null)
 
 func _ready():
 	screen_size = get_viewport_rect().size
@@ -20,7 +22,22 @@ func _ready():
 	inputs['right'] = "move_right{p}".format({'p': player}) 
 	inputs['left'] = "move_left{p}".format({'p': player}) 
 	inputs['special'] = "move_special{p}".format({'p': player}) 
-	inputs['attack'] = "move_attack{p}".format({'p': player}) 
+	inputs['attack'] = "move_attack{p}".format({'p': player})
+	if palette == null:
+		palette = player - 1
+	$AnimatedSprite.material.set_shader_param("palette", palette)
+
+func special():
+	if is_on_floor():
+		jumping = true
+		velocity.y = jump_speed
+
+func attack():
+	var instance = load("res://Attack.tscn").instance()
+	instance.set_name("attack")
+	add_child(instance)
+	attackNode = weakref(instance)
+	$AnimatedSprite.play("attack")
 
 func get_input():
 	velocity.x = 0
@@ -31,10 +48,11 @@ func get_input():
 		velocity.x -= run_speed
 		$AnimatedSprite.flip_h = false
 		
-	var jump = Input.is_action_just_pressed(inputs['special'])
-	if jump and is_on_floor():
-		jumping = true
-		velocity.y = jump_speed
+	if Input.is_action_just_pressed(inputs['special']):
+		special()
+		
+	if Input.is_action_just_pressed(inputs['attack']):
+		attack()
 
 func _physics_process(delta):
 	get_input()
@@ -51,8 +69,17 @@ func _process(delta):
 		$AnimatedSprite.flip_h = true
 	if velocity.x <= -1:
 		$AnimatedSprite.flip_h = false
-	
-	if velocity.length() > 0:
+		
+	var an = attackNode.get_ref()
+	if an:
+		$AnimatedSprite.animation = "attack"
+		an.get_node("AnimatedSprite").flip_h = $AnimatedSprite.flip_h
+		an.transform.origin.x = abs(an.transform.origin.x)
+		if not $AnimatedSprite.flip_h:
+			an.transform.origin.x *= -1
+	elif not is_on_floor():
+		$AnimatedSprite.animation = "jump"
+	elif velocity.length() > 0:
 		$AnimatedSprite.animation = "walk"
 	else:
 		$AnimatedSprite.animation = "idle"
