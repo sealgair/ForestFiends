@@ -77,26 +77,26 @@ func _process(delta):
 	if velocity.x <= -1:
 		$AnimatedSprite.flip_h = false
 	
-	if dead:
-		$AnimatedSprite.animation = "dead"
-	elif attackNode.get_ref():
-		var an = attackNode.get_ref()
-		$AnimatedSprite.animation = "attack"
-		an.get_node("AnimatedSprite").flip_h = $AnimatedSprite.flip_h
-		an.transform.origin.x = abs(an.transform.origin.x)
-		if not $AnimatedSprite.flip_h:
-			an.transform.origin.x *= -1
-	elif not is_on_floor():
-		$AnimatedSprite.animation = "jump"
-	elif velocity.length() > 0:
-		$AnimatedSprite.animation = "walk"
-	else:
-		$AnimatedSprite.animation = "idle"
+	if not dead:
+		if attackNode.get_ref():
+			var an = attackNode.get_ref()
+			$AnimatedSprite.animation = "attack"
+			an.get_node("AnimatedSprite").flip_h = $AnimatedSprite.flip_h
+			an.transform.origin.x = abs(an.transform.origin.x)
+			if not $AnimatedSprite.flip_h:
+				an.transform.origin.x *= -1
+		elif not is_on_floor():
+			$AnimatedSprite.animation = "jump"
+		elif velocity.length() > 0:
+			$AnimatedSprite.animation = "walk"
+		else:
+			$AnimatedSprite.animation = "idle"
 
 
 func die():
 	if not dead:
 		dead = true
+		$AnimatedSprite.play('dead')
 		$RespawnTimer.start()
 	
 	
@@ -106,4 +106,9 @@ func _on_RespawnTimer_timeout():
 
 
 func _on_DecayTimer_timeout():
-	queue_free()
+	$AnimatedSprite.play('decay')
+
+
+func _on_AnimatedSprite_animation_finished():
+	if $AnimatedSprite.animation == "decay":
+		queue_free()
