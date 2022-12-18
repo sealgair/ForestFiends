@@ -15,6 +15,7 @@ var velocity = Vector2()
 var jumping = false
 var size = Vector2(16, 16) # todo: dynamic
 var attackNode = weakref(null)
+var dead = false
 
 func _ready():
 	screen_size = get_viewport_rect().size
@@ -34,6 +35,7 @@ func special():
 
 func attack():
 	var instance = load("res://Attack.tscn").instance()
+	instance.attacker = self
 	instance.set_name("attack")
 	add_child(instance)
 	attackNode = weakref(instance)
@@ -41,18 +43,19 @@ func attack():
 
 func get_input():
 	velocity.x = 0
-	if Input.is_action_pressed(inputs['right']):
-		velocity.x += run_speed
-		$AnimatedSprite.flip_h = true
-	if Input.is_action_pressed(inputs['left']):
-		velocity.x -= run_speed
-		$AnimatedSprite.flip_h = false
-		
-	if Input.is_action_just_pressed(inputs['special']):
-		special()
-		
-	if Input.is_action_just_pressed(inputs['attack']):
-		attack()
+	if not dead:
+		if Input.is_action_pressed(inputs['right']):
+			velocity.x += run_speed
+			$AnimatedSprite.flip_h = true
+		if Input.is_action_pressed(inputs['left']):
+			velocity.x -= run_speed
+			$AnimatedSprite.flip_h = false
+			
+		if Input.is_action_just_pressed(inputs['special']):
+			special()
+			
+		if Input.is_action_just_pressed(inputs['attack']):
+			attack()
 
 func _physics_process(delta):
 	get_input()
@@ -69,9 +72,11 @@ func _process(delta):
 		$AnimatedSprite.flip_h = true
 	if velocity.x <= -1:
 		$AnimatedSprite.flip_h = false
-		
-	var an = attackNode.get_ref()
-	if an:
+	
+	if dead:
+		$AnimatedSprite.animation = "dead"
+	elif attackNode.get_ref():
+		var an = attackNode.get_ref()
 		$AnimatedSprite.animation = "attack"
 		an.get_node("AnimatedSprite").flip_h = $AnimatedSprite.flip_h
 		an.transform.origin.x = abs(an.transform.origin.x)
@@ -83,3 +88,10 @@ func _process(delta):
 		$AnimatedSprite.animation = "walk"
 	else:
 		$AnimatedSprite.animation = "idle"
+
+func die():
+	dead = true
+	
+func respawn():
+	# TODO: new coords
+	dead = false

@@ -29,3 +29,5 @@ shape = SubResource( 1 )
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 scale = Vector2( 2, 2 )
 frames = SubResource( 3 )
+
+[connection signal="body_entered" from="." to="." method="_on_Attack_body_entered"]
