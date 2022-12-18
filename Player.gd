@@ -10,6 +10,7 @@ var gravity = 1200
 
 var screen_size
 signal hit
+signal respawn(player)
 
 var velocity = Vector2()
 var jumping = false
@@ -57,6 +58,7 @@ func get_input():
 		if Input.is_action_just_pressed(inputs['attack']):
 			attack()
 
+
 func _physics_process(delta):
 	get_input()
 	velocity.y += gravity * delta
@@ -64,8 +66,10 @@ func _physics_process(delta):
 		jumping = false
 	velocity = move_and_slide(velocity, Vector2(0, -1))
 	
-	position.x = wrapf(position.x, -size.x, screen_size.x)
-	position.y = wrapf(position.y, -size.y, screen_size.y)
+	# use transform not position so as not to break physics
+	transform.origin.x = wrapf(transform.origin.x, 0, screen_size.x)
+	transform.origin.y = wrapf(transform.origin.y, 0, screen_size.y)
+
 
 func _process(delta):
 	if velocity.x >= 1:
@@ -89,9 +93,17 @@ func _process(delta):
 	else:
 		$AnimatedSprite.animation = "idle"
 
+
 func die():
-	dead = true
+	if not dead:
+		dead = true
+		$RespawnTimer.start()
 	
-func respawn():
-	# TODO: new coords
-	dead = false
+	
+func _on_RespawnTimer_timeout():
+	emit_signal("respawn", self.player)
+	$DecayTimer.start()
+
+
+func _on_DecayTimer_timeout():
+	queue_free()

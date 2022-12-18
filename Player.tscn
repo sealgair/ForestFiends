@@ -99,3 +99,12 @@ shape = SubResource( 9 )
 margin_top = -16.0
 margin_right = 40.0
 margin_bottom = -2.0
+
+[node name="RespawnTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="DecayTimer" type="Timer" parent="."]
+wait_time = 2.0
+
+[connection signal="timeout" from="RespawnTimer" to="." method="_on_RespawnTimer_timeout"]
+[connection signal="timeout" from="DecayTimer" to="." method="_on_DecayTimer_timeout"]
