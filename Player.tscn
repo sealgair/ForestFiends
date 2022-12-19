@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://PalletSwap.gdshader" type="Shader" id=1]
 [ext_resource path="res://Player.gd" type="Script" id=2]
@@ -10,10 +10,6 @@ resource_local_to_scene = true
 shader = ExtResource( 1 )
 shader_param/palette = 0
 shader_param/palette_length = 4
-
-[sub_resource type="AtlasTexture" id=22]
-atlas = ExtResource( 3 )
-region = Rect2( 96, 16, 16, 16 )
 
 [sub_resource type="AtlasTexture" id=23]
 atlas = ExtResource( 3 )
@@ -31,6 +27,18 @@ region = Rect2( 0, 0, 16, 16 )
 atlas = ExtResource( 4 )
 region = Rect2( 16, 0, 16, 16 )
 
+[sub_resource type="AtlasTexture" id=30]
+atlas = ExtResource( 3 )
+region = Rect2( 64, 16, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=31]
+atlas = ExtResource( 3 )
+region = Rect2( 48, 16, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=32]
+atlas = ExtResource( 3 )
+region = Rect2( 32, 16, 16, 16 )
+
 [sub_resource type="AtlasTexture" id=25]
 atlas = ExtResource( 3 )
 region = Rect2( 0, 16, 16, 16 )
@@ -38,10 +46,6 @@ region = Rect2( 0, 16, 16, 16 )
 [sub_resource type="AtlasTexture" id=26]
 atlas = ExtResource( 3 )
 region = Rect2( 32, 16, 16, 16 )
-
-[sub_resource type="AtlasTexture" id=27]
-atlas = ExtResource( 3 )
-region = Rect2( 48, 16, 16, 16 )
 
 [sub_resource type="AtlasTexture" id=28]
 atlas = ExtResource( 3 )
@@ -53,11 +57,6 @@ region = Rect2( 16, 16, 16, 16 )
 
 [sub_resource type="SpriteFrames" id=8]
 animations = [ {
-"frames": [ SubResource( 22 ) ],
-"loop": true,
-"name": "New Anim",
-"speed": 5.0
-}, {
 "frames": [ SubResource( 23 ) ],
 "loop": false,
 "name": "attack",
@@ -73,12 +72,22 @@ animations = [ {
 "name": "decay",
 "speed": 10.0
 }, {
+"frames": [ SubResource( 30 ) ],
+"loop": true,
+"name": "dive",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 31 ), SubResource( 32 ) ],
+"loop": false,
+"name": "flap",
+"speed": 5.0
+}, {
 "frames": [ SubResource( 25 ) ],
 "loop": true,
 "name": "idle",
 "speed": 5.0
 }, {
-"frames": [ SubResource( 26 ), SubResource( 27 ) ],
+"frames": [ SubResource( 26 ) ],
 "loop": true,
 "name": "jump",
 "speed": 5.0

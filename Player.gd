@@ -28,6 +28,8 @@ func _ready():
 	if palette == null:
 		palette = player - 1
 	$AnimatedSprite.material.set_shader_param("palette", palette)
+	
+	# TODO: invincibilty after spawn
 
 func special():
 	if is_on_floor():
@@ -35,8 +37,12 @@ func special():
 		velocity.y = jump_speed
 
 func attack():
+	make_attack()
+
+func make_attack(offset=Vector2(0,0)):
 	var instance = load("res://Attack.tscn").instance()
 	instance.attacker = self
+	instance.transform.origin += offset
 	instance.set_name("attack")
 	add_child(instance)
 	attackNode = weakref(instance)
@@ -71,6 +77,19 @@ func _physics_process(delta):
 	transform.origin.y = wrapf(transform.origin.y, 0, screen_size.y)
 
 
+func is_attacking():
+	return attackNode.get_ref()
+
+func get_animation():
+	if is_attacking():
+		return "attack"
+	elif not is_on_floor():
+		return "jump"
+	elif velocity.length() > 0:
+		return "walk"
+	else:
+		return "idle"
+
 func _process(delta):
 	if velocity.x >= 1:
 		$AnimatedSprite.flip_h = true
@@ -78,19 +97,13 @@ func _process(delta):
 		$AnimatedSprite.flip_h = false
 	
 	if not dead:
-		if attackNode.get_ref():
-			var an = attackNode.get_ref()
-			$AnimatedSprite.animation = "attack"
+		$AnimatedSprite.animation = get_animation()
+		var an = attackNode.get_ref()
+		if an:
 			an.get_node("AnimatedSprite").flip_h = $AnimatedSprite.flip_h
 			an.transform.origin.x = abs(an.transform.origin.x)
 			if not $AnimatedSprite.flip_h:
 				an.transform.origin.x *= -1
-		elif not is_on_floor():
-			$AnimatedSprite.animation = "jump"
-		elif velocity.length() > 0:
-			$AnimatedSprite.animation = "walk"
-		else:
-			$AnimatedSprite.animation = "idle"
 
 
 func die():
