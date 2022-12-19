@@ -2,7 +2,7 @@ extends Node2D
 
 export (int) var players = 2
 
-var Player = load("res://Brid.tscn")
+var Player = load("res://Shroo.tscn")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

@@ -51,12 +51,10 @@ func make_attack(offset=Vector2(0,0)):
 func get_input():
 	velocity.x = 0
 	if not dead:
-		if Input.is_action_pressed(inputs['right']):
-			velocity.x += run_speed
-			$AnimatedSprite.flip_h = true
-		if Input.is_action_pressed(inputs['left']):
-			velocity.x -= run_speed
-			$AnimatedSprite.flip_h = false
+		var x = Input.get_axis(inputs['left'], inputs['right'])
+		velocity.x += x * run_speed
+		if x != 0:
+			$AnimatedSprite.flip_h = x < 0
 			
 		if Input.is_action_just_pressed(inputs['special']):
 			special()

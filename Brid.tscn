@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Brid.gd" type="Script" id=2]
+[ext_resource path="res://decay.png" type="Texture" id=3]
 
 [sub_resource type="Shader" id=1]
 resource_local_to_scene = true
@@ -36,9 +37,51 @@ shader = SubResource( 1 )
 shader_param/palette = 0
 shader_param/palette_length = 4
 
+[sub_resource type="AtlasTexture" id=20]
+atlas = ExtResource( 3 )
+region = Rect2( 0, 0, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=21]
+atlas = ExtResource( 3 )
+region = Rect2( 16, 0, 16, 16 )
+
+[sub_resource type="SpriteFrames" id=22]
+resource_local_to_scene = true
+animations = [ {
+"frames": [  ],
+"loop": false,
+"name": "attack",
+"speed": 10.0
+}, {
+"frames": [  ],
+"loop": true,
+"name": "dead",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 20 ), SubResource( 21 ) ],
+"loop": false,
+"name": "decay",
+"speed": 10.0
+}, {
+"frames": [  ],
+"loop": true,
+"name": "idle",
+"speed": 5.0
+}, {
+"frames": [  ],
+"loop": true,
+"name": "jump",
+"speed": 5.0
+}, {
+"frames": [  ],
+"loop": true,
+"name": "walk",
+"speed": 5.0
+} ]
+
 [node name="Brid" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
 
 [node name="AnimatedSprite" parent="." index="0"]
 material = SubResource( 2 )
-animation = "flap"
+frames = SubResource( 22 )
