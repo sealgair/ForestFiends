@@ -10,9 +10,14 @@ region = Rect2( 0, 0, 32, 32 )
 
 [sub_resource type="SpriteFrames" id=2]
 animations = [ {
+"frames": [  ],
+"loop": true,
+"name": "off",
+"speed": 5.0
+}, {
 "frames": [ SubResource( 1 ) ],
 "loop": true,
-"name": "unselected",
+"name": "on",
 "speed": 5.0
 } ]
 
@@ -133,7 +138,7 @@ script = ExtResource( 2 )
 
 [node name="Background" type="AnimatedSprite" parent="."]
 frames = SubResource( 2 )
-animation = "unselected"
+animation = "on"
 centered = false
 
 [node name="Player1" type="AnimatedSprite" parent="."]

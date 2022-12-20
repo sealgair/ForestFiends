@@ -21,10 +21,10 @@ var dead = false
 func _ready():
 	screen_size = get_viewport_rect().size
 	# button mappings
-	inputs['right'] = "move_right{p}".format({'p': player}) 
-	inputs['left'] = "move_left{p}".format({'p': player}) 
-	inputs['special'] = "move_special{p}".format({'p': player}) 
-	inputs['attack'] = "move_attack{p}".format({'p': player})
+	inputs['right'] = "ui_right{p}".format({'p': player}) 
+	inputs['left'] = "ui_left{p}".format({'p': player}) 
+	inputs['special'] = "ui_a{p}".format({'p': player}) 
+	inputs['attack'] = "ui_b{p}".format({'p': player})
 	if palette == null:
 		palette = player - 1
 	$AnimatedSprite.material.set_shader_param("palette", palette)

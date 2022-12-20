@@ -20,6 +20,8 @@ func _ready():
 		$Aminal.frames = aminal_sprite.frames
 		$Aminal.play("idle")
 		$Label.text = aminal
+	else:
+		$Background.animation = "off"
 
 func _process(delta):
 	for p in range(4):
