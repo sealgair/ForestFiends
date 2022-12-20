@@ -40,7 +40,7 @@ func attack():
 	make_attack()
 
 func make_attack(offset=Vector2(0,0)):
-	var instance = load("res://Attack.tscn").instance()
+	var instance = load("res://characters/Attack.tscn").instance()
 	instance.attacker = self
 	instance.transform.origin += offset
 	instance.set_name("attack")

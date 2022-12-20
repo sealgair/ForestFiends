@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/shru.png-9b9e53fc9ec7aa340d2096bde7d2a43d.stex"
+path="res://.import/shru.png-deac46f0ea6e8a6d6222ba24065d76c9.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://shru.png"
-dest_files=[ "res://.import/shru.png-9b9e53fc9ec7aa340d2096bde7d2a43d.stex" ]
+source_file="res://art/shru.png"
+dest_files=[ "res://.import/shru.png-deac46f0ea6e8a6d6222ba24065d76c9.stex" ]
 
 [params]
 

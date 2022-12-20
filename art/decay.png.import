@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/brid.png-cabca3ba096ac356c89ca73d45bfb382.stex"
+path="res://.import/decay.png-6fec752f91d5adc247951f6bd954efcc.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://brid.png"
-dest_files=[ "res://.import/brid.png-cabca3ba096ac356c89ca73d45bfb382.stex" ]
+source_file="res://art/decay.png"
+dest_files=[ "res://.import/decay.png-6fec752f91d5adc247951f6bd954efcc.stex" ]
 
 [params]
 

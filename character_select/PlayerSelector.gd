@@ -18,7 +18,7 @@ func _ready():
 func set_aminal(new_aminal):
 	aminal = new_aminal
 	if aminal:
-		var instance = load("res://{a}.tscn".format({"a": aminal})).instance()
+		var instance = load("res://characters/{a}.tscn".format({"a": aminal})).instance()
 		var aminal_sprite = instance.get_node("AnimatedSprite")
 		for f in range($Aminal.frames.get_frame_count("idle")):
 			$Aminal.frames.remove_frame("idle", f)

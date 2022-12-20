@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/aminals-p8.png-c4322123e73e57944fa8072b69adfc94.stex"
+path="res://.import/aminals.png-b9e74516255fabbb47ee00b879bfad12.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://aminals-p8.png"
-dest_files=[ "res://.import/aminals-p8.png-c4322123e73e57944fa8072b69adfc94.stex" ]
+source_file="res://art/aminals.png"
+dest_files=[ "res://.import/aminals.png-b9e74516255fabbb47ee00b879bfad12.stex" ]
 
 [params]
 
@@ -20,7 +20,7 @@ compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=0
-flags/filter=true
+flags/filter=false
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2

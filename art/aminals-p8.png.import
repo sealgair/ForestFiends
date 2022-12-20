@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/decay.png-a9fa2a60c24891463bdf45fc77df6007.stex"
+path="res://.import/aminals-p8.png-6dea247d7d5f5b4b5684e365ea4dcc83.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://decay.png"
-dest_files=[ "res://.import/decay.png-a9fa2a60c24891463bdf45fc77df6007.stex" ]
+source_file="res://art/aminals-p8.png"
+dest_files=[ "res://.import/aminals-p8.png-6dea247d7d5f5b4b5684e365ea4dcc83.stex" ]
 
 [params]
 
@@ -20,7 +20,7 @@ compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=0
-flags/filter=false
+flags/filter=true
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2

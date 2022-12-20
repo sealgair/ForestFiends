@@ -11,7 +11,7 @@ config_version=4
 [application]
 
 config/name="Aminals"
-run/main_scene="res://Map.tscn"
+run/main_scene="res://arena/Map.tscn"
 config/icon="res://icon.png"
 
 [display]
