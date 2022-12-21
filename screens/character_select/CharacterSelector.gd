@@ -15,7 +15,7 @@ func _ready():
 		$Player4,
 	]
 	if aminal:
-		var instance = load("res://characters/{a}.tscn".format({"a": aminal})).instance()
+		var instance = Global.characters[aminal].instance()
 		aminal_sprite = instance.get_node("AnimatedSprite")
 		$Aminal.frames = aminal_sprite.frames
 		$Aminal.play("idle")

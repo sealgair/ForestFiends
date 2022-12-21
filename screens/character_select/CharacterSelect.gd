@@ -49,7 +49,7 @@ func _process(delta):
 			
 		var cell = highlights[p]
 		if selections[p]:
-			players[p].shift_palette(sign(dir.length()))
+			players[p].shift_palette(-sign(dir.x - dir.y))
 		elif dir.length() != 0:
 			if cell == null:
 				cell = Vector2(0,0)
@@ -63,7 +63,16 @@ func _process(delta):
 			players[p].visible = true
 			selectors[cell.x][cell.y].highlighted |= int(pow(2,p))
 			if Input.is_action_just_pressed(inp['select']):
-				selections[p] = true
+				if selections[p]:
+					var ready = true
+					for op in range(4):
+						if highlights[op] and not selections[op]:
+							ready = false
+							break
+					if ready:
+						start_game()
+				else:
+					selections[p] = true
 			if selections[p]:
 				selectors[cell.x][cell.y].selected |= int(pow(2,p))
 				players[p].set_aminal(selectors[cell.x][cell.y].aminal)
@@ -78,4 +87,11 @@ func _process(delta):
 			players[p].visible = false
 		
 		
-		
+func start_game():
+	for p in range(selections.size()):
+		if selections[p]:
+			var player = players[p]
+			Global.add_player(p, player.aminal, player.palette)
+		else:
+			Global.remove_player(p)
+	Global.load_scene("play")
