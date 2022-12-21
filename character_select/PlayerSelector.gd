@@ -1,7 +1,7 @@
 extends Node2D
 
 export (int) var player = 1
-var palette = null
+var palette = 0
 var aminal = ""
 var colors = [
 	Color("ff004d"),
@@ -14,6 +14,10 @@ var colors = [
 func _ready():
 	$Label.text = String(player)
 	$Background.color = colors[player-1]
+
+func shift_palette(amount):
+	palette = wrapi(palette+amount, 0, 4)
+	$Aminal.material.set_shader_param("palette", palette)
 
 func set_aminal(new_aminal):
 	aminal = new_aminal
@@ -30,6 +34,7 @@ func set_aminal(new_aminal):
 		$Sky.visible = true
 		$Aminal.visible = true
 		$Aminal.play("idle")
+		$Aminal.material.set_shader_param("palette", palette)
 	else:
 		$Aminal.visible = false
 		$Sky.visible = false

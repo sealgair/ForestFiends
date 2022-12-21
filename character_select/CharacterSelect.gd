@@ -48,7 +48,9 @@ func _process(delta):
 			dir.x += 1
 			
 		var cell = highlights[p]
-		if dir.length() != 0 and not selections[p]:
+		if selections[p]:
+			players[p].shift_palette(sign(dir.length()))
+		elif dir.length() != 0:
 			if cell == null:
 				cell = Vector2(0,0)
 				highlights[p] = cell
