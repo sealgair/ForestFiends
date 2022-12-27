@@ -1,42 +1,41 @@
 extends Node2D
 
-export (int) var player = 1
+export (int) var player_order = 1
 var palette = 0
-var aminal = ""
-var colors = [
-	Color("ff004d"),
-	Color("83769c"),
-	Color("00e436"),
-	Color("00e436"),
-]
+var species = ""
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	$Label.text = String(player)
-	$Background.color = colors[player-1]
+	$Label.text = String(player_order)
+	$Background.color = Global.player_colors[player_order-1]
+	$AminalSprite.visible = false
+	$Sky.visible = false
+	$Label.visible = true
 
 func shift_palette(amount):
 	palette = wrapi(palette+amount, 0, 4)
-	$Aminal.material.set_shader_param("palette", palette)
+	$AminalSprite.material.set_shader_param("palette", palette)
 
-func set_aminal(new_aminal):
-	aminal = new_aminal
-	if aminal:
-		var instance = Global.characters[aminal].instance()
-		var aminal_sprite = instance.get_node("AnimatedSprite")
-		for f in range($Aminal.frames.get_frame_count("idle")):
-			$Aminal.frames.remove_frame("idle", f)
-		for f in range(aminal_sprite.frames.get_frame_count("idle")):
-			var frame = aminal_sprite.frames.get_frame("idle", f)
-			$Aminal.frames.add_frame("idle", frame)
-		
-		$Label.visible = false
+func set_species(new_species):
+	var instance = Global.species[new_species].instance()
+	set_aminal(instance)
+
+func set_aminal(instance):
+	if instance:
+		species = instance.get_species()
+		$AminalSprite.set_aminal(instance)
+		$AminalSprite.visible = true
 		$Sky.visible = true
-		$Aminal.visible = true
-		$Aminal.play("idle")
-		$Aminal.material.set_shader_param("palette", palette)
+		$Label.visible = false
 	else:
-		$Aminal.visible = false
+		species = ""
+		$AminalSprite.visible = false
 		$Sky.visible = false
 		$Label.visible = true
 
+func make_player():
+	var player = Global.species[species].instance()
+	player.palette = palette
+	player.order = player_order
+	return player
+	

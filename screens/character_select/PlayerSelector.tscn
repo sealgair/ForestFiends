@@ -3,15 +3,7 @@
 [ext_resource path="res://screens/character_select/PlayerSelector.gd" type="Script" id=1]
 [ext_resource path="res://main/MenuTheme.tres" type="Theme" id=2]
 [ext_resource path="res://main/PalletSwap.tres" type="Material" id=3]
-
-[sub_resource type="SpriteFrames" id=1]
-resource_local_to_scene = true
-animations = [ {
-"frames": [  ],
-"loop": true,
-"name": "idle",
-"speed": 5.0
-} ]
+[ext_resource path="res://main/AminalSprite.tscn" type="PackedScene" id=4]
 
 [node name="PlayerSelector" type="Node2D"]
 script = ExtResource( 1 )
@@ -42,10 +34,6 @@ text = "0"
 align = 1
 valign = 1
 
-[node name="Aminal" type="AnimatedSprite" parent="."]
-visible = false
+[node name="AminalSprite" parent="." instance=ExtResource( 4 )]
 material = ExtResource( 3 )
 position = Vector2( 8, 8 )
-frames = SubResource( 1 )
-animation = "idle"
-centered = false

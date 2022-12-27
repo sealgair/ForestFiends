@@ -15,6 +15,7 @@ func _process(delta):
 
 
 func _on_Attack_body_entered(body):
-	if body != attacker:
+	if body != attacker and !body.dead:
 		$CollisionShape2D.set_deferred("disabled", true)
+		attacker.hit()
 		body.die()

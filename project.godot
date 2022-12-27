@@ -17,6 +17,7 @@ config/icon="res://icon.png"
 [autoload]
 
 Global="*res://main/Global.gd"
+ScreenManager="*res://screens/ScreenManager.gd"
 
 [display]
 

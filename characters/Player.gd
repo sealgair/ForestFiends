@@ -1,7 +1,12 @@
 extends KinematicBody2D
 
-export (int) var player = 1
+
+export (int) var order = 1
 export (int) var palette = null
+
+var ate = 0
+var fed = 0
+var points = 0
 
 var inputs = {}
 var run_speed = 100
@@ -9,7 +14,7 @@ var jump_speed = -450
 var gravity = 1200
 
 var screen_size
-signal hit
+signal made_hit
 signal respawn(player)
 
 var velocity = Vector2()
@@ -21,15 +26,24 @@ var dead = false
 func _ready():
 	screen_size = get_viewport_rect().size
 	# button mappings
-	inputs['right'] = "ui_right{p}".format({'p': player}) 
-	inputs['left'] = "ui_left{p}".format({'p': player}) 
-	inputs['special'] = "ui_a{p}".format({'p': player}) 
-	inputs['attack'] = "ui_b{p}".format({'p': player})
+	inputs['right'] = "ui_right{p}".format({'p': order}) 
+	inputs['left'] = "ui_left{p}".format({'p': order}) 
+	inputs['special'] = "ui_a{p}".format({'p': order}) 
+	inputs['attack'] = "ui_b{p}".format({'p': order})
 	if palette == null:
-		palette = player - 1
+		palette = order - 1
 	$AnimatedSprite.material.set_shader_param("palette", palette)
 	
-	# TODO: invincibilty after spawn
+
+func init(start_pos):
+	position = start_pos
+	ate = 0
+	fed = 0
+
+
+func get_species():
+	return "Shroo"
+
 
 func special():
 	if is_on_floor():
@@ -104,7 +118,13 @@ func _process(delta):
 				an.transform.origin.x *= -1
 
 
+func hit():
+	ate += 1
+	emit_signal("made_hit")
+
+
 func die():
+	fed += 1
 	if not dead:
 		dead = true
 		$AnimatedSprite.play('dead')
@@ -112,14 +132,15 @@ func die():
 	
 	
 func _on_RespawnTimer_timeout():
-	emit_signal("respawn", self.player)
-	$DecayTimer.start()
-
-
-func _on_DecayTimer_timeout():
 	$AnimatedSprite.play('decay')
 
 
 func _on_AnimatedSprite_animation_finished():
 	if $AnimatedSprite.animation == "decay":
-		queue_free()
+		emit_signal("respawn", self)
+
+
+func revive(new_pos):
+	position = new_pos
+	dead = false
+	# TODO: invincibilty after revive

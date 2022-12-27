@@ -2,8 +2,7 @@ extends Node2D
 
 export (int) var highlighted = 0
 export (int) var selected = 0
-export (String) var aminal = ""
-var aminal_sprite
+export (String) var species = ""
 
 var player_sprites
 
@@ -14,14 +13,11 @@ func _ready():
 		$Player3,
 		$Player4,
 	]
-	if aminal:
-		var instance = Global.characters[aminal].instance()
-		aminal_sprite = instance.get_node("AnimatedSprite")
-		$Aminal.frames = aminal_sprite.frames
-		$Aminal.play("idle")
-		$Label.text = aminal
+	if species:
+		$AminalSprite.set_species(species)
+		$Label.text = species
 	else:
-		$Background.animation = "off"
+		visible = false
 
 func _process(delta):
 	for p in range(4):

@@ -1,0 +1,61 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://art/shru.png" type="Texture" id=2]
+[ext_resource path="res://main/AminalSprite.gd" type="Script" id=3]
+
+[sub_resource type="AtlasTexture" id=2]
+atlas = ExtResource( 2 )
+region = Rect2( 0, 16, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=3]
+atlas = ExtResource( 2 )
+region = Rect2( 32, 16, 16, 16 )
+
+[sub_resource type="SpriteFrames" id=1]
+resource_local_to_scene = true
+animations = [ {
+"frames": [ SubResource( 2 ), SubResource( 3 ) ],
+"loop": true,
+"name": "idle",
+"speed": 5.0
+} ]
+
+[sub_resource type="GDScript" id=4]
+script/source = "extends AnimatedSprite
+
+
+export (String) var aminal = \"\"
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	if aminal:
+		set_aminal(aminal)
+
+
+func set_aminal(new_aminal):
+	aminal = new_aminal
+	var instance = Global.characters[aminal].instance()
+	var aminal_sprite = instance.get_node(\"AnimatedSprite\")
+	for f in range($AnimatedSprite.frames.get_frame_count(\"idle\")):
+		$AnimatedSprite.frames.remove_frame(\"idle\", f)
+	for f in range(aminal_sprite.frames.get_frame_count(\"idle\")):
+		var frame = aminal_sprite.frames.get_frame(\"idle\", f)
+		$AnimatedSprite.frames.add_frame(\"idle\", frame)
+"
+
+[node name="AminalSprite" type="Node2D"]
+script = ExtResource( 3 )
+
+[node name="ColorRect" type="ColorRect" parent="."]
+margin_right = 16.0
+margin_bottom = 16.0
+color = Color( 0.160784, 0.678431, 1, 1 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+position = Vector2( 8, 8 )
+frames = SubResource( 1 )
+animation = "idle"
+script = SubResource( 4 )

@@ -1,7 +1,9 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://art/aminals.png" type="Texture" id=1]
 [ext_resource path="res://screens/arena/Map.gd" type="Script" id=2]
+[ext_resource path="res://art/score.png" type="Texture" id=3]
+[ext_resource path="res://main/MenuTheme.tres" type="Theme" id=4]
 
 [sub_resource type="ConvexPolygonShape2D" id=2]
 points = PoolVector2Array( 0, 0, 8, 0, 8, 8, 0, 8 )
@@ -155,6 +157,18 @@ points = PoolVector2Array( 0, 0, 8, 0, 8, 8, 0, 8 )
 0/shapes = [  ]
 0/z_index = 0
 
+[sub_resource type="AtlasTexture" id=8]
+atlas = ExtResource( 3 )
+region = Rect2( 0, 0, 64, 16 )
+
+[sub_resource type="SpriteFrames" id=9]
+animations = [ {
+"frames": [ SubResource( 8 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
 [node name="Map" type="Node2D"]
 script = ExtResource( 2 )
 
@@ -179,3 +193,23 @@ cell_size = Vector2( 8, 8 )
 cell_custom_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
 format = 1
 tile_data = PoolIntArray( 131076, 0, 0, 131083, 0, 0, 393218, 0, 0, 393223, 0, 0, 393229, 0, 0, 655365, 0, 0, 655370, 0, 0, 917506, 0, 0, 917512, 0, 0, 917517, 0, 0 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+position = Vector2( 128, 8 )
+frames = SubResource( 9 )
+
+[node name="Score" type="Label" parent="."]
+margin_left = 104.0
+margin_top = 2.0
+margin_right = 152.0
+margin_bottom = 16.0
+theme = ExtResource( 4 )
+text = "0"
+align = 1
+valign = 1
+
+[node name="VictoryTimer" type="Timer" parent="."]
+wait_time = 0.3
+one_shot = true
+
+[connection signal="timeout" from="VictoryTimer" to="." method="_on_VictoryTimer_timeout"]

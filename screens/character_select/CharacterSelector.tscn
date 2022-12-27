@@ -3,6 +3,7 @@
 [ext_resource path="res://screens/character_select/CharacterSelector.gd" type="Script" id=1]
 [ext_resource path="res://art/selector.png" type="Texture" id=2]
 [ext_resource path="res://main/MenuTheme.tres" type="Theme" id=3]
+[ext_resource path="res://main/AminalSprite.tscn" type="PackedScene" id=4]
 
 [sub_resource type="AtlasTexture" id=1]
 atlas = ExtResource( 2 )
@@ -125,14 +126,6 @@ animations = [ {
 "speed": 5.0
 } ]
 
-[sub_resource type="SpriteFrames" id=15]
-animations = [ {
-"frames": [  ],
-"loop": true,
-"name": "idle",
-"speed": 5.0
-} ]
-
 [node name="CharacterSelector" type="Node2D"]
 script = ExtResource( 1 )
 
@@ -165,11 +158,8 @@ frames = SubResource( 12 )
 animation = "select"
 centered = false
 
-[node name="Aminal" type="AnimatedSprite" parent="."]
+[node name="AminalSprite" parent="." instance=ExtResource( 4 )]
 position = Vector2( 8, 8 )
-frames = SubResource( 15 )
-animation = "idle"
-centered = false
 
 [node name="Label" type="Label" parent="."]
 margin_top = 33.0

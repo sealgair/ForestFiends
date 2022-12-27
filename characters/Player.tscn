@@ -82,9 +82,5 @@ margin_bottom = -2.0
 [node name="RespawnTimer" type="Timer" parent="."]
 one_shot = true
 
-[node name="DecayTimer" type="Timer" parent="."]
-wait_time = 2.0
-
 [connection signal="animation_finished" from="AnimatedSprite" to="." method="_on_AnimatedSprite_animation_finished"]
 [connection signal="timeout" from="RespawnTimer" to="." method="_on_RespawnTimer_timeout"]
-[connection signal="timeout" from="DecayTimer" to="." method="_on_DecayTimer_timeout"]

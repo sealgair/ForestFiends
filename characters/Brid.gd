@@ -12,6 +12,10 @@ func _ready():
 	gravity *= .25
 
 
+func get_species():
+	return "Brid"
+
+
 func special():
 	if flaps <= max_flaps and flapped <= 0:
 		flaps += 1

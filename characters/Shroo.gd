@@ -3,20 +3,28 @@ extends "Player.gd"
 var dashing = 0
 var dash_speed = run_speed * 2
 
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	._ready()
 	jump_speed = -200
+	
+
+func get_species():
+	return "Shroo"
+
 
 func attack():
 	if dashing <= 0:
 		# no attack while dashing
 		.attack()
 
+
 func special():
 	if is_on_floor() and dashing <= 0:
 		.special()
 		dashing = 0.5
+
 
 func get_input():
 	.get_input()

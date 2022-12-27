@@ -4,13 +4,13 @@ var inputs = {}
 var highlights = [null, null, null, null]
 var selections = [false, false, false, false]
 var selectors
-var players
+var player_selectors
 
 func _ready():
 	selectors = [
 		[$Selector1, $Selector3,],
 	]
-	players = [
+	player_selectors = [
 		$Player1Selector, 
 		$Player2Selector, 
 		$Player3Selector, 
@@ -49,7 +49,7 @@ func _process(delta):
 			
 		var cell = highlights[p]
 		if selections[p]:
-			players[p].shift_palette(-sign(dir.x - dir.y))
+			player_selectors[p].shift_palette(-sign(dir.x - dir.y))
 		elif dir.length() != 0:
 			if cell == null:
 				cell = Vector2(0,0)
@@ -60,7 +60,7 @@ func _process(delta):
 			highlights[p] = cell
 		
 		if cell != null:
-			players[p].visible = true
+			player_selectors[p].visible = true
 			selectors[cell.x][cell.y].highlighted |= int(pow(2,p))
 			if Input.is_action_just_pressed(inp['select']):
 				if selections[p]:
@@ -75,23 +75,23 @@ func _process(delta):
 					selections[p] = true
 			if selections[p]:
 				selectors[cell.x][cell.y].selected |= int(pow(2,p))
-				players[p].set_aminal(selectors[cell.x][cell.y].aminal)
+				player_selectors[p].set_species(selectors[cell.x][cell.y].species)
 			
 			if Input.is_action_just_pressed(inp['cancel']):
 				if selections[p]:
 					selections[p] = false
-					players[p].set_aminal("")
+					player_selectors[p].set_aminal(null)
 				else:
 					highlights[p] = null
-		else:
-			players[p].visible = false
 		
 		
 func start_game():
+	var start_players = []
 	for p in range(selections.size()):
 		if selections[p]:
-			var player = players[p]
-			Global.add_player(p, player.aminal, player.palette)
-		else:
-			Global.remove_player(p)
-	Global.load_scene("play")
+			var player = player_selectors[p]
+			start_players.append(player.make_player())
+	
+	ScreenManager.load_screen("play", {
+		"players": start_players
+	})

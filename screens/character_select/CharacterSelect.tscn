@@ -15,14 +15,14 @@ color = Color( 0, 0, 0, 1 )
 
 [node name="Selector1" parent="." instance=ExtResource( 4 )]
 position = Vector2( 48, 48 )
-aminal = "Shroo"
+species = "Shroo"
 
 [node name="Selector2" parent="." instance=ExtResource( 4 )]
 position = Vector2( 112, 48 )
 
 [node name="Selector3" parent="." instance=ExtResource( 4 )]
 position = Vector2( 176, 48 )
-aminal = "Brid"
+species = "Brid"
 
 [node name="Selector4" parent="." instance=ExtResource( 4 )]
 position = Vector2( 48, 112 )
@@ -56,12 +56,12 @@ position = Vector2( 8, 8 )
 
 [node name="Player2Selector" parent="." instance=ExtResource( 2 )]
 position = Vector2( 216, 8 )
-player = 2
+player_order = 2
 
 [node name="Player3Selector" parent="." instance=ExtResource( 2 )]
 position = Vector2( 8, 216 )
-player = 3
+player_order = 3
 
 [node name="Player4Selector" parent="." instance=ExtResource( 2 )]
 position = Vector2( 216, 216 )
-player = 4
+player_order = 4
