@@ -1,6 +1,7 @@
 extends Node2D
 
 var players = []
+var player_data = []
 var PlayerVictory = preload("res://screens/victory/PlayerVictory.tscn")
 var inputs = {}
 
@@ -8,6 +9,7 @@ func score_sorter(a, b):
 	return a.points < b.points
 
 func _ready():
+#	player_data = player_data.duplicate(true)  # keep it around for posterity (restarting the match)
 	var column = get_viewport_rect().size.x / players.size()
 	var x = 0
 	players.sort_custom(self, 'score_sorter')
@@ -24,6 +26,12 @@ func _ready():
 		x += column
 		add_child(pv)
 		prev = player
+		# for restart
+		player_data.append({
+			'order': player.order,
+			'species': player.get_species(),
+			'palette': player.palette
+		})
 
 	for p in range(4):
 		var pl = p+1
@@ -36,6 +44,6 @@ func _process(delta):
 	for i in range(4):
 		var inp = inputs[i]
 		if Input.is_action_just_pressed(inp['replay']):
-			ScreenManager.load_screen('play', {'players': players})
+			ScreenManager.load_screen('play', {'start_data': player_data})
 		if Input.is_action_just_pressed(inp['change']):
 			ScreenManager.load_screen('select')

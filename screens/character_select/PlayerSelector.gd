@@ -34,8 +34,9 @@ func set_aminal(instance):
 		$Label.visible = true
 
 func make_player():
-	var player = Global.species[species].instance()
-	player.palette = palette
-	player.order = player_order
-	return player
+	return {
+		'order': player_order,
+		'species': species,
+		'palette': palette
+	}
 	

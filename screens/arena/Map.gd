@@ -1,5 +1,6 @@
 extends Node2D
 
+var start_data = []
 var players = []
 export (int) var score_limit = 2
 var score = 0
@@ -9,14 +10,17 @@ func _ready():
 	randomize()
 	$Score.text = String(score_limit)
 	var spawn_points = $RespawnTiles.get_used_cells()
-	for player in players:
+	for player_data in start_data:
+		var player = Global.species[player_data['species']].instance()
+		player.order = player_data['order']
+		player.palette = player_data['palette']
 		var s = randi() % spawn_points.size()
 		player.init(spawn_points[s] * player.size)
 		spawn_points.erase(s)
 		add_child(player)
 		player.connect("respawn", self, "spawn")
 		player.connect("made_hit", self, "hit")
-	
+		players.append(player)
 
 func hit():
 	score = 0
@@ -43,7 +47,7 @@ func make_points(player):
 	#local ktd = player.kills - player.deaths
 	#local kpc = player.kills / self.totalkills
 	#return max(0, ceil(kpm * 800 + ktd * 500 + kpc * 2000))
-	return player.ate * 5 - player.fed * 2
+	return max(0, player.ate * 5 - player.fed * 2)
 
 
 func end():

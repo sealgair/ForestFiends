@@ -93,5 +93,5 @@ func start_game():
 			start_players.append(player.make_player())
 	
 	ScreenManager.load_screen("play", {
-		"players": start_players
+		"start_data": start_players
 	})
