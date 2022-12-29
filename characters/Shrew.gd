@@ -11,7 +11,7 @@ func _ready():
 	
 
 func get_species():
-	return "Shroo"
+	return "Shrew"
 
 
 func attack():

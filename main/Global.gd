@@ -1,10 +1,10 @@
 extends Node
 
 var species = {
-	'Shroo': load("res://characters/Shroo.tscn"),
-	'Brid': load("res://characters/Brid.tscn"),
-	'Forg': load("res://characters/Forg.tscn"),
-	'Trut': load("res://characters/Trut.tscn"),
+	'Shrew': load("res://characters/Shrew.tscn"),
+	'Bird': load("res://characters/Bird.tscn"),
+	'Frog': load("res://characters/Frog.tscn"),
+	'Turt': load("res://characters/Turt.tscn"),
 }
 var screens = {
 	'select': "res://screens/character_select/CharacterSelect.tscn",

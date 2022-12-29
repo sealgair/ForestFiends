@@ -2,9 +2,16 @@ extends Node2D
 
 export (int) var highlighted = 0
 export (int) var selected = 0
-export (String) var species = ""
+export (String, "Shrew", "Bird", "Frog", "Turt") var species
 
 var player_sprites
+
+var names = {
+	"Shrew": "Sherm",
+	"Bird": "Borb",
+	"Frog": "Freg",
+	"Turt": "Tirt",
+}
 
 func _ready():
 	player_sprites = [
@@ -15,7 +22,7 @@ func _ready():
 	]
 	if species:
 		$AminalSprite.set_species(species)
-		$Label.text = species
+		$Label.text = names[species]
 	else:
 		visible = false
 

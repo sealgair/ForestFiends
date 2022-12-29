@@ -52,7 +52,7 @@ func init(start_pos):
 
 
 func get_species():
-	return "Shroo"
+	return "Player"
 
 
 func special():

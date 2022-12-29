@@ -13,7 +13,7 @@ func _ready():
 
 
 func get_species():
-	return "Brid"
+	return "Bird"
 
 
 func special():

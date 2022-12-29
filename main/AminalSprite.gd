@@ -8,9 +8,10 @@ func _ready():
 
 
 func set_species(species):
-	var instance = Global.species[species].instance()
-	instance.palette = palette
-	set_aminal(instance)
+	if species in Global.species:
+		var instance = Global.species[species].instance()
+		instance.palette = palette
+		set_aminal(instance)
 
 func set_aminal(instance):
 	var aminal_sprite = instance.get_node("AnimatedSprite")

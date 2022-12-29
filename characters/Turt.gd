@@ -9,7 +9,7 @@ func _ready():
 
 
 func get_species():
-	return "Trut"
+	return "Turt"
 
 func get_animation():
 	if defending:
