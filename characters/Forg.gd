@@ -2,7 +2,7 @@ extends "Player.gd"
 
 var jump_time = 0
 var max_jump = -300
-
+var look_angle = 0
 
 func _ready():
 	._ready()
@@ -37,21 +37,32 @@ func walk():
 			velocity.y = max(max_jump, velocity.y)
 
 
+func get_input(delta):
+	.get_input(delta)
+	var y = Input.get_axis(inputs['down'], inputs['up'])
+	look_angle = clamp(look_angle + TAU/4 * delta * y, 0, TAU/4)
+
+
 func _process(delta):
 	._process(delta)
 	if is_on_floor():
 		jump_time = 0
 	else:
 		jump_time = max(jump_time - delta, 0)
+	
+	var ret = Vector2(-16, 0)
+	ret = ret.rotated(look_angle)
+	if $AnimatedSprite.flip_h:
+		ret *= Vector2(-1, 1)
+	$Reticle.transform.origin = ret
 		
 	var an = attackNode.get_ref()
 	$Tongue.visible = an != null
 	if an:
-		var x = easeoutback(an.life/an.live) * 32
-		if $AnimatedSprite.flip_h:
-			x *= -1
-		an.transform.origin.x = x
-		$Tongue.set_point_position(1, Vector2(-x, 0))
+		var l = easeoutback(an.life/an.live)
+		ret = ret * l * 2
+		an.transform.origin = ret
+		$Tongue.set_point_position(1, ret)
 
 
 func easeoutback(t, p=4):

@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://characters/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://characters/Forg.gd" type="Script" id=2]
@@ -70,6 +70,22 @@ animations = [ {
 "speed": 5.0
 } ]
 
+[sub_resource type="AtlasTexture" id=28]
+atlas = ExtResource( 5 )
+region = Rect2( 32, 0, 4, 4 )
+
+[sub_resource type="AtlasTexture" id=29]
+atlas = ExtResource( 5 )
+region = Rect2( 36, 0, 4, 4 )
+
+[sub_resource type="SpriteFrames" id=30]
+animations = [ {
+"frames": [ SubResource( 28 ), SubResource( 29 ) ],
+"loop": true,
+"name": "default",
+"speed": 30.0
+} ]
+
 [node name="Forg" instance=ExtResource( 1 )]
 position = Vector2( 130, 235 )
 script = ExtResource( 2 )
@@ -85,3 +101,9 @@ material = SubResource( 22 )
 frames = SubResource( 23 )
 animation = "idle"
 frame = 0
+
+[node name="Reticle" type="AnimatedSprite" parent="." index="5"]
+position = Vector2( -16, 0 )
+frames = SubResource( 30 )
+frame = 1
+playing = true

@@ -22,8 +22,8 @@ func special():
 		flapped = 0.3
 		velocity.y = flap_speed
 
-func get_input():
-	.get_input()
+func get_input(delta):
+	.get_input(delta)
 	if is_attacking():
 		if is_on_floor():
 			velocity.x = 0

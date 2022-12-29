@@ -26,8 +26,8 @@ func special():
 		dashing = 0.5
 
 
-func get_input():
-	.get_input()
+func get_input(delta):
+	.get_input(delta)
 	if dashing > 0:
 		var dash = dash_speed
 		if velocity.x == 0:

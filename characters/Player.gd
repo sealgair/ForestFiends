@@ -31,8 +31,10 @@ var attack_scene = preload("res://characters/Attack.tscn")
 func _ready():
 	screen_size = get_viewport_rect().size
 	# button mappings
-	inputs['right'] = "ui_right{p}".format({'p': order}) 
-	inputs['left'] = "ui_left{p}".format({'p': order}) 
+	inputs['right'] = "ui_right{p}".format({'p': order})
+	inputs['left'] = "ui_left{p}".format({'p': order})
+	inputs['up'] = "ui_up{p}".format({'p': order})
+	inputs['down'] = "ui_down{p}".format({'p': order})
 	inputs['special'] = "ui_a{p}".format({'p': order}) 
 	inputs['attack'] = "ui_b{p}".format({'p': order})
 	if palette == null:
@@ -76,7 +78,7 @@ func walk():
 	if x != 0:
 		$AnimatedSprite.flip_h = x > 0
 
-func get_input():
+func get_input(delta):
 	if not dead:
 		walk()
 			
@@ -90,7 +92,7 @@ func get_input():
 func _physics_process(delta):
 	if jumping and is_on_floor():
 		jumping = false
-	get_input()
+	get_input(delta)
 	velocity.y += gravity * delta
 	velocity = move_and_slide(velocity, Vector2(0, -1))
 	
