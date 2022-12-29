@@ -1,5 +1,6 @@
 extends "Player.gd"
 
+var defending = false
 
 func _ready():
 	run_speed = 60
@@ -10,11 +11,37 @@ func _ready():
 func get_species():
 	return "Trut"
 
+func get_animation():
+	if defending:
+		return "defend"
+	return .get_animation()
+
+
+func get_input(delta):
+	.get_input(delta)
+	if not Input.is_action_pressed(inputs['special']):
+		defending = false
+	
+	
+func special():
+	if not defending:
+		defending = true
+		$AnimatedSprite.play("defend")
+
+func walk():
+	if not defending:
+		return .walk()
+	else:
+		velocity.x = 0	
+
+func is_vulnerable():
+	return .is_vulnerable() and not defending
 
 func _process(delta):
 	._process(delta)
 	$Head.flip_h = $AnimatedSprite.flip_h
 	var an = attackNode.get_ref()
+	$Head.visible = not defending and not dead
 	$Head.animation = "idle"
 	if an:
 		var xoff = easeoutback(an.life/an.live) * 10
