@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/aminals.png.png-5afcc7782cd6e738cd0d0c537da0e0db.stex"
+path="res://.import/trut.png-3a8bc51f870c4c60ed5d8cf1ac4febbe.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/aminals.png.png"
-dest_files=[ "res://.import/aminals.png.png-5afcc7782cd6e738cd0d0c537da0e0db.stex" ]
+source_file="res://art/trut.png"
+dest_files=[ "res://.import/trut.png-3a8bc51f870c4c60ed5d8cf1ac4febbe.stex" ]
 
 [params]
 

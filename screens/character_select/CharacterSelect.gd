@@ -9,6 +9,7 @@ var player_selectors
 func _ready():
 	selectors = [
 		[$Selector1, $Selector3,],
+		[$Selector7, $Selector9,],
 	]
 	player_selectors = [
 		$Player1Selector, 
@@ -52,7 +53,7 @@ func _process(delta):
 			player_selectors[p].shift_palette(sign(dir.x - dir.y))
 		elif dir.length() != 0:
 			if cell == null:
-				cell = Vector2(0,0)
+				cell = Vector2(0,0)	
 				highlights[p] = cell
 			else:
 				cell.x = wrapi(cell.x+dir.x, 0, selectors.size())

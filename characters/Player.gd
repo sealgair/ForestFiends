@@ -27,6 +27,7 @@ var attackNode = weakref(null)
 var dead = false
 
 var attack_scene = preload("res://characters/Attack.tscn")
+var attack_anim = "default"
 
 func _ready():
 	screen_size = get_viewport_rect().size
@@ -67,9 +68,11 @@ func make_attack(offset=Vector2(0,0)):
 	instance.attacker = self
 	instance.transform.origin += offset
 	instance.set_name("attack")
+	instance.configure(attack_anim)
 	add_child(instance)
 	attackNode = weakref(instance)
 	$AnimatedSprite.play("attack")
+	return instance
 
 func walk():
 	velocity.x = 0
@@ -154,3 +157,7 @@ func revive(new_pos):
 	position = new_pos
 	dead = false
 	# TODO: invincibilty after revive
+
+
+func easeoutback(t, p=4):
+	return 1-pow(2*(t-.5), p)

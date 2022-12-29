@@ -8,7 +8,7 @@ func _ready():
 	._ready()
 	run_speed = 150
 	jump_speed = -50
-	attack_scene = preload("res://characters/ForgAttack.tscn")
+	attack_anim = "tongue"
 
 
 func get_species():
@@ -63,7 +63,3 @@ func _process(delta):
 		ret = ret * l * 2
 		an.transform.origin = ret
 		$Tongue.set_point_position(1, ret)
-
-
-func easeoutback(t, p=4):
-	return 1-pow(2*(t-.5), p)

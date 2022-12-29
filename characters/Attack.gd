@@ -13,6 +13,9 @@ func _process(delta):
 	if life <= 0:
 		queue_free()
 
+func configure(anim="idle", size=6):
+	$AnimatedSprite.animation = anim
+
 
 func _on_Attack_body_entered(body):
 	if body != attacker and !body.dead:
