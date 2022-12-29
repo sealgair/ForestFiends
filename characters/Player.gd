@@ -13,6 +13,9 @@ var run_speed = 100
 var jump_speed = -450
 var gravity = 1200
 
+var attack_wait = 1
+var attack_timeout = 0
+
 var screen_size
 signal made_hit
 signal respawn(player)
@@ -22,6 +25,8 @@ var jumping = false
 var size = Vector2(16, 16) # todo: dynamic
 var attackNode = weakref(null)
 var dead = false
+
+var attack_scene = preload("res://characters/Attack.tscn")
 
 func _ready():
 	screen_size = get_viewport_rect().size
@@ -51,10 +56,12 @@ func special():
 		velocity.y = jump_speed
 
 func attack():
-	make_attack()
+	if attack_timeout <= 0:
+		attack_timeout = attack_wait
+		make_attack()
 
 func make_attack(offset=Vector2(0,0)):
-	var instance = load("res://characters/Attack.tscn").instance()
+	var instance = attack_scene.instance()
 	instance.attacker = self
 	instance.transform.origin += offset
 	instance.set_name("attack")
@@ -106,6 +113,9 @@ func get_animation():
 		return "idle"
 
 func _process(delta):
+	if not is_attacking():
+		attack_timeout = max(0, attack_timeout - delta)
+	
 	if not dead:
 		$AnimatedSprite.animation = get_animation()
 		var an = attackNode.get_ref()

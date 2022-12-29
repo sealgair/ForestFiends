@@ -1,6 +1,6 @@
 extends Area2D
 
-export (float) var live = 0.3
+export (float) var live = 0.5
 var life = 0
 
 var attacker

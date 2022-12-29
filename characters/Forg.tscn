@@ -71,8 +71,17 @@ animations = [ {
 } ]
 
 [node name="Forg" instance=ExtResource( 1 )]
+position = Vector2( 130, 235 )
 script = ExtResource( 2 )
 
-[node name="AnimatedSprite" parent="." index="0"]
+[node name="Tongue" type="Line2D" parent="." index="0"]
+visible = false
+points = PoolVector2Array( 0, 0, -31, 0 )
+width = 2.0
+default_color = Color( 1, 0, 0.301961, 1 )
+
+[node name="AnimatedSprite" parent="." index="1"]
 material = SubResource( 22 )
 frames = SubResource( 23 )
+animation = "idle"
+frame = 0

@@ -4,14 +4,16 @@
 [ext_resource path="res://characters/Attack.gd" type="Script" id=2]
 
 [sub_resource type="CircleShape2D" id=1]
+radius = 4.0
 
-[sub_resource type="AtlasTexture" id=2]
+[sub_resource type="AtlasTexture" id=4]
 atlas = ExtResource( 1 )
 region = Rect2( 120, 40, 8, 8 )
 
 [sub_resource type="SpriteFrames" id=3]
+resource_local_to_scene = true
 animations = [ {
-"frames": [ SubResource( 2 ) ],
+"frames": [ SubResource( 4 ) ],
 "loop": true,
 "name": "default",
 "speed": 5.0

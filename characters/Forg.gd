@@ -3,11 +3,12 @@ extends "Player.gd"
 var jump_time = 0
 var max_jump = -300
 
-# Called when the node enters the scene tree for the first time.
+
 func _ready():
 	._ready()
 	run_speed = 150
 	jump_speed = -50
+	attack_scene = preload("res://characters/ForgAttack.tscn")
 
 
 func get_species():
@@ -42,3 +43,16 @@ func _process(delta):
 		jump_time = 0
 	else:
 		jump_time = max(jump_time - delta, 0)
+		
+	var an = attackNode.get_ref()
+	$Tongue.visible = an != null
+	if an:
+		var x = easeoutback(an.life/an.live) * 32
+		if $AnimatedSprite.flip_h:
+			x *= -1
+		an.transform.origin.x = x
+		$Tongue.set_point_position(1, Vector2(-x, 0))
+
+
+func easeoutback(t, p=4):
+	return 1-pow(2*(t-.5), p)
