@@ -15,6 +15,8 @@ var gravity = 1200
 
 var attack_wait = 1
 var attack_timeout = 0
+var revive_countdown = 0
+var revive_time = 2
 
 var screen_size
 signal made_hit
@@ -122,6 +124,12 @@ func _process(delta):
 		attack_timeout = max(0, attack_timeout - delta)
 	
 	if not dead:
+		revive_countdown = max(0, revive_countdown - delta)
+		var opacity = 1
+		if revive_countdown > 0:
+			opacity = .5 + cos(8*PI*revive_countdown*revive_time)/2
+		modulate = Color(1,1,1,opacity)
+		
 		$AnimatedSprite.animation = get_animation()
 		var an = attackNode.get_ref()
 		if an:
@@ -129,6 +137,10 @@ func _process(delta):
 			an.transform.origin.x = abs(an.transform.origin.x)
 			if not $AnimatedSprite.flip_h:
 				an.transform.origin.x *= -1
+
+
+func is_vulnerable():
+	return not self.dead
 
 
 func hit():
@@ -156,7 +168,8 @@ func _on_AnimatedSprite_animation_finished():
 func revive(new_pos):
 	position = new_pos
 	dead = false
-	# TODO: invincibilty after revive
+	# for invincibilty after revive
+	revive_countdown = revive_time
 
 
 func easeoutback(t, p=4):
