@@ -49,7 +49,7 @@ func _process(delta):
 			
 		var cell = highlights[p]
 		if selections[p]:
-			player_selectors[p].shift_palette(-sign(dir.x - dir.y))
+			player_selectors[p].shift_palette(sign(dir.x - dir.y))
 		elif dir.length() != 0:
 			if cell == null:
 				cell = Vector2(0,0)

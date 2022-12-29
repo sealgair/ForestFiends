@@ -14,7 +14,7 @@ func _ready():
 
 func shift_palette(amount):
 	palette = wrapi(palette+amount, 0, 4)
-	$AminalSprite.material.set_shader_param("palette", palette)
+	$AminalSprite.set_palette(palette)
 
 func set_species(new_species):
 	var instance = Global.species[new_species].instance()
