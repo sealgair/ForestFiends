@@ -9,7 +9,6 @@ func score_sorter(a, b):
 	return a.points < b.points
 
 func _ready():
-#	player_data = player_data.duplicate(true)  # keep it around for posterity (restarting the match)
 	var column = get_viewport_rect().size.x / players.size()
 	var x = 0
 	players.sort_custom(self, 'score_sorter')

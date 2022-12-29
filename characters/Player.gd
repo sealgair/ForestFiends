@@ -62,13 +62,16 @@ func make_attack(offset=Vector2(0,0)):
 	attackNode = weakref(instance)
 	$AnimatedSprite.play("attack")
 
-func get_input():
+func walk():
 	velocity.x = 0
+	var x = Input.get_axis(inputs['left'], inputs['right'])
+	velocity.x += x * run_speed
+	if x != 0:
+		$AnimatedSprite.flip_h = x > 0
+
+func get_input():
 	if not dead:
-		var x = Input.get_axis(inputs['left'], inputs['right'])
-		velocity.x += x * run_speed
-		if x != 0:
-			$AnimatedSprite.flip_h = x < 0
+		walk()
 			
 		if Input.is_action_just_pressed(inputs['special']):
 			special()
@@ -78,10 +81,10 @@ func get_input():
 
 
 func _physics_process(delta):
-	get_input()
-	velocity.y += gravity * delta
 	if jumping and is_on_floor():
 		jumping = false
+	get_input()
+	velocity.y += gravity * delta
 	velocity = move_and_slide(velocity, Vector2(0, -1))
 	
 	# use transform not position so as not to break physics
@@ -103,11 +106,6 @@ func get_animation():
 		return "idle"
 
 func _process(delta):
-	if velocity.x >= 1:
-		$AnimatedSprite.flip_h = true
-	if velocity.x <= -1:
-		$AnimatedSprite.flip_h = false
-	
 	if not dead:
 		$AnimatedSprite.animation = get_animation()
 		var an = attackNode.get_ref()

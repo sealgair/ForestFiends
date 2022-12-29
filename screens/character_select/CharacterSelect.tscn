@@ -22,7 +22,7 @@ position = Vector2( 112, 48 )
 
 [node name="Selector3" parent="." instance=ExtResource( 4 )]
 position = Vector2( 176, 48 )
-species = "Brid"
+species = "Forg"
 
 [node name="Selector4" parent="." instance=ExtResource( 4 )]
 position = Vector2( 48, 112 )
@@ -35,6 +35,7 @@ position = Vector2( 176, 112 )
 
 [node name="Selector7" parent="." instance=ExtResource( 4 )]
 position = Vector2( 48, 176 )
+species = "Brid"
 
 [node name="Selector8" parent="." instance=ExtResource( 4 )]
 position = Vector2( 112, 176 )
