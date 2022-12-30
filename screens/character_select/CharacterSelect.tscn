@@ -40,6 +40,7 @@ species = "Bird"
 
 [node name="Selector8" parent="." instance=ExtResource( 4 )]
 position = Vector2( 112, 176 )
+species = "Mant"
 
 [node name="Selector9" parent="." instance=ExtResource( 4 )]
 position = Vector2( 176, 176 )
