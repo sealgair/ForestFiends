@@ -15,7 +15,7 @@ var gravity = 1200
 
 var attack_wait = 1
 var attack_timeout = 0
-var attack_offset = Vector2(0,0)
+var attack_offset = Vector2(16,0)
 var revive_countdown = 0
 var revive_time = 2
 

@@ -5,7 +5,7 @@ func _ready():
 	._ready()
 	gravity = 0
 	run_speed = 80
-	attack_offset = Vector2(0,8)
+	attack_offset = Vector2(16,8)
 	
 
 func get_species():

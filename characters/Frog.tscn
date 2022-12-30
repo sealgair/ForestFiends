@@ -87,7 +87,7 @@ animations = [ {
 } ]
 
 [node name="Forg" instance=ExtResource( 1 )]
-position = Vector2( 130, 235 )
+position = Vector2( 0, 0 )
 script = ExtResource( 2 )
 
 [node name="Tongue" type="Line2D" parent="." index="0"]
@@ -104,4 +104,5 @@ frame = 0
 [node name="Reticle" type="AnimatedSprite" parent="." index="5"]
 position = Vector2( -16, 0 )
 frames = SubResource( 30 )
+frame = 1
 playing = true
