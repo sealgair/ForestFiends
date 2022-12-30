@@ -38,15 +38,15 @@ func get_input(delta):
 			poise_timer = 0
 
 func walk():
-	if not poised:
-		.walk()
-		if velocity.x != 0:
-			hidden = false
-	else:
+	if poised:
 		velocity.x = 0
 		var x = Input.get_axis(inputs['left'], inputs['right'])
 		if x != 0:
 			$AnimatedSprite.flip_h = x > 0
+	else:
+		.walk()
+		if hidden and velocity.x != 0:
+			velocity.x *= 0.1
 	
 
 func get_animation():
@@ -62,7 +62,10 @@ func _process(delta):
 	._process(delta)
 	
 	if hidden:
-		opacity = max(0, opacity - delta / fade_time)
+		var min_opacity = 0
+		if velocity.x != 0 or velocity.y != 0:
+			min_opacity = 0.2
+		opacity = max(min_opacity, opacity - delta / fade_time)
 	else:
 		opacity = min(1, opacity + delta / fade_time)
 	$AnimatedSprite.modulate = Color(1,1,1,opacity)
