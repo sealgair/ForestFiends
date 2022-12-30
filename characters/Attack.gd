@@ -20,5 +20,4 @@ func configure(anim="idle", size=6):
 func _on_Attack_body_entered(body):
 	if body != attacker and body.is_vulnerable():
 		$CollisionShape2D.set_deferred("disabled", true)
-		attacker.hit()
-		body.die()
+		attacker.hit(body)

@@ -1,9 +1,10 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=21 format=2]
 
 [ext_resource path="res://main/PalletSwap.gdshader" type="Shader" id=1]
 [ext_resource path="res://characters/Player.gd" type="Script" id=2]
-[ext_resource path="res://art/trut.png" type="Texture" id=3]
+[ext_resource path="res://art/wasp.png" type="Texture" id=3]
 [ext_resource path="res://art/decay.png" type="Texture" id=4]
+[ext_resource path="res://art/poison.png" type="Texture" id=5]
 
 [sub_resource type="ShaderMaterial" id=17]
 resource_local_to_scene = true
@@ -13,7 +14,7 @@ shader_param/palette_length = 4
 
 [sub_resource type="AtlasTexture" id=23]
 atlas = ExtResource( 3 )
-region = Rect2( 0, 16, 16, 16 )
+region = Rect2( 32, 16, 16, 16 )
 
 [sub_resource type="AtlasTexture" id=24]
 atlas = ExtResource( 3 )
@@ -33,13 +34,21 @@ region = Rect2( 0, 16, 16, 16 )
 
 [sub_resource type="AtlasTexture" id=26]
 atlas = ExtResource( 3 )
-region = Rect2( 0, 16, 16, 16 )
+region = Rect2( 16, 16, 16, 16 )
 
 [sub_resource type="AtlasTexture" id=27]
 atlas = ExtResource( 3 )
 region = Rect2( 0, 16, 16, 16 )
 
 [sub_resource type="AtlasTexture" id=28]
+atlas = ExtResource( 3 )
+region = Rect2( 16, 16, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=29]
+atlas = ExtResource( 3 )
+region = Rect2( 0, 16, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=30]
 atlas = ExtResource( 3 )
 region = Rect2( 16, 16, 16, 16 )
 
@@ -61,17 +70,17 @@ animations = [ {
 "name": "decay",
 "speed": 10.0
 }, {
-"frames": [ SubResource( 25 ) ],
+"frames": [ SubResource( 25 ), SubResource( 26 ) ],
 "loop": true,
 "name": "idle",
-"speed": 5.0
+"speed": 30.0
 }, {
-"frames": [ SubResource( 26 ) ],
+"frames": [ SubResource( 27 ), SubResource( 28 ) ],
 "loop": true,
 "name": "jump",
 "speed": 5.0
 }, {
-"frames": [ SubResource( 27 ), SubResource( 28 ) ],
+"frames": [ SubResource( 29 ), SubResource( 30 ) ],
 "loop": true,
 "name": "walk",
 "speed": 5.0
@@ -80,8 +89,20 @@ animations = [ {
 [sub_resource type="RectangleShape2D" id=9]
 extents = Vector2( 8, 8 )
 
+[sub_resource type="AtlasTexture" id=31]
+atlas = ExtResource( 5 )
+region = Rect2( 0, 0, 16, 16 )
+
+[sub_resource type="SpriteFrames" id=32]
+animations = [ {
+"frames": [ SubResource( 31 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
 [node name="Player" type="KinematicBody2D"]
-position = Vector2( 129, 240 )
+position = Vector2( 128, 252 )
 collision_layer = 2
 collision_mask = 5
 script = ExtResource( 2 )
@@ -92,8 +113,7 @@ __meta__ = {
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 material = SubResource( 17 )
 frames = SubResource( 8 )
-animation = "decay"
-frame = 1
+animation = "idle"
 playing = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -107,5 +127,15 @@ margin_bottom = -2.0
 [node name="RespawnTimer" type="Timer" parent="."]
 one_shot = true
 
+[node name="Poison" type="AnimatedSprite" parent="."]
+visible = false
+frames = SubResource( 32 )
+offset = Vector2( 0, -16 )
+
+[node name="PoisonTimer" type="Timer" parent="."]
+wait_time = 6.0
+one_shot = true
+
 [connection signal="animation_finished" from="AnimatedSprite" to="." method="_on_AnimatedSprite_animation_finished"]
 [connection signal="timeout" from="RespawnTimer" to="." method="_on_RespawnTimer_timeout"]
+[connection signal="timeout" from="PoisonTimer" to="." method="_on_PoisonTimer_timeout"]

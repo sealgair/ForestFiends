@@ -15,6 +15,7 @@ var gravity = 1200
 
 var attack_wait = 1
 var attack_timeout = 0
+var attack_offset = Vector2(0,0)
 var revive_countdown = 0
 var revive_time = 2
 
@@ -27,6 +28,7 @@ var jumping = false
 var size = Vector2(16, 16) # todo: dynamic
 var attackNode = weakref(null)
 var dead = false
+var poisoned_by = null
 
 var attack_scene = preload("res://characters/Attack.tscn")
 var attack_anim = "default"
@@ -65,10 +67,10 @@ func attack():
 		attack_timeout = attack_wait
 		make_attack()
 
-func make_attack(offset=Vector2(0,0)):
+func make_attack():
 	var instance = attack_scene.instance()
 	instance.attacker = self
-	instance.transform.origin += offset
+	instance.transform.origin += attack_offset
 	instance.set_name("attack")
 	instance.configure(attack_anim)
 	add_child(instance)
@@ -124,6 +126,8 @@ func _process(delta):
 		attack_timeout = max(0, attack_timeout - delta)
 	
 	if not dead:
+		$Poison.visible = poisoned_by != null
+		
 		revive_countdown = max(0, revive_countdown - delta)
 		var opacity = 1
 		if revive_countdown > 0:
@@ -143,9 +147,21 @@ func is_vulnerable():
 	return not self.dead
 
 
-func hit():
+func score(other):
 	ate += 1
 	emit_signal("made_hit")
+	if other == poisoned_by:
+		poisoned_by = null
+	
+
+func hit(other):
+	score(other)
+	other.die()
+
+
+func poison(other):
+	poisoned_by = other
+	$PoisonTimer.start()
 
 
 func die():
@@ -168,9 +184,17 @@ func _on_AnimatedSprite_animation_finished():
 func revive(new_pos):
 	position = new_pos
 	dead = false
+	poisoned_by = null
 	# for invincibilty after revive
 	revive_countdown = revive_time
 
 
 func easeoutback(t, p=4):
 	return 1-pow(2*(t-.5), p)
+
+
+func _on_PoisonTimer_timeout():
+	if poisoned_by:
+		poisoned_by.score(self)
+		die()
+		poisoned_by = null
