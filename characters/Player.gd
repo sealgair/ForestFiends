@@ -126,7 +126,11 @@ func _process(delta):
 		attack_timeout = max(0, attack_timeout - delta)
 	
 	if not dead:
-		$Poison.visible = poisoned_by != null
+		var poison_opacity = 0
+		if poisoned_by != null:
+			var poison_time = $PoisonTimer.time_left / $PoisonTimer.wait_time
+			poison_opacity = .5 + cos(32*PI*poison_time*poison_time)
+		$Poison.modulate = Color(1,1,1,poison_opacity)
 		
 		revive_countdown = max(0, revive_countdown - delta)
 		var opacity = 1
