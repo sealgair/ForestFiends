@@ -5,6 +5,9 @@ var poised = false
 var poise_timer = 0
 var poise_time = 0.5
 
+var hidden = false
+var opacity = 1
+var fade_time = 0.3
 
 func _ready():
 	attack_anim = "none"
@@ -20,18 +23,25 @@ func make_attack():
 		poise_timer = poise_time
 		
 
+func special():
+	hidden = not hidden
+
+
 func get_input(delta):
 	.get_input(delta)
-	if not dead and poised:
-		if not Input.is_action_pressed(inputs['attack']):
+	if not dead:
+		if poised and not Input.is_action_pressed(inputs['attack']):
 			poised = false
 			if poise_timer <= 0:
 				.make_attack()
+				hidden = false
 			poise_timer = 0
 
 func walk():
 	if not poised:
-		return .walk()
+		.walk()
+		if velocity.x != 0:
+			hidden = false
 	else:
 		velocity.x = 0
 		var x = Input.get_axis(inputs['left'], inputs['right'])
@@ -50,6 +60,12 @@ func get_animation():
 
 func _process(delta):
 	._process(delta)
+	
+	if hidden:
+		opacity = max(0, opacity - delta / fade_time)
+	else:
+		opacity = min(1, opacity + delta / fade_time)
+	$AnimatedSprite.modulate = Color(1,1,1,opacity)
 	
 	if poised:
 		poise_timer = max(0, poise_timer - delta)
