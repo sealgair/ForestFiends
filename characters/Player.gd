@@ -12,6 +12,7 @@ var inputs = {}
 var run_speed = 100
 var jump_speed = -450
 var gravity = 1200
+var accelerate = Vector2(0,0)
 
 var attack_wait = 1
 var attack_timeout = 0
@@ -59,12 +60,19 @@ func get_species():
 	return "Player"
 
 
-func special():
+func special_pressed():
 	if is_on_floor():
 		jumping = true
 		velocity.y = jump_speed
 
-func attack():
+func special_released():
+	pass
+
+func is_special_pressed():
+	return Input.is_action_pressed(inputs['special'])
+
+
+func attack_pressed():
 	if attack_timeout <= 0:
 		attack_timeout = attack_wait
 		make_attack()
@@ -81,18 +89,34 @@ func make_attack():
 	return instance
 
 
+func attack_released():
+	pass
+
+
+func is_attack_pressed():
+	return Input.is_action_pressed(inputs['attack'])
+
+
 func is_mobile():
 	return true
 
 
-func walk(delta):
-	var x = 0
+func axes_pressed():
 	if is_mobile():
-		x = Input.get_axis(inputs['left'], inputs['right'])
+		return Vector2(
+			Input.get_axis(inputs['left'], inputs['right']),
+			Input.get_axis(inputs['up'], inputs['down'])
+		)
+	else:
+		return Vector2(0,0)
+
+
+# warning-ignore:unused_argument
+func move(x, y):
+	accelerate = Vector2(0,0)
 	if x == 0:
 		if slimed > 0:
-			var decel = run_speed * sign(velocity.x) * delta / 2
-			velocity.x -= decel
+			accelerate.x = run_speed / 2 * -sign(velocity.x)
 		else:
 			velocity.x = 0
 	else:
@@ -100,22 +124,34 @@ func walk(delta):
 	if x != 0:
 		$AnimatedSprite.flip_h = x > 0
 
-func get_input(delta):
+
+func moved(delta):
+	pass
+
+
+func handle_input(delta):
 	if not dead:
-		walk(delta)
+		var axes = axes_pressed()
+		move(axes.x, axes.y)
+		moved(delta)
 			
 		if Input.is_action_just_pressed(inputs['special']):
-			special()
+			special_pressed()
+		if Input.is_action_just_released(inputs['special']):
+			special_released()
 			
 		if Input.is_action_just_pressed(inputs['attack']):
-			attack()
+			attack_pressed()
+		if Input.is_action_just_released(inputs['attack']):
+			attack_released()
 
 
 func _physics_process(delta):
 	if jumping and is_on_floor():
 		jumping = false
-	get_input(delta)
+	handle_input(delta)
 	velocity.y += gravity * delta
+	velocity += accelerate * delta
 	velocity = move_and_slide(velocity, Vector2(0, -1))
 	
 	# use transform not position so as not to break physics

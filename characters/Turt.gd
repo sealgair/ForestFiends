@@ -2,6 +2,7 @@ extends "Player.gd"
 
 var defending = false
 
+
 func _ready():
 	run_speed = 60
 	$Head.material.set_shader_param("palette", palette)
@@ -17,16 +18,14 @@ func get_animation():
 	return .get_animation()
 
 
-func get_input(delta):
-	.get_input(delta)
-	if not Input.is_action_pressed(inputs['special']):
-		defending = false
-	
-	
-func special():
+func special_pressed():
 	if not defending:
 		defending = true
 		$AnimatedSprite.play("defend")
+
+
+func special_released():
+	defending = false
 
 
 func is_mobile():

@@ -6,6 +6,7 @@ func _ready():
 	gravity = 0
 	run_speed = 80
 	attack_offset = Vector2(16,8)
+	attack_wait = 1.5
 	
 
 func get_species():
@@ -19,9 +20,6 @@ func hit(other):
 		other.poison(self)
 	
 
-func walk(delta):
-	.walk(delta)
-	
-	velocity.y = 0
-	var y = Input.get_axis(inputs['up'], inputs['down'])
-	velocity.y += y * run_speed
+func move(x, y):
+	.move(x, y)
+	velocity.y = y * run_speed

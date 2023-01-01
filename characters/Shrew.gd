@@ -14,20 +14,20 @@ func get_species():
 	return "Shrew"
 
 
-func attack():
+func attack_pressed():
 	if dashing <= 0:
 		# no attack while dashing
-		.attack()
+		.attack_pressed()
 
 
-func special():
+func special_pressed():
 	if is_on_floor() and dashing <= 0:
-		.special()
+		.special_pressed()
 		dashing = 0.5
 
 
-func get_input(delta):
-	.get_input(delta)
+func moved(delta):
+	.moved(delta)
 	if dashing > 0:
 		var dash = dash_speed
 		if velocity.x == 0:
@@ -47,6 +47,6 @@ func _process(delta):
 		if Input.get_axis(inputs['left'], inputs['right']) == 0:
 			velocity.x = 0
 			$AnimatedSprite.flip_h = not $AnimatedSprite.flip_h
-		attack()
+		attack_pressed()
 	
 	._process(delta)

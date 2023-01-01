@@ -24,13 +24,14 @@ func is_mobile():
 	return not Input.is_action_pressed(inputs['attack'])
 
 
-func special():
+func special_pressed():
 	pass # TODO: dash
 
 
 func _process(delta):
 	._process(delta)
 	
+	# drop slimes
 	if is_on_floor():
 		# find slime locale
 		var slime_pos = self.position + Vector2(-self.size.x/2, self.size.y/2)
@@ -47,6 +48,7 @@ func _process(delta):
 			emit_signal("make_slime", slime_pos, palette)
 	
 	
+	# extend spikes
 	var an = attackNode.get_ref()
 	for spike in spikes:
 		spike.visible = an != null
@@ -59,5 +61,5 @@ func _process(delta):
 		spikes[2].transform.origin.x = l
 		
 		# hold attack to keep spikes out
-		if Input.is_action_pressed(inputs['attack']):
+		if is_attack_pressed():
 			an.extend()

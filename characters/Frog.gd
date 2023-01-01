@@ -3,6 +3,7 @@ extends "Player.gd"
 var jump_time = 0
 var max_jump = -300
 var look_angle = 0
+var look_change = 0
 
 func _ready():
 	._ready()
@@ -15,17 +16,15 @@ func get_species():
 	return "Frog"
 
 
-func special():
-	if is_on_floor():
-		jumping = true
+func special_pressed():
+	.special_pressed()
+	if jumping:
 		jump_time = 0.2
-		velocity.y = jump_speed
 
 
-func walk(delta):
+func move(x, y):
 	# TODO: figure out slipping on slime
 	self.velocity.x = 0
-	var x = Input.get_axis(inputs['left'], inputs['right'])
 	if x != 0:
 		$AnimatedSprite.flip_h = x > 0
 	if jumping:
@@ -33,15 +32,21 @@ func walk(delta):
 		if not $AnimatedSprite.flip_h:
 			f = -1
 		velocity.x += f * run_speed
-		if Input.is_action_pressed(inputs['special']) and jump_time > 0:
+		if is_special_pressed() and jump_time > 0:
 			velocity.y += jump_speed
 			velocity.y = max(max_jump, velocity.y)
+	
+	look_change = -y
+
+
+func moved(delta):
+	.moved(delta)
+	look_angle = clamp(look_angle + TAU/4 * delta * look_change, 0, TAU/4)
 
 
 func get_input(delta):
 	.get_input(delta)
 	var y = Input.get_axis(inputs['down'], inputs['up'])
-	look_angle = clamp(look_angle + TAU/4 * delta * y, 0, TAU/4)
 
 
 func _process(delta):

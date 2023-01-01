@@ -16,14 +16,14 @@ func get_species():
 	return "Bird"
 
 
-func special():
+func special_pressed():
 	if flaps <= max_flaps and flapped <= 0:
 		flaps += 1
 		flapped = 0.3
 		velocity.y = flap_speed
 
-func get_input(delta):
-	.get_input(delta)
+func moved(delta):
+	.moved(delta)
 	if is_attacking():
 		if is_on_floor():
 			velocity.x = 0
@@ -32,12 +32,13 @@ func get_input(delta):
 			if not $AnimatedSprite.flip_h:
 				velocity.x *= -1
 
-func attack():
-	.attack()
-	if not is_on_floor():
-		var an = attackNode.get_ref()
-		an.transform.origin.y += 8
+
+func make_attack():
+	var instance = .make_attack()
+	if instance and not is_on_floor():
+		instance.transform.origin.y += 8
 		velocity.y = dive_speed
+
 
 func get_animation():
 	var anim_name = .get_animation()

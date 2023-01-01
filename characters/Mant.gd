@@ -21,30 +21,28 @@ func make_attack():
 	if not poised:
 		poised = true
 		poise_timer = poise_time
-		
 
-func special():
+
+func attack_released():
+	if poised:
+		poised = false
+		if poise_timer <= 0:
+			.make_attack()
+			hidden = false
+		poise_timer = 0
+
+
+func special_pressed():
 	hidden = not hidden
 
 
-func get_input(delta):
-	.get_input(delta)
-	if not dead:
-		if poised and not Input.is_action_pressed(inputs['attack']):
-			poised = false
-			if poise_timer <= 0:
-				.make_attack()
-				hidden = false
-			poise_timer = 0
-
-func walk(delta):
+func move(x, y):
 	if poised:
 		velocity.x = 0
-		var x = Input.get_axis(inputs['left'], inputs['right'])
 		if x != 0:
 			$AnimatedSprite.flip_h = x > 0
 	else:
-		.walk(delta)
+		.move(x, y)
 		if hidden and velocity.x != 0:
 			velocity.x *= 0.1
 	
