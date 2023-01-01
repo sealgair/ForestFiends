@@ -6,4 +6,4 @@
 resource_local_to_scene = true
 shader = ExtResource( 1 )
 shader_param/palette = 0
-shader_param/palette_length = 4
+shader_param/palette_length = 8

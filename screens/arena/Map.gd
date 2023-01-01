@@ -5,6 +5,8 @@ var players = []
 export (int) var score_limit = 2
 var score = 0
 
+var slime_scene = preload("res://characters/Slime.tscn")
+
 
 func _ready():
 	randomize()
@@ -20,6 +22,7 @@ func _ready():
 		add_child(player)
 		player.connect("respawn", self, "spawn")
 		player.connect("made_hit", self, "hit")
+		player.connect("make_slime", self, "make_slime")
 		players.append(player)
 
 func hit():
@@ -40,7 +43,17 @@ func spawn(player, spawn_point=null):
 		# TODO: get point furthest from players
 	player.revive(spawn_point * player.size)
 
-		
+
+func make_slime(position, palette=0):
+	var tile_pos = position / $TileMap.cell_size
+	var tile_id = $TileMap.get_cellv(tile_pos)
+	if tile_id != $TileMap.INVALID_CELL:
+		var instance = slime_scene.instance()
+		instance.transform.origin = position
+		instance.set_palette(palette)
+		add_child(instance)
+
+
 func make_points(player):
 	# TODO:
 	#local kpm = player.kills / (self.gametime/60)

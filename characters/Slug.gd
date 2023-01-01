@@ -1,26 +1,52 @@
 extends "Player.gd"
 
+signal make_slime(position, palette)
+
+var spikes
 
 func _ready():
 	attack_anim = "none"
 	attack_offset = Vector2(0,0)
+	spikes = [$Spike1, $Spike2, $Spike3]
+	for spike in spikes:
+		spike.material.set_shader_param("palette", palette)
+
 
 func get_species():
 	return "Slug"
 
 
+func slime():
+	pass
+
+
 func _process(delta):
 	._process(delta)
+	
+	if is_on_floor():
+		# find slime locale
+		var slime_pos = self.position + Vector2(-self.size.x/2, self.size.y/2)
+		slime_pos = slime_pos.snapped(self.size)
+		var found = false
+		# check if slime is there already
+		for area in $SlimeFinder.get_overlapping_areas():
+			if area.collision_layer & 8:
+				area.refresh()
+				if area.transform.origin == slime_pos:
+					found = true
+		if not found:
+			# make one
+			emit_signal("make_slime", slime_pos, palette)
+	
 
+	# TODO: hold attack to keep spikes out
 	var an = attackNode.get_ref()
-	$Spike1.visible = an != null
-	$Spike2.visible = an != null
-	$Spike3.visible = an != null
+	for spike in spikes:
+		spike.visible = an != null
 	if an:
 		var l = easeoutback(an.life/an.live)
-		an.scale = Vector2(l+1, l+1)
-		l *= 8
-		$Spike1.transform.origin.y = -l
-		$Spike2.transform.origin.x = -l
-		$Spike3.transform.origin.x = l
+		an.scale = Vector2(1+l, 1+l*1.5)
+		spikes[0].transform.origin.y = -l*12
+		spikes[1].transform.origin.x = -l*8
+		spikes[2].transform.origin.x = l*8
 		

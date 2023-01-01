@@ -22,7 +22,7 @@ func special():
 		velocity.y = jump_speed
 
 
-func walk():
+func walk(delta):
 	self.velocity.x = 0
 	var x = Input.get_axis(inputs['left'], inputs['right'])
 	if x != 0:

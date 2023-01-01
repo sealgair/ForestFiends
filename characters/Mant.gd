@@ -37,14 +37,14 @@ func get_input(delta):
 				hidden = false
 			poise_timer = 0
 
-func walk():
+func walk(delta):
 	if poised:
 		velocity.x = 0
 		var x = Input.get_axis(inputs['left'], inputs['right'])
 		if x != 0:
 			$AnimatedSprite.flip_h = x > 0
 	else:
-		.walk()
+		.walk(delta)
 		if hidden and velocity.x != 0:
 			velocity.x *= 0.1
 	

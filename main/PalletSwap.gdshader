@@ -1,7 +1,7 @@
 shader_type canvas_item;
 
 uniform int palette = 0;
-uniform int palette_length = 4;
+uniform int palette_length = 8;
 
 ivec3 round_color(vec4 color) {
 	return ivec3(round(color.rgb * 255.0));

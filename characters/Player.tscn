@@ -104,7 +104,7 @@ animations = [ {
 [node name="Player" type="KinematicBody2D"]
 position = Vector2( 128, 252 )
 collision_layer = 2
-collision_mask = 5
+collision_mask = 13
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_group_": true
@@ -114,7 +114,6 @@ __meta__ = {
 material = SubResource( 17 )
 frames = SubResource( 8 )
 animation = "idle"
-frame = 1
 playing = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

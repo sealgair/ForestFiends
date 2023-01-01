@@ -19,8 +19,8 @@ func hit(other):
 		other.poison(self)
 	
 
-func walk():
-	.walk()
+func walk(delta):
+	.walk(delta)
 	
 	velocity.y = 0
 	var y = Input.get_axis(inputs['up'], inputs['down'])

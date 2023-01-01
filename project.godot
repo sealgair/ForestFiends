@@ -33,6 +33,7 @@ window/stretch/aspect="keep"
 
 "pixel snap"=false
 font=false
+layer=false
 
 [gui]
 
@@ -160,6 +161,7 @@ ui_b4={
 2d_physics/layer_1="wall"
 2d_physics/layer_2="player"
 2d_physics/layer_3="attack"
+2d_physics/layer_4="slime"
 
 [physics]
 

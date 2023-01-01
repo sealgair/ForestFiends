@@ -29,6 +29,8 @@ var size = Vector2(16, 16) # todo: dynamic
 var attackNode = weakref(null)
 var dead = false
 var poisoned_by = null
+var slimed = 0
+var slime_time = 2
 
 var attack_scene = preload("res://characters/Attack.tscn")
 var attack_anim = "default"
@@ -78,16 +80,22 @@ func make_attack():
 	$AnimatedSprite.play("attack")
 	return instance
 
-func walk():
-	velocity.x = 0
+func walk(delta):
 	var x = Input.get_axis(inputs['left'], inputs['right'])
-	velocity.x += x * run_speed
+	if x == 0:
+		if slimed > 0:
+			var decel = run_speed * sign(velocity.x) * delta / 2
+			velocity.x -= decel
+		else:
+			velocity.x = 0
+	else:
+		velocity.x = x * run_speed
 	if x != 0:
 		$AnimatedSprite.flip_h = x > 0
 
 func get_input(delta):
 	if not dead:
-		walk()
+		walk(delta)
 			
 		if Input.is_action_just_pressed(inputs['special']):
 			special()
@@ -138,6 +146,8 @@ func _process(delta):
 			opacity = .5 + cos(8*PI*revive_countdown*revive_time)/2
 		modulate = Color(1,1,1,opacity)
 		
+		slimed = max(0, slimed - delta)
+		
 		$AnimatedSprite.animation = get_animation()
 		var an = attackNode.get_ref()
 		if an:
@@ -166,6 +176,10 @@ func hit(other):
 func poison(other):
 	poisoned_by = other
 	$PoisonTimer.start()
+
+
+func slime():
+	slimed = slime_time
 
 
 func die():

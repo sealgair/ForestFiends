@@ -28,9 +28,9 @@ func special():
 		defending = true
 		$AnimatedSprite.play("defend")
 
-func walk():
+func walk(delta):
 	if not defending:
-		return .walk()
+		return .walk(delta)
 	else:
 		velocity.x = 0	
 

@@ -126,3 +126,4 @@ animation = "idle"
 material = SubResource( 22 )
 frames = SubResource( 29 )
 animation = "defend"
+frame = 1
