@@ -20,6 +20,14 @@ func slime():
 	pass
 
 
+func is_mobile():
+	return not Input.is_action_pressed(inputs['attack'])
+
+
+func special():
+	pass # TODO: dash
+
+
 func _process(delta):
 	._process(delta)
 	
@@ -38,15 +46,18 @@ func _process(delta):
 			# make one
 			emit_signal("make_slime", slime_pos, palette)
 	
-
-	# TODO: hold attack to keep spikes out
+	
 	var an = attackNode.get_ref()
 	for spike in spikes:
 		spike.visible = an != null
 	if an:
 		var l = easeoutback(an.life/an.live)
-		an.scale = Vector2(1+l, 1+l*1.5)
-		spikes[0].transform.origin.y = -l*12
-		spikes[1].transform.origin.x = -l*8
-		spikes[2].transform.origin.x = l*8
+		an.scale = Vector2(1+l, 1+l)
+		l *= 10
+		spikes[0].transform.origin.y = -l
+		spikes[1].transform.origin.x = -l
+		spikes[2].transform.origin.x = l
 		
+		# hold attack to keep spikes out
+		if Input.is_action_pressed(inputs['attack']):
+			an.extend()

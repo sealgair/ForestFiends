@@ -28,14 +28,14 @@ func special():
 		defending = true
 		$AnimatedSprite.play("defend")
 
-func walk(delta):
-	if not defending:
-		return .walk(delta)
-	else:
-		velocity.x = 0	
+
+func is_mobile():
+	return not defending
+
 
 func is_vulnerable():
 	return .is_vulnerable() and not defending
+
 
 func _process(delta):
 	._process(delta)

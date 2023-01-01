@@ -23,6 +23,7 @@ func special():
 
 
 func walk(delta):
+	# TODO: figure out slipping on slime
 	self.velocity.x = 0
 	var x = Input.get_axis(inputs['left'], inputs['right'])
 	if x != 0:

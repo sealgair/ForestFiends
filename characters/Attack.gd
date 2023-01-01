@@ -17,6 +17,9 @@ func configure(anim="idle", size=6):
 	$AnimatedSprite.animation = anim
 
 
+func extend():
+	life = max(life, live/2)
+
 func _on_Attack_body_entered(body):
 	if body != attacker and body.is_vulnerable():
 		$CollisionShape2D.set_deferred("disabled", true)

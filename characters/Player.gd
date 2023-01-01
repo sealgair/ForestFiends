@@ -80,8 +80,15 @@ func make_attack():
 	$AnimatedSprite.play("attack")
 	return instance
 
+
+func is_mobile():
+	return true
+
+
 func walk(delta):
-	var x = Input.get_axis(inputs['left'], inputs['right'])
+	var x = 0
+	if is_mobile():
+		x = Input.get_axis(inputs['left'], inputs['right'])
 	if x == 0:
 		if slimed > 0:
 			var decel = run_speed * sign(velocity.x) * delta / 2
