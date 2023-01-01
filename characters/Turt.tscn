@@ -126,3 +126,14 @@ animation = "idle"
 material = SubResource( 22 )
 frames = SubResource( 29 )
 animation = "defend"
+
+[node name="DefendTimer" type="Timer" parent="." index="7"]
+wait_time = 3.0
+one_shot = true
+
+[node name="DefendCooldown" type="Timer" parent="." index="8"]
+wait_time = 10.0
+one_shot = true
+
+[connection signal="timeout" from="DefendTimer" to="." method="_on_DefendTimer_timeout"]
+[connection signal="timeout" from="DefendCooldown" to="." method="_on_DefendCooldown_timeout"]

@@ -1,16 +1,18 @@
 extends "Player.gd"
 
 var defending = false
-
+var defend_cooldown = 1
 
 func _ready():
 	run_speed = 60
 	$Head.material.set_shader_param("palette", palette)
 	attack_anim = "none"
+	$DefendCooldown.stop()
 
 
 func get_species():
 	return "Turt"
+
 
 func get_animation():
 	if defending:
@@ -19,13 +21,18 @@ func get_animation():
 
 
 func special_pressed():
-	if not defending:
+	if not defending and $DefendCooldown.time_left <= 0:
 		defending = true
 		$AnimatedSprite.play("defend")
+		$DefendTimer.start()
 
 
 func special_released():
-	defending = false
+	if defending:
+		defending = false
+		var timer_used = 1 - ($DefendTimer.time_left / $DefendTimer.wait_time)
+		$DefendCooldown.start(defend_cooldown * timer_used)
+		$DefendTimer.stop()
 
 
 func is_mobile():
@@ -52,3 +59,13 @@ func _process(delta):
 		an.transform.origin.x = xoff * 2.1
 	else:
 		$Head.transform.origin.x = 0
+
+
+func _on_DefendTimer_timeout():
+	defending = false
+	$DefendCooldown.start(defend_cooldown)
+
+
+func _on_DefendCooldown_timeout():
+	if is_special_pressed():
+		special_pressed()
