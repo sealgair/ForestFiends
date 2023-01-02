@@ -8,7 +8,7 @@ var look_change = 0
 func _ready():
 	._ready()
 	run_speed = 150
-	jump_speed = -50
+	jump_speed = -60
 	attack_anim = "tongue"
 
 
@@ -23,15 +23,12 @@ func special_pressed():
 
 
 func move(x, y):
-	# TODO: figure out slipping on slime
-	self.velocity.x = 0
+	to_velocity = Vector2()
 	if x != 0:
 		$AnimatedSprite.flip_h = x > 0
 	if jumping:
-		var f = 1
-		if not $AnimatedSprite.flip_h:
-			f = -1
-		velocity.x += f * run_speed
+		to_velocity = velocity * 1
+		to_velocity.x = run_speed * facing()
 		if is_special_pressed() and jump_time > 0:
 			velocity.y += jump_speed
 			velocity.y = max(max_jump, velocity.y)
@@ -42,11 +39,6 @@ func move(x, y):
 func moved(delta):
 	.moved(delta)
 	look_angle = clamp(look_angle + TAU/4 * delta * look_change, 0, TAU/4)
-
-
-func get_input(delta):
-	.get_input(delta)
-	var y = Input.get_axis(inputs['down'], inputs['up'])
 
 
 func _process(delta):

@@ -12,7 +12,8 @@ var inputs = {}
 var run_speed = 100
 var jump_speed = -450
 var gravity = 1200
-var accelerate = Vector2(0,0)
+var accelerate = 10
+var decelerate = 20
 
 var attack_wait = 1
 var attack_timeout = 0
@@ -25,6 +26,7 @@ signal made_hit
 signal respawn(player)
 
 var velocity = Vector2()
+var to_velocity = Vector2()
 var jumping = false
 var size = Vector2(16, 16) # todo: dynamic
 var attackNode = weakref(null)
@@ -99,7 +101,13 @@ func is_attack_pressed():
 
 func is_mobile():
 	return true
+	
 
+func facing():
+	if $AnimatedSprite.flip_h:
+		return 1
+	else:
+		return -1
 
 func axes_pressed():
 	if is_mobile():
@@ -113,18 +121,17 @@ func axes_pressed():
 
 # warning-ignore:unused_argument
 func move(x, y):
-	accelerate = Vector2(0,0)
+	to_velocity = velocity * 1 # copy
 	if x == 0:
-		if slimed > 0:
-			accelerate.x = run_speed / 2 * -sign(velocity.x)
-		else:
-			velocity.x = 0
+		to_velocity.x = 0
 	else:
-		velocity.x = x * run_speed
+		to_velocity.x = x * run_speed
+	
 	if x != 0:
 		$AnimatedSprite.flip_h = x > 0
 
 
+# warning-ignore:unused_argument
 func moved(delta):
 	pass
 
@@ -151,7 +158,15 @@ func _physics_process(delta):
 		jumping = false
 	handle_input(delta)
 	velocity.y += gravity * delta
-	velocity += accelerate * delta
+	var dv = to_velocity - velocity
+	var rate = accelerate
+	if slimed:
+		rate /= 10
+		if axes_pressed().x == 0:
+			rate /= 2
+	elif axes_pressed().x == 0:
+		rate = decelerate
+	velocity += dv * delta * rate
 	velocity = move_and_slide(velocity, Vector2(0, -1))
 	
 	# use transform not position so as not to break physics
@@ -167,7 +182,7 @@ func get_animation():
 		return "attack"
 	elif not is_on_floor():
 		return "jump"
-	elif velocity.length() > 0:
+	elif axes_pressed().x != 0:
 		return "walk"
 	else:
 		return "idle"
@@ -196,8 +211,7 @@ func _process(delta):
 		if an:
 			an.get_node("AnimatedSprite").flip_h = $AnimatedSprite.flip_h
 			an.transform.origin.x = abs(an.transform.origin.x)
-			if not $AnimatedSprite.flip_h:
-				an.transform.origin.x *= -1
+			an.transform.origin.x *= facing()
 
 
 func is_vulnerable():

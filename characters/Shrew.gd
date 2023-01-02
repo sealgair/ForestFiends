@@ -34,8 +34,8 @@ func moved(delta):
 			if not $AnimatedSprite.flip_h:
 				dash *= -1
 		else:
-			dash *= sign(velocity.x)
-		velocity.x = dash
+			dash *= facing()
+		to_velocity.x = dash
 
 func _process(delta):
 	var was_dashing = dashing > 0
@@ -45,7 +45,7 @@ func _process(delta):
 	if was_dashing and dashing <= 0:
 		# flip and attack at the end of the dash
 		if Input.get_axis(inputs['left'], inputs['right']) == 0:
-			velocity.x = 0
+			to_velocity.x = 0
 			$AnimatedSprite.flip_h = not $AnimatedSprite.flip_h
 		attack_pressed()
 	

@@ -5,6 +5,7 @@ var defend_cooldown = 1
 
 func _ready():
 	run_speed = 60
+	accelerate = 0.3
 	$Head.material.set_shader_param("palette", palette)
 	attack_anim = "none"
 	$DefendCooldown.stop()

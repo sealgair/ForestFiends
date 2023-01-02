@@ -25,7 +25,10 @@ func is_mobile():
 
 
 func special_pressed():
-	pass # TODO: dash
+	slimed = slime_time
+	velocity.x = run_speed * 2
+	if $AnimatedSprite.flip_h:
+		velocity.x *= -1
 
 
 func _process(delta):

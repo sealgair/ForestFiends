@@ -26,11 +26,11 @@ func moved(delta):
 	.moved(delta)
 	if is_attacking():
 		if is_on_floor():
-			velocity.x = 0
+			to_velocity.x = 0
 		else:
-			velocity.x = dive_speed
+			to_velocity.x = dive_speed
 			if not $AnimatedSprite.flip_h:
-				velocity.x *= -1
+				to_velocity.x *= -1
 
 
 func make_attack():

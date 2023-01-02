@@ -38,13 +38,13 @@ func special_pressed():
 
 func move(x, y):
 	if poised:
-		velocity.x = 0
+		to_velocity.x = 0
 		if x != 0:
 			$AnimatedSprite.flip_h = x > 0
 	else:
 		.move(x, y)
 		if hidden and velocity.x != 0:
-			velocity.x *= 0.1
+			to_velocity.x *= 0.1
 	
 
 func get_animation():
@@ -61,7 +61,7 @@ func _process(delta):
 	
 	if hidden:
 		var min_opacity = 0
-		if velocity.x != 0 or velocity.y != 0:
+		if axes_pressed().x != 0:
 			min_opacity = 0.2
 		opacity = max(min_opacity, opacity - delta / fade_time)
 	else:

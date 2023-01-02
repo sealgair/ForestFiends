@@ -22,4 +22,4 @@ func hit(other):
 
 func move(x, y):
 	.move(x, y)
-	velocity.y = y * run_speed
+	to_velocity.y = y * run_speed
