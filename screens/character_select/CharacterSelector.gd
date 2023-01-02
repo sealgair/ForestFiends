@@ -2,7 +2,7 @@ extends Node2D
 
 export (int) var highlighted = 0
 export (int) var selected = 0
-export (String, "Shrew", "Bird", "Frog", "Turt", "Wasp", "Mant", "Slug") var species
+export (String, "Shrew", "Bird", "Frog", "Turt", "Wasp", "Mant", "Slug", "Spid") var species
 
 var player_sprites
 
@@ -14,6 +14,7 @@ var names = {
 	"Wasp": "Wups",
 	"Mant": "Manti",
 	"Slug": "Saulg",
+	"Spid": "Spids",
 }
 
 func _ready():

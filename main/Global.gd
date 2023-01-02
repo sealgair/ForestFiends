@@ -8,6 +8,7 @@ var species = {
 	'Wasp': load("res://characters/Wasp.tscn"),
 	'Mant': load("res://characters/Mant.tscn"),
 	'Slug': load("res://characters/Slug.tscn"),
+	'Spid': load("res://characters/Spid.tscn"),
 }
 var screens = {
 	'select': "res://screens/character_select/CharacterSelect.tscn",

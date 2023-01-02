@@ -122,10 +122,7 @@ func axes_pressed():
 # warning-ignore:unused_argument
 func move(x, y):
 	to_velocity = velocity * 1 # copy
-	if x == 0:
-		to_velocity.x = 0
-	else:
-		to_velocity.x = x * run_speed
+	to_velocity.x = x * run_speed
 	
 	if x != 0:
 		$AnimatedSprite.flip_h = x > 0
@@ -157,7 +154,6 @@ func _physics_process(delta):
 	if jumping and is_on_floor():
 		jumping = false
 	handle_input(delta)
-	velocity.y += gravity * delta
 	var dv = to_velocity - velocity
 	var rate = accelerate
 	if slimed:
@@ -167,6 +163,7 @@ func _physics_process(delta):
 	elif axes_pressed().x == 0:
 		rate = decelerate
 	velocity += dv * delta * rate
+	velocity.y += gravity * delta
 	velocity = move_and_slide(velocity, Vector2(0, -1))
 	
 	# use transform not position so as not to break physics

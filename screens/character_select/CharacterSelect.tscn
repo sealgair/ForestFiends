@@ -34,6 +34,7 @@ position = Vector2( 112, 112 )
 
 [node name="Selector6" parent="." instance=ExtResource( 4 )]
 position = Vector2( 176, 112 )
+species = "Spid"
 
 [node name="Selector7" parent="." instance=ExtResource( 4 )]
 position = Vector2( 48, 176 )
