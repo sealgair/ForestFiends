@@ -1,91 +1,177 @@
 extends "Player.gd"
 
+var sides
+var corners
 var base_gravity
-var from_touches = Vector2(0, 1)
+var from_side = Vector2(0, 1)
+var edge_grab = 3
+var was_edge = false
 
-# Called when the node enters the scene tree for the first time.
 func _ready():
+	sides = [$RightTouch, $LeftTouch, $TopTouch, $BottomTouch]
+	corners = [$ULCorner, $URCorner, $BLCorner, $BRCorner]
 	base_gravity = gravity
+	jumping = true
 
 
 func get_species():
 	return "Spid"
 	
+	
 func get_animation():
 	var pressed = axes_pressed()
-	var touches = touching_sides()
+	var side = side_dir()
+	
+	$AnimatedSprite.transform.origin = Vector2()
+	$AnimatedSprite.rotation_degrees = 0
+	if side.x != 0:
+		$AnimatedSprite.rotation_degrees = 90
+	
 	if is_attacking():
 		return "attack"
-	elif touches.length() == 0:
+	elif jumping:
+		$AnimatedSprite.flip_v = false
 		return "jump"
-	elif touches.x != 0 and touches.y != 0:
+	elif side.x != 0 and side.y != 0:
+		if from_side.x != 0:
+			$AnimatedSprite.rotation_degrees = 90
+			$AnimatedSprite.flip_v = side.x > 0
+			$AnimatedSprite.flip_h = side.y > 0
+		else:
+			$AnimatedSprite.rotation_degrees = 0
+			$AnimatedSprite.flip_h = side.x > 0
+			$AnimatedSprite.flip_v = side.y < 0
 		return "corner"
-	elif pressed.x != 0 and touches.y != 0:
-		return "walk"
-	elif pressed.y != 0 and touches.x != 0:
+	elif edge_point().length() < edge_grab:
+		var corner = corner_dir()
+		$AnimatedSprite.transform.origin = corner * 6
+		
+		if from_side.x == 0:
+			$AnimatedSprite.rotation_degrees = 90
+			$AnimatedSprite.flip_v = corner.x > 0
+			$AnimatedSprite.flip_h = corner.y > 0
+		else:
+			$AnimatedSprite.rotation_degrees = 0
+			$AnimatedSprite.flip_h = corner.x > 0
+			$AnimatedSprite.flip_v = corner.y < 0
+				
+		return "edge"
+	elif (pressed * flip(side)).length() != 0:
 		return "walk"
 	else:
 		return "idle"
 
-func touching_sides():
+
+func unitize(vec):
+	if vec.x != 0:
+		vec.x = vec.x / abs(vec.x)
+	if vec.y != 0:
+		vec.y = vec.y / abs(vec.y)
+	return vec
+
+
+func abs2(vec2):
+	return Vector2(abs(vec2.x), abs(vec2.y))
+
+
+func flip(vec2):
+	return Vector2(vec2.y, vec2.x)
+
+
+func side_dir():
 	var touches = Vector2()
-	if $RightTouch.get_overlapping_bodies().size() > 0:
-		touches.x = 1
-	elif $LeftTouch.get_overlapping_bodies().size() > 0:
-		touches.x = -1
-	
-	if $TopTouch.get_overlapping_bodies().size() > 0:
-		touches.y = -1
-	elif $BottomTouch.get_overlapping_bodies().size() > 0:
-		touches.y = 1
-	
-	return touches
+	for side in sides:
+		if side.get_overlapping_bodies().size() > 0:
+			touches += side.get_node("CollisionShape2D").transform.origin
+	return unitize(touches)
+
+
+func corner_count():
+	var count = 0
+	for corner in corners:
+		if corner.get_overlapping_bodies().size() > 0:
+			count += 1
+	return count
+
+
+func corner_dir():
+	if corner_count() == 1:
+		for corner in corners:
+			if corner.get_overlapping_bodies().size() > 0:
+				return unitize(corner.get_node("CollisionShape2D").transform.origin)
+	return Vector2()
+
+
+func edge_point():
+	var corner = corner_dir()
+	# find corner point
+	var edge = position + corner * size/2  # nearest point
+	edge = edge.snapped(size)  # snap to tiles
+	edge = edge - position # relative to player
+	edge -= size/2 * corner  # back to center
+	return edge
 
 
 func special_pressed():
-	var touches = touching_sides()
-	if touches.length() != 0:
+	if not jumping:
 		jumping = true
-		velocity += jump_speed  * touches
-		if touches.y == 0:
-			velocity.y += jump_speed/2
+		var side = side_dir()
+		var jump_vel
+		if edge_point().length() < 4:
+			jump_vel = corner_dir()
+		else:
+			jump_vel = side
+		if side.y == 0:
+			jump_vel.y += .5
+		velocity += jump_vel * jump_speed
 
 
 func move(x,y):
+	var side = side_dir()
+	var corner = corner_dir()
+	var edge = edge_point()
+	if side.length() == 0 and edge.length() > edge_grab:
+		jumping = true  # falling really, but who's counting
+	
 	gravity = base_gravity
-	var touches = touching_sides()
-	if touches.length() != 0:
+	if jumping:
+		.move(x,y)
+	else:
 		gravity = 0
 	
-	$AnimatedSprite.rotation_degrees = 0
-	to_velocity = velocity + touches * 10
-	
-	if touches.x != 0:
-		$AnimatedSprite.rotation_degrees = 90
-		to_velocity.y = y * run_speed
-
-		$AnimatedSprite.flip_v = touches.x > 0
-		if y != 0:
-			$AnimatedSprite.flip_h = y > 0
-	
-	if touches.y != 0:
-		to_velocity.x = x * run_speed
-		
-		$AnimatedSprite.flip_v = touches.y < 0
-		if x != 0:
-			$AnimatedSprite.flip_h = x > 0
-	
-	if touches.x != 0 and touches.y != 0:
-		# corner
-		if from_touches.x != 0:
-			$AnimatedSprite.rotation_degrees = 90
-			$AnimatedSprite.flip_v = touches.x > 0
-			$AnimatedSprite.flip_h = touches.y > 0
+		$Debug.text = ""
+		if edge.length() < edge_grab:
+			if not was_edge:
+				velocity = Vector2()
+			was_edge = true
+			var input_mask = Vector2(
+				1 if x == corner.x else 0,
+				1 if y == corner.y else 0
+			)
+			var invert_input_mask = abs2(Vector2(1,1) - input_mask)
+			to_velocity = edge * run_speed/2 * invert_input_mask
+			to_velocity += corner * input_mask * run_speed
 		else:
-			$AnimatedSprite.rotation_degrees = 0
-			$AnimatedSprite.flip_h = touches.x > 0
-			$AnimatedSprite.flip_v = touches.y < 0
-	elif touches.length() != 0:
-		# not in corner
-		from_touches = touches * 1 # copy
+			was_edge = false
+			to_velocity = velocity + side * 10
+			if side.x != 0:
+				to_velocity.y = y * run_speed
 
+				$AnimatedSprite.flip_v = side.x > 0
+				if y != 0:
+					$AnimatedSprite.flip_h = y > 0
+			
+			if side.y != 0:
+				to_velocity.x = x * run_speed
+				
+				$AnimatedSprite.flip_v = side.y < 0
+				if x != 0:
+					$AnimatedSprite.flip_h = x > 0
+			
+			if (side.x == 0 or side.y == 0) and corner_count() != 1:
+				from_side = side * 1 # copy
+
+
+func _physics_process(delta):
+	if jumping and side_dir().length() != 0:
+		jumping = false

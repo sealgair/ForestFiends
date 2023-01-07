@@ -10,11 +10,11 @@ var names = {
 	"Shrew": "Sherm",
 	"Bird": "Borb",
 	"Frog": "Freg",
-	"Turt": "Tirt",
-	"Wasp": "Wups",
+	"Turt": "Timt",
+	"Wasp": "Wensp",
 	"Mant": "Manti",
-	"Slug": "Saulg",
-	"Spid": "Spids",
+	"Slug": "Slaul",
+	"Spid": "Spid",
 }
 
 func _ready():

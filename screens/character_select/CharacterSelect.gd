@@ -9,7 +9,7 @@ var player_selectors
 func _ready():
 	selectors = [
 		[$Selector1, $Selector2, $Selector3,],
-		[$Selector4, $Selector6,],
+		[$Selector4, null, $Selector6,],
 		[$Selector7, $Selector8, $Selector9,],
 	]
 	player_selectors = [
@@ -33,8 +33,9 @@ func _ready():
 func _process(delta):
 	for row in selectors:
 		for cell in row:
-			cell.highlighted = 0
-			cell.selected = 0
+			if cell != null:
+				cell.highlighted = 0
+				cell.selected = 0
 	
 	for p in range(4):
 		var inp = inputs[p];
@@ -57,8 +58,11 @@ func _process(delta):
 				cell = Vector2(0,0)	
 				highlights[p] = cell
 			else:
-				cell.x = wrapi(cell.x+dir.x, 0, selectors.size())
-				cell.y = wrapi(cell.y+dir.y, 0, selectors[cell.x].size())
+				while true:
+					cell.x = wrapi(cell.x+dir.x, 0, selectors.size())
+					cell.y = wrapi(cell.y+dir.y, 0, selectors[cell.x].size())
+					if selectors[cell.x][cell.y] != null:
+						break
 			highlights[p] = cell
 		
 		if cell != null:

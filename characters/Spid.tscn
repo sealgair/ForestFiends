@@ -1,6 +1,7 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=23 format=2]
 
 [ext_resource path="res://characters/Player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://art/aminals.png" type="Texture" id=2]
 [ext_resource path="res://art/decay.png" type="Texture" id=3]
 [ext_resource path="res://main/PalletSwap.gdshader" type="Shader" id=4]
 [ext_resource path="res://characters/Spid.gd" type="Script" id=5]
@@ -31,6 +32,10 @@ region = Rect2( 0, 0, 16, 16 )
 [sub_resource type="AtlasTexture" id=21]
 atlas = ExtResource( 3 )
 region = Rect2( 16, 0, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=39]
+atlas = ExtResource( 6 )
+region = Rect2( 32, 16, 16, 16 )
 
 [sub_resource type="AtlasTexture" id=33]
 atlas = ExtResource( 6 )
@@ -71,6 +76,11 @@ animations = [ {
 "name": "decay",
 "speed": 10.0
 }, {
+"frames": [ SubResource( 39 ) ],
+"loop": true,
+"name": "edge",
+"speed": 5.0
+}, {
 "frames": [ SubResource( 33 ) ],
 "loop": true,
 "name": "idle",
@@ -88,20 +98,31 @@ animations = [ {
 } ]
 
 [sub_resource type="RectangleShape2D" id=36]
-extents = Vector2( 7, 2 )
+extents = Vector2( 8, 2 )
 
 [sub_resource type="RectangleShape2D" id=35]
-extents = Vector2( 2, 7 )
+extents = Vector2( 2, 8 )
+
+[sub_resource type="AtlasTexture" id=40]
+atlas = ExtResource( 2 )
+region = Rect2( 48, 80, 5, 5 )
+
+[sub_resource type="RectangleShape2D" id=41]
+extents = Vector2( 5, 5 )
 
 [node name="Spid" instance=ExtResource( 1 )]
-position = Vector2( 127, 248 )
+position = Vector2( 127, 245 )
 script = ExtResource( 5 )
 
 [node name="AnimatedSprite" parent="." index="0"]
 material = SubResource( 27 )
 frames = SubResource( 30 )
-animation = "corner"
-frame = 0
+
+[node name="Debug" parent="." index="2"]
+margin_left = -6.0
+margin_top = -20.0
+margin_right = 26.0
+margin_bottom = -6.0
 
 [node name="TopTouch" type="Area2D" parent="." index="6"]
 collision_layer = 2
@@ -131,3 +152,35 @@ collision_layer = 2
 [node name="CollisionShape2D" type="CollisionShape2D" parent="LeftTouch" index="0"]
 position = Vector2( -8, 0 )
 shape = SubResource( 35 )
+
+[node name="DebugPoint" type="Sprite" parent="." index="10"]
+visible = false
+texture = SubResource( 40 )
+
+[node name="ULCorner" type="Area2D" parent="." index="11"]
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ULCorner" index="0"]
+position = Vector2( -8, -8 )
+shape = SubResource( 41 )
+
+[node name="URCorner" type="Area2D" parent="." index="12"]
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="URCorner" index="0"]
+position = Vector2( 8, -8 )
+shape = SubResource( 41 )
+
+[node name="BLCorner" type="Area2D" parent="." index="13"]
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BLCorner" index="0"]
+position = Vector2( -8, 8 )
+shape = SubResource( 41 )
+
+[node name="BRCorner" type="Area2D" parent="." index="14"]
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BRCorner" index="0"]
+position = Vector2( 8, 8 )
+shape = SubResource( 41 )

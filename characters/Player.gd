@@ -101,13 +101,20 @@ func is_attack_pressed():
 
 func is_mobile():
 	return true
-	
+
 
 func facing():
+	return facing2().x
+
+
+func facing2():
+	var result = Vector2(-1, 1)
 	if $AnimatedSprite.flip_h:
-		return 1
-	else:
-		return -1
+		result.x = 1
+	if $AnimatedSprite.flip_v:
+		result.y = -1
+	return result
+
 
 func axes_pressed():
 	if is_mobile():

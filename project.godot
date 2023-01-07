@@ -162,6 +162,10 @@ ui_b4={
 "deadzone": 0.5,
 "events": [  ]
 }
+replace={
+"deadzone": 0.5,
+"events": [  ]
+}
 
 [layer_names]
 
