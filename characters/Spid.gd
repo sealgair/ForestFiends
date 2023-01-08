@@ -6,6 +6,11 @@ var base_gravity
 var from_side = Vector2(0, 1)
 var edge_grab = 3
 var was_edge = false
+var web = null
+var web_offset = null
+var web_start = null
+var web_scene = preload("res://characters/Web.tscn")
+
 
 func _ready():
 	sides = [$RightTouch, $LeftTouch, $TopTouch, $BottomTouch]
@@ -112,12 +117,70 @@ func edge_point():
 	return edge
 
 
+func attack_pressed():
+	if web == null:
+		if not jumping:
+			start_web()
+	else:
+		stop_web()
+
+
+func butt_offset():
+	var facing = facing2()
+	var butt = Vector2()
+	var sides = side_dir()
+	if edge_point().length() < edge_grab:
+		# edge
+		if from_side.x == 0:
+			butt.x -= facing.y
+		else:
+			butt.y += facing.y
+		butt *= 12
+	elif sides.length() > 1:
+		# corner
+		butt = flip(abs2(from_side)) * -facing
+		butt *= size/2
+	else:
+		#side
+		if sides.x == 0:
+			butt.x = -facing.x
+		if sides.y == 0:
+			butt.y = -facing.x
+		butt *= size/2
+	return butt
+
+
+func start_web():
+	web = web_scene.instance()
+	add_child(web)
+	
+	web_start = position
+	if edge_point().length() <= edge_grab:
+#		web_start += edge
+		web_offset = corner_dir() * (size * (5.0/8.0))
+	else:
+		web_offset = side_dir() * size/2
+		web_start += butt_offset()
+
+
+func stop_web(keep=false):
+	web.queue_free()
+	web = null
+	web_start = null
+	web_offset = null
+
+
+func update_web():
+	web.set_start(butt_offset())
+	web.set_end(web_start - position + web_offset)
+
+
 func special_pressed():
 	if not jumping:
 		jumping = true
 		var side = side_dir()
 		var jump_vel
-		if edge_point().length() < 4:
+		if edge_point().length() < edge_grab:
 			jump_vel = corner_dir()
 		else:
 			jump_vel = side
@@ -130,7 +193,7 @@ func move(x,y):
 	var side = side_dir()
 	var corner = corner_dir()
 	var edge = edge_point()
-	if side.length() == 0 and edge.length() > edge_grab:
+	if side.length() == 0 and edge.length() > edge_grab+1:
 		jumping = true  # falling really, but who's counting
 	
 	gravity = base_gravity
@@ -175,3 +238,8 @@ func move(x,y):
 func _physics_process(delta):
 	if jumping and side_dir().length() != 0:
 		jumping = false
+
+
+func _process(_delta):
+	if web != null:
+		update_web()
