@@ -12,6 +12,9 @@ var web_start = null
 var web_scene = preload("res://characters/Web.tscn")
 
 
+signal make_web(start, end)
+
+
 func _ready():
 	sides = [$RightTouch, $LeftTouch, $TopTouch, $BottomTouch]
 	corners = [$ULCorner, $URCorner, $BLCorner, $BRCorner]
@@ -122,7 +125,7 @@ func attack_pressed():
 		if not jumping:
 			start_web()
 	else:
-		stop_web()
+		stop_web(true)
 
 
 func butt_offset():
@@ -164,6 +167,13 @@ func start_web():
 
 
 func stop_web(keep=false):
+	if keep:
+		var start = position
+		if edge_point().length() <= edge_grab:
+			start += corner_dir() * (size * (5.0/8.0))
+		else:
+			start += side_dir() * size/2
+		emit_signal("make_web", start, web_start + web_offset)
 	web.queue_free()
 	web = null
 	web_start = null

@@ -6,7 +6,7 @@ export (int) var score_limit = 2
 var score = 0
 
 var slime_scene = preload("res://characters/Slime.tscn")
-
+var web_scene = preload("res://characters/Web.tscn")
 
 func _ready():
 	randomize()
@@ -23,6 +23,7 @@ func _ready():
 		player.connect("respawn", self, "spawn")
 		player.connect("made_hit", self, "hit")
 		player.connect("make_slime", self, "make_slime")
+		player.connect("make_web", self, "make_web")
 		players.append(player)
 
 func hit():
@@ -52,6 +53,13 @@ func make_slime(position, palette=0):
 		instance.transform.origin = position
 		instance.set_palette(palette)
 		add_child(instance)
+
+
+func make_web(start, end):
+	var web = web_scene.instance()
+	add_child(web)
+	web.set_start(start)
+	web.set_end(end)
 
 
 func make_points(player):
