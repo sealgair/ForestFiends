@@ -57,8 +57,6 @@ func get_animation():
 
 
 func _process(delta):
-	._process(delta)
-	
 	if hidden:
 		var min_opacity = 0
 		if axes_pressed().x != 0:

@@ -103,4 +103,3 @@ script = ExtResource( 2 )
 material = SubResource( 31 )
 frames = SubResource( 32 )
 animation = "poised"
-frame = 0

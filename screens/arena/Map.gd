@@ -60,6 +60,7 @@ func make_web(start, end):
 	add_child(web)
 	web.set_start(start)
 	web.set_end(end)
+	web.start_decay()
 
 
 func make_points(player):
