@@ -21,6 +21,8 @@ var player_colors = [
 	Color("ffa300"),
 ]
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass
+func center(points):
+	var sum = Vector2()
+	for point in points:
+		sum += point
+	return sum / points.size()

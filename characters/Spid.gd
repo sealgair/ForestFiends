@@ -128,6 +128,10 @@ func attack_pressed():
 		stop_web(true)
 
 
+func ensnare(web):
+	pass
+
+
 func butt_offset():
 	var facing = facing2()
 	var butt = Vector2()
@@ -181,6 +185,7 @@ func stop_web(keep=false):
 
 
 func update_web():
+	# TODO: wrap around map (using transform
 	web.set_start(butt_offset())
 	web.set_end(web_start - position + web_offset)
 

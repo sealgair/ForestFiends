@@ -34,6 +34,7 @@ var dead = false
 var poisoned_by = null
 var slimed = 0
 var slime_time = 2
+var webs = {}
 
 var attack_scene = preload("res://characters/Attack.tscn")
 var attack_anim = "default"
@@ -170,7 +171,11 @@ func _physics_process(delta):
 	elif axes_pressed().x == 0:
 		rate = decelerate
 	velocity += dv * delta * rate
-	velocity.y += gravity * delta
+	if webs.size() > 0:
+		var webbed = Global.center(webs.values())
+		velocity = (webbed - position) * run_speed
+	else:
+		velocity.y += gravity * delta
 	velocity = move_and_slide(velocity, Vector2(0, -1))
 	
 	# use transform not position so as not to break physics
@@ -241,6 +246,14 @@ func poison(other):
 
 func slime():
 	slimed = slime_time
+
+
+func ensnare(web):
+	webs[web.get_instance_id()] = web.intersection_center(self)
+
+
+func desnare(web):
+	webs.erase(web.get_instance_id())
 
 
 func die():
