@@ -2,11 +2,17 @@ extends Node2D
 
 var started = false
 var spinner
+var texture = preload("res://art/spid.png")
 
 func _ready():
 	set_start(Vector2())
 	set_end(Vector2())
 
+func set_palette(palette):
+	var image = texture.get_data()
+	image.lock()
+	$Line2D.default_color = image.get_pixel(palette, 3)
+	image.unlock()
 
 func start_decay():
 	$Timer.start()
@@ -14,6 +20,8 @@ func start_decay():
 	for body in $Area2D.get_overlapping_bodies():
 		if body != spinner:
 			body.ensnare(self)
+	if spinner:
+		set_palette(spinner.palette)
 
 
 func get_start():

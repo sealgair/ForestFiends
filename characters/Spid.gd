@@ -155,6 +155,7 @@ func butt_offset():
 
 func start_web():
 	web = web_scene.instance()
+	web.set_palette(palette)
 	add_child(web)
 	
 	web_start = position
