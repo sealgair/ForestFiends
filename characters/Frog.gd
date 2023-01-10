@@ -4,12 +4,16 @@ var jump_time = 0
 var max_jump = -300
 var look_angle = 0
 var look_change = 0
+var texture = preload("res://art/forg.png")
 
 func _ready():
-	._ready()
 	run_speed = 150
 	jump_speed = -60
 	attack_anim = "tongue"
+	var image = texture.get_data()
+	image.lock()
+	$Tongue.default_color = image.get_pixel(palette, 3)
+	image.unlock()
 
 
 func get_species():
@@ -20,6 +24,12 @@ func special_pressed():
 	.special_pressed()
 	if jumping:
 		jump_time = 0.2
+
+
+func make_attack():
+	var instance = .make_attack()
+	instance.get_node("AnimatedSprite").material.set_shader_param("palette", palette)
+	return instance
 
 
 func move(x, y):
