@@ -1,6 +1,7 @@
 extends Node2D
 
 var started = false
+var spinner
 
 func _ready():
 	set_start(Vector2())
@@ -11,7 +12,8 @@ func start_decay():
 	$Timer.start()
 	started = true
 	for body in $Area2D.get_overlapping_bodies():
-		body.ensnare(self)
+		if body != spinner:
+			body.ensnare(self)
 
 
 func get_start():
@@ -75,7 +77,8 @@ func _on_Timer_timeout():
 
 
 func _on_Area2D_body_entered(body):
-	body.ensnare(self)
+	if body != spinner:
+		body.ensnare(self)
 
 
 func _on_Area2D_body_exited(body):

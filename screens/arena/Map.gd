@@ -55,8 +55,9 @@ func make_slime(position, palette=0):
 		add_child(instance)
 
 
-func make_web(start, end):
+func make_web(start, end, player):
 	var web = web_scene.instance()
+	web.spinner = player
 	add_child(web)
 	web.set_start(start)
 	web.set_end(end)

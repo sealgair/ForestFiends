@@ -12,7 +12,7 @@ var web_start = null
 var web_scene = preload("res://characters/Web.tscn")
 
 
-signal make_web(start, end)
+signal make_web(start, end, player)
 
 
 func _ready():
@@ -128,10 +128,6 @@ func attack_pressed():
 		stop_web(true)
 
 
-func ensnare(web):
-	pass
-
-
 func butt_offset():
 	var facing = facing2()
 	var butt = Vector2()
@@ -177,7 +173,7 @@ func stop_web(keep=false):
 			start += corner_dir() * (size * (5.0/8.0))
 		else:
 			start += side_dir() * size/2
-		emit_signal("make_web", start, web_start + web_offset)
+		emit_signal("make_web", start, web_start + web_offset, self)
 	web.queue_free()
 	web = null
 	web_start = null
