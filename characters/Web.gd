@@ -3,10 +3,16 @@ extends Node2D
 var started = false
 var spinner
 var texture = preload("res://art/spid.png")
+var decay_max = 15
+var decay = decay_max
+var shaking = Vector2()
+var new_shaking = Vector2()
+
 
 func _ready():
 	set_start(Vector2())
 	set_end(Vector2())
+
 
 func set_palette(palette):
 	var image = texture.get_data()
@@ -14,8 +20,8 @@ func set_palette(palette):
 	$Line2D.default_color = image.get_pixel(palette, 3)
 	image.unlock()
 
+
 func start_decay():
-	$Timer.start()
 	started = true
 	for body in $Area2D.get_overlapping_bodies():
 		if body != spinner:
@@ -42,32 +48,45 @@ func set_end(point):
 	$Area2D.get_node("CollisionPolygon2D").polygon[1] = point
 
 
+func shake(direction):
+	new_shaking = direction
+
+
 func _process(delta):
 	if started:
-		var opacity = $Timer.time_left / $Timer.wait_time
-		$Line2D.modulate = Color(1,1,1,opacity)
+		decay -= delta
+		if new_shaking.length() != 0 and new_shaking != shaking:
+			decay -= delta * 3
+			shaking = new_shaking
+		if decay <= 0:
+			end_decay()
+		else:
+			var opacity = decay / decay_max
+			$Line2D.modulate = Color(1,1,1,opacity)
 
 
 func intersection_center(square):
+	var center = square.position
+	var size = square.size/2
 	var square_lines = [
 		# top
-		[Vector2(square.position.x, square.position.y), 
-		 Vector2(square.position.x + square.size.x, square.position.y)],
+		[Vector2(center.x - size.x, center.y - size.y), 
+		 Vector2(center.x + size.x, center.y - size.y)],
 		# left
-		[Vector2(square.position.x, square.position.y), 
-		 Vector2(square.position.x, square.position.y + square.size.y)],
+		[Vector2(center.x - size.x, center.y - size.y), 
+		 Vector2(center.x - size.x, center.y + size.y)],
 		# right
-		[Vector2(square.position.x + square.size.x, square.position.y), 
-		 Vector2(square.position.x + square.size.x, square.position.y + square.size.y)],
+		[Vector2(center.x + size.x, center.y - size.y), 
+		 Vector2(center.x + size.x, center.y + size.y)],
 		# bottom
-		[Vector2(square.position.x, square.position.y + square.size.y), 
-		 Vector2(square.position.x + square.size.x, square.position.y + square.size.y)],
+		[Vector2(center.x - size.x, center.y + size.y), 
+		 Vector2(center.x + size.x, center.y + size.y)],
 	]
 	var intersections = []
+	var web_line = $Line2D.points
 	for line in square_lines:
 		var intersection = Geometry.segment_intersects_segment_2d(
-			$Line2D.points[0],
-			$Line2D.points[1],
+			web_line[0], web_line[1],
 			line[0], line[1]
 		)
 		if intersection != null:
@@ -78,14 +97,14 @@ func intersection_center(square):
 		return null
 
 
-func _on_Timer_timeout():
+func end_decay():
 	queue_free()
 	for body in $Area2D.get_overlapping_bodies():
 		body.desnare(self)
 
 
 func _on_Area2D_body_entered(body):
-	if body != spinner:
+	if started and body != spinner:
 		body.ensnare(self)
 
 
