@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=2]
+[gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://characters/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://art/aminals.png" type="Texture" id=2]
@@ -110,6 +110,9 @@ region = Rect2( 48, 80, 5, 5 )
 [sub_resource type="RectangleShape2D" id=41]
 extents = Vector2( 5, 5 )
 
+[sub_resource type="RectangleShape2D" id=42]
+extents = Vector2( 8, 8 )
+
 [node name="Spid" instance=ExtResource( 1 )]
 position = Vector2( 127, 245 )
 script = ExtResource( 5 )
@@ -117,7 +120,6 @@ script = ExtResource( 5 )
 [node name="AnimatedSprite" parent="." index="0"]
 material = SubResource( 27 )
 frames = SubResource( 30 )
-frame = 0
 
 [node name="Debug" parent="." index="2"]
 margin_left = -6.0
@@ -185,3 +187,12 @@ collision_layer = 2
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BRCorner" index="0"]
 position = Vector2( 8, 8 )
 shape = SubResource( 41 )
+
+[node name="Hit" type="Area2D" parent="." index="15"]
+collision_layer = 4
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hit" index="0"]
+shape = SubResource( 42 )
+
+[connection signal="body_entered" from="Hit" to="." method="_on_Hit_body_entered"]

@@ -255,3 +255,8 @@ func _physics_process(delta):
 func _process(_delta):
 	if web != null:
 		update_web()
+
+
+func _on_Hit_body_entered(other):
+	if other.webs.size() > 0:
+		hit(other)
