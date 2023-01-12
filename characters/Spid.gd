@@ -160,21 +160,21 @@ func start_web():
 	
 	web_start = position
 	if edge_point().length() <= edge_grab:
-#		web_start += edge
 		web_offset = corner_dir() * (size * (5.0/8.0))
 	else:
 		web_offset = side_dir() * size/2
-		web_start += butt_offset()
+		if corner_count() > 1:
+			web_offset += butt_offset()
 
 
 func stop_web(keep=false):
 	if keep:
-		var start = position
+		var end = position
 		if edge_point().length() <= edge_grab:
-			start += corner_dir() * (size * (5.0/8.0))
+			end += corner_dir() * (size * (5.0/8.0))
 		else:
-			start += side_dir() * size/2
-		emit_signal("make_web", start, web_start + web_offset, self)
+			end += side_dir() * size/2
+		emit_signal("make_web", web_start + web_offset, end, self)
 	web.queue_free()
 	web = null
 	web_start = null
