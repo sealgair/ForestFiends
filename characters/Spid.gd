@@ -6,10 +6,9 @@ var base_gravity
 var from_side = Vector2(0, 1)
 var edge_grab = 3
 var was_edge = false
-var web = null
-var web_offset = null
-var web_start = null
-var web_scene = preload("res://characters/Web.tscn")
+var web_parts = {}
+var top_web = null
+var WebTracker = preload("res://characters/WebTracker.gd")
 
 
 signal make_web(start, end, player)
@@ -121,7 +120,7 @@ func edge_point():
 
 
 func attack_pressed():
-	if web == null:
+	if web_parts.size() == 0:
 		if not jumping:
 			start_web()
 	else:
@@ -154,17 +153,17 @@ func butt_offset():
 
 
 func start_web():
-	web = web_scene.instance()
-	web.set_palette(palette)
-	add_child(web)
+	var web = WebTracker.new(position, palette)
+	add_child(web.web)
+	web_parts[Vector2()] = web
 	
-	web_start = position
 	if edge_point().length() <= edge_grab:
-		web_offset = corner_dir() * (size * (5.0/8.0))
+		web.offset = corner_dir() * (size * (5.0/8.0))
 	else:
-		web_offset = side_dir() * size/2
+		web.offset = side_dir() * size/2
 		if corner_count() > 1:
-			web_offset += butt_offset()
+			web.offset += butt_offset()
+	top_web = web
 
 
 func stop_web(keep=false):
@@ -174,17 +173,40 @@ func stop_web(keep=false):
 			end += corner_dir() * (size * (5.0/8.0))
 		else:
 			end += side_dir() * size/2
-		emit_signal("make_web", web_start + web_offset, end, self)
-	web.queue_free()
-	web = null
-	web_start = null
-	web_offset = null
+		for web in web_parts.values():
+			emit_signal(
+				"make_web", 
+				web.start + web.offset + web.start_transform, 
+				end + web.end_transform, 
+				self)
+	for web in web_parts.values():
+		web.queue_free()
+	web_parts = {}
+	top_web = null
 
 
 func update_web():
-	# TODO: wrap around map (using transform
-	web.set_start(butt_offset())
-	web.set_end(web_start - position + web_offset)
+	for web in web_parts.values():
+		web.update(position, butt_offset())
+
+
+func wrap_screen(amount):
+	.wrap_screen(amount)
+	for web in web_parts.values():
+		web.end_transform -= amount
+	var more_web
+	var new_transform = top_web.start_transform + amount
+	if web_parts.has(new_transform):
+		more_web = web_parts[new_transform]
+	else:
+		more_web = WebTracker.new(position, palette)
+		more_web.start = top_web.start
+		more_web.offset = top_web.offset
+		more_web.start_transform = new_transform
+		more_web.end_transform = Vector2()
+		add_child(more_web.web)
+		web_parts[more_web.start_transform] = more_web
+	top_web = more_web
 
 
 func special_pressed():
@@ -253,8 +275,7 @@ func _physics_process(delta):
 
 
 func _process(_delta):
-	if web != null:
-		update_web()
+	update_web()
 
 
 func _on_Hit_body_entered(other):

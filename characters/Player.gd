@@ -183,9 +183,17 @@ func _physics_process(delta):
 	velocity = move_and_slide(velocity, Vector2(0, -1))
 	
 	# use transform not position so as not to break physics
-	transform.origin.x = wrapf(transform.origin.x, 0, screen_size.x)
-	transform.origin.y = wrapf(transform.origin.y, 0, screen_size.y)
+#	transform.origin.x = wrapf(transform.origin.x, 0, screen_size.x)
+#	transform.origin.y = wrapf(transform.origin.y, 0, screen_size.y)
+	var screenwrap = Vector2(
+		wrapf(transform.origin.x, 0, screen_size.x),
+		wrapf(transform.origin.y, 0, screen_size.y)
+	) - transform.origin
+	if screenwrap.length() > 0:
+		wrap_screen(screenwrap)
 
+func wrap_screen(amount):
+	transform.origin += amount
 
 func is_attacking():
 	return attackNode.get_ref()
