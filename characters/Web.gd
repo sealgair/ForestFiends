@@ -1,7 +1,7 @@
-extends Node2D
+extends Area2D
 
 var started = false
-var spinner
+var spinner = null
 var texture = preload("res://art/spid.png")
 var decay_max = 15
 var decay = decay_max
@@ -23,7 +23,7 @@ func set_palette(palette):
 
 func start_decay():
 	started = true
-	for body in $Area2D.get_overlapping_bodies():
+	for body in get_overlapping_bodies():
 		if body != spinner:
 			body.ensnare(self)
 	if spinner:
@@ -36,8 +36,8 @@ func get_start():
 
 func set_start(point):
 	$Line2D.set_point_position(0, point)
-	$Area2D.get_node("CollisionPolygon2D").polygon[0] = point
-
+	$Collision.shape.a = point
+	$Debug.rect_position = point
 
 func get_end():
 	return $Line2D.get_point_position(1)
@@ -45,7 +45,7 @@ func get_end():
 
 func set_end(point):
 	$Line2D.set_point_position(1, point)
-	$Area2D.get_node("CollisionPolygon2D").polygon[1] = point
+	$Collision.shape.b = point
 
 
 func shake(direction):
@@ -99,14 +99,19 @@ func intersection_center(square):
 
 func end_decay():
 	queue_free()
-	for body in $Area2D.get_overlapping_bodies():
+	for body in get_overlapping_bodies():
 		body.desnare(self)
 
 
-func _on_Area2D_body_entered(body):
-	if started and body != spinner:
-		body.ensnare(self)
+func _on_Web_body_entered(body):
+	if body != spinner:
+		if started:
+			body.ensnare(self)
+		else:
+			spinner.stop_web()
 
 
-func _on_Area2D_body_exited(body):
-	body.desnare(self)
+func _on_Web_body_exited(body):
+	if body != spinner:
+		body.desnare(self)
+

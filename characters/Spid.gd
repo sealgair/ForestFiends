@@ -153,8 +153,7 @@ func butt_offset():
 
 
 func start_web():
-	var web = WebTracker.new(position, palette)
-	add_child(web.web)
+	var web = WebTracker.new(position, self)
 	web_parts[Vector2()] = web
 	
 	if edge_point().length() <= edge_grab:
@@ -192,21 +191,21 @@ func update_web():
 
 func wrap_screen(amount):
 	.wrap_screen(amount)
-	for web in web_parts.values():
-		web.end_transform -= amount
-	var more_web
-	var new_transform = top_web.start_transform + amount
-	if web_parts.has(new_transform):
-		more_web = web_parts[new_transform]
-	else:
-		more_web = WebTracker.new(position, palette)
-		more_web.start = top_web.start
-		more_web.offset = top_web.offset
-		more_web.start_transform = new_transform
-		more_web.end_transform = Vector2()
-		add_child(more_web.web)
-		web_parts[more_web.start_transform] = more_web
-	top_web = more_web
+	if web_parts.size() > 0:
+		for web in web_parts.values():
+			web.end_transform -= amount
+		var more_web
+		var new_transform = top_web.start_transform + amount
+		if web_parts.has(new_transform):
+			more_web = web_parts[new_transform]
+		else:
+			more_web = WebTracker.new(position, self)
+			more_web.start = top_web.start
+			more_web.offset = top_web.offset
+			more_web.start_transform = new_transform
+			more_web.end_transform = Vector2()
+			web_parts[more_web.start_transform] = more_web
+		top_web = more_web
 
 
 func special_pressed():
