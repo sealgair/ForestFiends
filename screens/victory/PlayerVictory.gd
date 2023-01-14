@@ -16,7 +16,7 @@ func _ready():
 		$Place.add_color_override("font_color", Global.player_colors[player.order-1])
 		$Ate.text = "Ate: {v}".format({'v': player.ate})
 		$Fed.text = "Fed: {v}".format({'v': player.fed})
-		$Points.text = "Pts: {v}".format({'v': player.points})
+		$Points.text = "Pts: {v}".format({'v': player.score})
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

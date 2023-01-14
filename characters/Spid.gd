@@ -226,7 +226,11 @@ func move(x,y):
 	var side = side_dir()
 	var corner = corner_dir()
 	var edge = edge_point()
-	if side.length() == 0 and edge.length() > edge_grab+1:
+	
+	if side.length() > 0:
+		# stop jumping on touch
+		jumping = false
+	elif corner_count() == 0 or edge.length() > edge_grab+1:
 		jumping = true  # falling really, but who's counting
 	
 	gravity = base_gravity
@@ -235,7 +239,6 @@ func move(x,y):
 	else:
 		gravity = 0
 	
-		$Debug.text = ""
 		if edge.length() < edge_grab:
 			if not was_edge:
 				velocity = Vector2()
@@ -268,9 +271,15 @@ func move(x,y):
 				from_side = side * 1 # copy
 
 
-func _physics_process(delta):
-	if jumping and side_dir().length() != 0:
-		jumping = false
+func die():
+	.die()
+	$AnimatedSprite.flip_v = false
+	$AnimatedSprite.rotation_degrees = 0
+	gravity = base_gravity
+
+func revive(new_pos):
+	.revive(new_pos)
+	jumping = true
 
 
 func _process(_delta):

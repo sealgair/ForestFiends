@@ -2,7 +2,7 @@ extends Node2D
 
 var start_data = []
 var players = []
-export (int) var score_limit = 2
+export (int) var score_limit = 10
 var score = 0
 
 var slime_scene = preload("res://characters/Slime.tscn")
@@ -64,7 +64,7 @@ func make_web(start, end, player):
 	web.start_decay()
 
 
-func make_points(player):
+func make_score(player):
 	# TODO:
 	#local kpm = player.kills / (self.gametime/60)
 	#local ktd = player.kills - player.deaths
@@ -75,7 +75,7 @@ func make_points(player):
 
 func end():
 	for player in players:
-		player.points = make_points(player)
+		player.score = make_score(player)
 	ScreenManager.load_screen("victory", {'players': players})
 
 

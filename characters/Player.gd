@@ -6,7 +6,7 @@ export (int) var palette = null
 
 var ate = 0
 var fed = 0
-var points = 0
+var score = 0
 
 var inputs = {}
 var run_speed = 100
@@ -147,16 +147,18 @@ func handle_input(delta):
 		var axes = axes_pressed()
 		move(axes.x, axes.y)
 		moved(delta)
-			
-		if Input.is_action_just_pressed(inputs['special']):
-			special_pressed()
-		if Input.is_action_just_released(inputs['special']):
-			special_released()
-			
-		if Input.is_action_just_pressed(inputs['attack']):
-			attack_pressed()
-		if Input.is_action_just_released(inputs['attack']):
-			attack_released()
+		
+		# can't attack / special if webbed
+		if webs.size() <= 0:
+			if Input.is_action_just_pressed(inputs['special']):
+				special_pressed()
+			if Input.is_action_just_released(inputs['special']):
+				special_released()
+				
+			if Input.is_action_just_pressed(inputs['attack']):
+				attack_pressed()
+			if Input.is_action_just_released(inputs['attack']):
+				attack_released()
 
 
 func _physics_process(delta):
@@ -183,8 +185,6 @@ func _physics_process(delta):
 	velocity = move_and_slide(velocity, Vector2(0, -1))
 	
 	# use transform not position so as not to break physics
-#	transform.origin.x = wrapf(transform.origin.x, 0, screen_size.x)
-#	transform.origin.y = wrapf(transform.origin.y, 0, screen_size.y)
 	var screenwrap = Vector2(
 		wrapf(transform.origin.x, 0, screen_size.x),
 		wrapf(transform.origin.y, 0, screen_size.y)
@@ -236,10 +236,10 @@ func _process(delta):
 
 
 func is_vulnerable():
-	return not self.dead
+	return not self.dead and revive_countdown <= 0
 
 
-func score(other):
+func make_score(other):
 	ate += 1
 	emit_signal("made_hit")
 	if other == poisoned_by:
@@ -247,7 +247,7 @@ func score(other):
 	
 
 func hit(other):
-	score(other)
+	make_score(other)
 	other.die()
 
 
@@ -295,6 +295,7 @@ func revive(new_pos):
 	position = new_pos
 	dead = false
 	poisoned_by = null
+	$AnimatedSprite.flip_v = false
 	# for invincibilty after revive
 	revive_countdown = revive_time
 

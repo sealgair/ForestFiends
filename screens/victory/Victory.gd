@@ -6,7 +6,7 @@ var PlayerVictory = preload("res://screens/victory/PlayerVictory.tscn")
 var inputs = {}
 
 func score_sorter(a, b):
-	return a.points < b.points
+	return a.score < b.score
 
 func _ready():
 	var column = get_viewport_rect().size.x / players.size()
@@ -15,7 +15,7 @@ func _ready():
 	var prev = null
 	var place = 1
 	for player in players:
-		if prev and prev.points != player.points:
+		if prev and prev.score != player.score:
 			place += 1
 		var pv = PlayerVictory.instance()
 		pv.player = player
