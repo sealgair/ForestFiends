@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://art/aminals.png" type="Texture" id=1]
 [ext_resource path="res://screens/arena/Map.gd" type="Script" id=2]
@@ -169,6 +169,9 @@ animations = [ {
 "speed": 5.0
 } ]
 
+[sub_resource type="RectangleShape2D" id=15]
+extents = Vector2( 8, 8 )
+
 [node name="Map" type="Node2D"]
 script = ExtResource( 2 )
 
@@ -210,5 +213,13 @@ valign = 1
 [node name="VictoryTimer" type="Timer" parent="."]
 wait_time = 0.3
 one_shot = true
+
+[node name="WebChecker" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WebChecker"]
+position = Vector2( 8, 8 )
+shape = SubResource( 15 )
 
 [connection signal="timeout" from="VictoryTimer" to="." method="_on_VictoryTimer_timeout"]

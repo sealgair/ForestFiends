@@ -277,6 +277,7 @@ func die():
 	$AnimatedSprite.rotation_degrees = 0
 	gravity = base_gravity
 
+
 func revive(new_pos):
 	.revive(new_pos)
 	jumping = true

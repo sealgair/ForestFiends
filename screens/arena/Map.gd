@@ -36,12 +36,33 @@ func hit():
 	else:
 		$Score.text = String(score_limit - score)
 
+func average(values):
+	var sum = 0
+	for value in values:
+		sum += value
+	return sum / values.size()
+
+
+func spawnpoint_distance(spawnpoint):
+	var distances = []
+	for player in players:
+		distances.append((player.position - spawnpoint * player.size).length())
+	return average(distances)
+
+
+func spawnpoint_sorter(a, b):
+	return spawnpoint_distance(a) > spawnpoint_distance(b)
+
 
 func spawn(player, spawn_point=null):
-	if not spawn_point:
+	if spawn_point == null:
 		var spawn_points = $RespawnTiles.get_used_cells()
-		spawn_point = spawn_points[randi() % spawn_points.size()]
-		# TODO: get point furthest from players
+		# find spawn point furthest from other players
+		spawn_point = spawn_points[0]
+		for sp in spawn_points:
+			$WebChecker.transform.origin = spawn_point * $WebChecker.transform.size
+			if spawnpoint_distance(spawn_point) < spawnpoint_distance(sp):
+				spawn_point = sp
 	player.revive(spawn_point * player.size)
 
 
