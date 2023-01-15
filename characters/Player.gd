@@ -292,6 +292,8 @@ func _on_AnimatedSprite_animation_finished():
 
 
 func revive(new_pos):
+	velocity = Vector2()
+	to_velocity = Vector2()
 	position = new_pos
 	dead = false
 	poisoned_by = null

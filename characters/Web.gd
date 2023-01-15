@@ -21,7 +21,9 @@ func set_palette(palette):
 	image.unlock()
 
 
-func start_decay():
+func start_decay(time=null):
+	if time != null:
+		decay = time
 	started = true
 	for body in get_overlapping_bodies():
 		if body != spinner:
