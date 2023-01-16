@@ -1,10 +1,12 @@
 extends Node2D
 
+var Cursor = preload("res://screens/character_select/Cursor.tscn")
+
 var inputs = {}
-var highlights = [null, null, null, null]
-var selections = [false, false, false, false]
+var cursors = {}
 var selectors
 var player_selectors
+
 
 func _ready():
 	selectors = [
@@ -38,65 +40,65 @@ func _process(delta):
 				cell.selected = 0
 	
 	for p in range(4):
-		var inp = inputs[p];
+		var player_selector = player_selectors[p]
+		var just_pressed = {}
 		var dir = Vector2(0,0)
-		# x & y are flipped to make the inline definition of 'selectors' look right above
-		if Input.is_action_just_pressed(inp['left']):
-			dir.y -= 1
-		if Input.is_action_just_pressed(inp['right']):
-			dir.y += 1
-		if Input.is_action_just_pressed(inp['up']):
-			dir.x -= 1
-		if Input.is_action_just_pressed(inp['down']):
-			dir.x += 1
-			
-		var cell = highlights[p]
-		if selections[p]:
-			player_selectors[p].shift_palette(sign(dir.x - dir.y))
-		elif dir.length() != 0:
-			if cell == null:
-				cell = Vector2(0,0)	
-				highlights[p] = cell
-			else:
-				while true:
-					cell.x = wrapi(cell.x+dir.x, 0, selectors.size())
-					cell.y = wrapi(cell.y+dir.y, 0, selectors[cell.x].size())
-					if selectors[cell.x][cell.y] != null:
-						break
-			highlights[p] = cell
+		for btn in inputs[p].keys():
+			just_pressed[btn] = Input.is_action_just_pressed(inputs[p][btn])
 		
-		if cell != null:
-			player_selectors[p].visible = true
-			selectors[cell.x][cell.y].highlighted |= int(pow(2,p))
-			if Input.is_action_just_pressed(inp['select']):
-				if selections[p]:
+		# x & y are flipped to make the inline definition of 'selectors' look right above
+		if just_pressed['left']:
+			dir.y -= 1
+		if just_pressed['right']:
+			dir.y += 1
+		if just_pressed['up']:
+			dir.x -= 1
+		if just_pressed['down']:
+			dir.x += 1
+		
+		var cursor = null
+		if cursors.has(p):
+			cursor = cursors[p]
+		if cursor == null:
+			if dir.length() > 0:
+				cursor = Cursor.instance()
+				add_child(cursor)
+				cursor.set_player(p)
+				cursors[p] = cursor
+				cursor.position = selectors[0][0].position
+		else:
+			var cell = null
+			while cell == null:
+				cursor.move(dir)
+				cell = selectors[cursor.cell.x][cursor.cell.y]
+			cursor.position = cell.position
+			player_selector.set_palette(cursor.palette)
+		
+			if just_pressed['select']:
+				if cursor.selected:
 					var ready = true
-					for op in range(4):
-						if highlights[op] and not selections[op]:
-							ready = false
-							break
+					for c in cursors.values():
+						ready = ready && c.selected
 					if ready:
 						start_game()
 				else:
-					selections[p] = true
-			if selections[p]:
-				selectors[cell.x][cell.y].selected |= int(pow(2,p))
-				player_selectors[p].set_species(selectors[cell.x][cell.y].species)
+					cursor.set_selected(true)
+					player_selector.set_species(cell.species)
 			
-			if Input.is_action_just_pressed(inp['cancel']):
-				if selections[p]:
-					selections[p] = false
-					player_selectors[p].set_aminal(null)
+			if just_pressed['cancel']:
+				if cursor.selected:
+					cursor.set_selected(false)
+					player_selector.set_species(null)
 				else:
-					highlights[p] = null
-		
+					cursor.queue_free()
+					cursors.erase(p)
+			
 		
 func start_game():
 	var start_players = []
-	for p in range(selections.size()):
-		if selections[p]:
-			var player = player_selectors[p]
-			start_players.append(player.make_player())
+	for p in cursors.keys():
+		var player = player_selectors[p]
+		start_players.append(player.make_player())
 	
 	ScreenManager.load_screen("play", {
 		"start_data": start_players

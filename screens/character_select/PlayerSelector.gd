@@ -12,13 +12,15 @@ func _ready():
 	$Sky.visible = false
 	$Label.visible = true
 
-func shift_palette(amount):
-	palette = wrapi(palette+amount, 0, 4)
+func set_palette(palette):
 	$AminalSprite.set_palette(palette)
 
 func set_species(new_species):
-	var instance = Global.species[new_species].instance()
-	set_aminal(instance)
+	if new_species == null:
+		set_aminal(null)
+	else:
+		var instance = Global.species[new_species].instance()
+		set_aminal(instance)
 
 func set_aminal(instance):
 	if instance:
