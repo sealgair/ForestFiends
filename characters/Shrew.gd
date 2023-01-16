@@ -1,6 +1,7 @@
 extends "Player.gd"
 
 var dashing = 0
+var dash_time = 0.5
 var dash_speed = run_speed * 2
 
 
@@ -15,15 +16,15 @@ func get_species():
 
 
 func attack_pressed():
-	if dashing <= 0:
-		# no attack while dashing
+	if dashing <= 3*dash_time/4:
+		# no attack in first quarter of dash
 		.attack_pressed()
 
 
 func special_pressed():
 	if is_on_floor() and dashing <= 0:
 		.special_pressed()
-		dashing = 0.5
+		dashing = dash_time
 
 
 func moved(delta):
@@ -47,6 +48,5 @@ func _process(delta):
 		if Input.get_axis(inputs['left'], inputs['right']) == 0:
 			to_velocity.x = 0
 			$AnimatedSprite.flip_h = not $AnimatedSprite.flip_h
-		attack_pressed()
 	
 	._process(delta)
