@@ -66,6 +66,7 @@ func _process(delta):
 				cursor.set_player(p)
 				cursors[p] = cursor
 				cursor.position = selectors[0][0].position
+				$ForceStartTimer.start()
 		else:
 			var cell = null
 			while cell == null:
@@ -94,7 +95,14 @@ func _process(delta):
 					cursors.erase(p)
 					# reset timer when cursors go away
 					$ContinueTimer.start() 
+	
 	$ContinueTimer.paused = cursors.size() > 0
+	$ForceStartTimer.paused = cursors.size() <= 0
+	
+	$Countdown.text = ""
+	if $ForceStartTimer.time_left <= 5 and not $ForceStartTimer.paused:
+		$Countdown.text = String(ceil($ForceStartTimer.time_left))
+		
 
 func start_game():
 	var start_players = []
@@ -109,3 +117,12 @@ func start_game():
 
 func _on_ContinueTimer_timeout():
 	ScreenManager.load_screen("stats")
+
+
+func _on_ForceStartTimer_timeout():
+	for p in cursors.keys():
+		var cursor = cursors[p]
+		cursor.set_selected(true)
+		var cell = selectors[cursor.cell.x][cursor.cell.y]
+		player_selectors[p].set_species(cell.species)
+	start_game()
