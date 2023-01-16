@@ -4,6 +4,7 @@ var screens = {
 	'select': preload("res://screens/character_select/CharacterSelect.tscn"),
 	'play': preload("res://screens/arena/Map.tscn"),
 	'victory': preload("res://screens/victory/Victory.tscn"),
+	'stats': preload("res://screens/stats/Stats.tscn"),
 }
 
 func _ready():

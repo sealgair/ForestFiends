@@ -19,6 +19,6 @@ func _ready():
 		$Points.text = "Pts: {v}".format({'v': player.score})
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+func _on_ContinueTimer_timeout():
+	# TODO: some of this could be abstracted into a base screen scene
+	ScreenManager.load_screen("stats")

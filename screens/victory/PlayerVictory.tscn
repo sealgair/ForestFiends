@@ -95,3 +95,8 @@ clip_text = true
 
 [node name="AminalSprite" parent="." instance=ExtResource( 4 )]
 position = Vector2( -8, -8 )
+
+[node name="ContinueTimer" type="Timer" parent="."]
+wait_time = 25.0
+
+[connection signal="timeout" from="ContinueTimer" to="." method="_on_ContinueTimer_timeout"]

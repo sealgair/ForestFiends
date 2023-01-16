@@ -7,6 +7,8 @@ export (int) var palette = null
 var ate = 0
 var fed = 0
 var score = 0
+var time = 0
+var distance = 0
 
 var inputs = {}
 var run_speed = 100
@@ -182,7 +184,9 @@ func _physics_process(delta):
 		velocity = (webbed - position) * run_speed
 	else:
 		velocity.y += gravity * delta
+	var before = position
 	velocity = move_and_slide(velocity, Vector2(0, -1))
+	distance += (position - before).length()
 	
 	# use transform not position so as not to break physics
 	var screenwrap = Vector2(
@@ -213,6 +217,7 @@ func _process(delta):
 		attack_timeout = max(0, attack_timeout - delta)
 	
 	if not dead:
+		time += delta
 		var poison_opacity = 0
 		if poisoned_by != null:
 			var poison_time = $PoisonTimer.time_left / $PoisonTimer.wait_time

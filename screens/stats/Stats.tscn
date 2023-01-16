@@ -1,0 +1,531 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://main/MenuTheme.tres" type="Theme" id=1]
+[ext_resource path="res://main/AminalSprite.tscn" type="PackedScene" id=2]
+[ext_resource path="res://screens/stats/Stats.gd" type="Script" id=3]
+
+[node name="Stats" type="Node2D"]
+script = ExtResource( 3 )
+
+[node name="Background" type="ColorRect" parent="."]
+margin_right = 256.0
+margin_bottom = 256.0
+color = Color( 0.113725, 0.168627, 0.32549, 1 )
+
+[node name="Title" type="Label" parent="."]
+margin_right = 256.0
+margin_bottom = 24.0
+theme = ExtResource( 1 )
+custom_colors/font_color = Color( 1, 0.945098, 0.909804, 1 )
+text = "Aminal Stats"
+align = 1
+valign = 1
+
+[node name="Ate" type="Label" parent="."]
+margin_left = 40.0
+margin_top = 24.0
+margin_right = 72.0
+margin_bottom = 40.0
+theme = ExtResource( 1 )
+custom_colors/font_color = Color( 0.160784, 0.678431, 1, 1 )
+text = "Ate"
+align = 1
+valign = 1
+
+[node name="Fed" type="Label" parent="."]
+margin_left = 80.0
+margin_top = 24.0
+margin_right = 112.0
+margin_bottom = 40.0
+theme = ExtResource( 1 )
+custom_colors/font_color = Color( 0.160784, 0.678431, 1, 1 )
+text = "Fed"
+align = 1
+valign = 1
+
+[node name="Won" type="Label" parent="."]
+margin_left = 120.0
+margin_top = 24.0
+margin_right = 152.0
+margin_bottom = 40.0
+theme = ExtResource( 1 )
+custom_colors/font_color = Color( 0.160784, 0.678431, 1, 1 )
+text = "Won"
+align = 1
+valign = 1
+
+[node name="Lost" type="Label" parent="."]
+margin_left = 160.0
+margin_top = 24.0
+margin_right = 192.0
+margin_bottom = 40.0
+theme = ExtResource( 1 )
+custom_colors/font_color = Color( 0.160784, 0.678431, 1, 1 )
+text = "Lost"
+align = 1
+valign = 1
+
+[node name="Time" type="Label" parent="."]
+margin_left = 208.0
+margin_top = 24.0
+margin_right = 240.0
+margin_bottom = 40.0
+theme = ExtResource( 1 )
+custom_colors/font_color = Color( 0.160784, 0.678431, 1, 1 )
+text = "Time"
+align = 1
+valign = 1
+
+[node name="Sky" type="ColorRect" parent="."]
+margin_top = 40.0
+margin_right = 32.0
+margin_bottom = 256.0
+color = Color( 0.160784, 0.678431, 1, 1 )
+
+[node name="Line2D" type="Line2D" parent="."]
+points = PoolVector2Array( 256, 40, 0, 40 )
+width = 2.0
+default_color = Color( 1, 0.945098, 0.909804, 1 )
+
+[node name="Shrew" parent="." instance=ExtResource( 2 )]
+position = Vector2( 8, 48 )
+
+[node name="Ate" type="Label" parent="Shrew"]
+margin_left = 32.0
+margin_right = 64.0
+margin_bottom = 16.0
+theme = ExtResource( 1 )
+custom_colors/font_color = Color( 0.513726, 0.462745, 0.611765, 1 )
+text = "0"
+align = 1
+valign = 1
+
+[node name="Fed" type="Label" parent="Shrew"]
+margin_left = 72.0
+margin_right = 104.0
+margin_bottom = 16.0
+theme = ExtResource( 1 )
+custom_colors/font_color = Color( 0.513726, 0.462745, 0.611765, 1 )
+text = "0"
+align = 1
+valign = 1
+
+[node name="Won" type="Label" parent="Shrew"]
+margin_left = 112.0
+margin_right = 144.0
+margin_bottom = 16.0
+theme = ExtResource( 1 )
+custom_colors/font_color = Color( 0.513726, 0.462745, 0.611765, 1 )
+text = "0"
+align = 1
+valign = 1
+
+[node name="Lost" type="Label" parent="Shrew"]
+margin_left = 152.0
+margin_right = 184.0
+margin_bottom = 16.0
+theme = ExtResource( 1 )
+custom_colors/font_color = Color( 0.513726, 0.462745, 0.611765, 1 )
+text = "0"
+align = 1
+valign = 1
+
+[node name="Time" type="Label" parent="Shrew"]
+margin_left = 192.0
+margin_right = 240.0
+margin_bottom = 16.0
+theme = ExtResource( 1 )
+custom_colors/font_color = Color( 0.513726, 0.462745, 0.611765, 1 )
+text = "0:00"
+align = 1
+valign = 1
+
+[node name="Bird" parent="." instance=ExtResource( 2 )]
+position = Vector2( 8, 72 )
+species = "Bird"
+
+[node name="Ate" type="Label" parent="Bird"]
+margin_left = 32.0
+margin_right = 64.0
+margin_bottom = 16.0
+theme = ExtResource( 1 )
+custom_colors/font_color = Color( 0.160784, 0.678431, 1, 1 )
+text = "0"
+align = 1
+valign = 1
+
+[node name="Fed" type="Label" parent="Bird"]
+margin_left = 72.0
+margin_right = 104.0
+margin_bottom = 16.0
+theme = ExtResource( 1 )
+custom_colors/font_color = Color( 0.160784, 0.678431, 1, 1 )
+text = "0"
+align = 1
+valign = 1
+
+[node name="Won" type="Label" parent="Bird"]
+margin_left = 112.0
+margin_right = 144.0
+margin_bottom = 16.0
+theme = ExtResource( 1 )
+custom_colors/font_color = Color( 0.160784, 0.678431, 1, 1 )
+text = "0"
+align = 1
+valign = 1
+
+[node name="Lost" type="Label" parent="Bird"]
+margin_left = 152.0
+margin_right = 184.0
+margin_bottom = 16.0
+theme = ExtResource( 1 )
+custom_colors/font_color = Color( 0.160784, 0.678431, 1, 1 )
+text = "0"
+align = 1
+valign = 1
+
+[node name="Time" type="Label" parent="Bird"]
+margin_left = 192.0
+margin_right = 240.0
+margin_bottom = 16.0
+theme = ExtResource( 1 )
+custom_colors/font_color = Color( 0.160784, 0.678431, 1, 1 )
+text = "0:00"
+align = 1
+valign = 1
+
+[node name="Frog" parent="." instance=ExtResource( 2 )]
+position = Vector2( 8, 96 )
+species = "Frog"
+
+[node name="Ate" type="Label" parent="Frog"]
+margin_left = 32.0
+margin_right = 64.0
+margin_bottom = 16.0
+theme = ExtResource( 1 )
+custom_colors/font_color = Color( 0.513726, 0.462745, 0.611765, 1 )
+text = "0"
+align = 1
+valign = 1
+
+[node name="Fed" type="Label" parent="Frog"]
+margin_left = 72.0
+margin_right = 104.0
+margin_bottom = 16.0
+theme = ExtResource( 1 )
+custom_colors/font_color = Color( 0.513726, 0.462745, 0.611765, 1 )
+text = "0"
+align = 1
+valign = 1
+
+[node name="Won" type="Label" parent="Frog"]
+margin_left = 112.0
+margin_right = 144.0
+margin_bottom = 16.0
+theme = ExtResource( 1 )
+custom_colors/font_color = Color( 0.513726, 0.462745, 0.611765, 1 )
+text = "0"
+align = 1
+valign = 1
+
+[node name="Lost" type="Label" parent="Frog"]
+margin_left = 152.0
+margin_right = 184.0
+margin_bottom = 16.0
+theme = ExtResource( 1 )
+custom_colors/font_color = Color( 0.513726, 0.462745, 0.611765, 1 )
+text = "0"
+align = 1
+valign = 1
+
+[node name="Time" type="Label" parent="Frog"]
+margin_left = 192.0
+margin_right = 240.0
+margin_bottom = 16.0
+theme = ExtResource( 1 )
+custom_colors/font_color = Color( 0.513726, 0.462745, 0.611765, 1 )
+text = "0:00"
+align = 1
+valign = 1
+
+[node name="Turt" parent="." instance=ExtResource( 2 )]
+position = Vector2( 8, 120 )
+species = "Turt"
+
+[node name="Ate" type="Label" parent="Turt"]
+margin_left = 32.0
+margin_right = 64.0
+margin_bottom = 16.0
+theme = ExtResource( 1 )
+custom_colors/font_color = Color( 0.160784, 0.678431, 1, 1 )
+text = "0"
+align = 1
+valign = 1
+
+[node name="Fed" type="Label" parent="Turt"]
+margin_left = 72.0
+margin_right = 104.0
+margin_bottom = 16.0
+theme = ExtResource( 1 )
+custom_colors/font_color = Color( 0.160784, 0.678431, 1, 1 )
+text = "0"
+align = 1
+valign = 1
+
+[node name="Won" type="Label" parent="Turt"]
+margin_left = 112.0
+margin_right = 144.0
+margin_bottom = 16.0
+theme = ExtResource( 1 )
+custom_colors/font_color = Color( 0.160784, 0.678431, 1, 1 )
+text = "0"
+align = 1
+valign = 1
+
+[node name="Lost" type="Label" parent="Turt"]
+margin_left = 152.0
+margin_right = 184.0
+margin_bottom = 16.0
+theme = ExtResource( 1 )
+custom_colors/font_color = Color( 0.160784, 0.678431, 1, 1 )
+text = "0"
+align = 1
+valign = 1
+
+[node name="Time" type="Label" parent="Turt"]
+margin_left = 192.0
+margin_right = 240.0
+margin_bottom = 16.0
+theme = ExtResource( 1 )
+custom_colors/font_color = Color( 0.160784, 0.678431, 1, 1 )
+text = "0:00"
+align = 1
+valign = 1
+
+[node name="Wasp" parent="." instance=ExtResource( 2 )]
+position = Vector2( 8, 144 )
+species = "Wasp"
+
+[node name="Ate" type="Label" parent="Wasp"]
+margin_left = 32.0
+margin_right = 64.0
+margin_bottom = 16.0
+theme = ExtResource( 1 )
+custom_colors/font_color = Color( 0.513726, 0.462745, 0.611765, 1 )
+text = "0"
+align = 1
+valign = 1
+
+[node name="Fed" type="Label" parent="Wasp"]
+margin_left = 72.0
+margin_right = 104.0
+margin_bottom = 16.0
+theme = ExtResource( 1 )
+custom_colors/font_color = Color( 0.513726, 0.462745, 0.611765, 1 )
+text = "0"
+align = 1
+valign = 1
+
+[node name="Won" type="Label" parent="Wasp"]
+margin_left = 112.0
+margin_right = 144.0
+margin_bottom = 16.0
+theme = ExtResource( 1 )
+custom_colors/font_color = Color( 0.513726, 0.462745, 0.611765, 1 )
+text = "0"
+align = 1
+valign = 1
+
+[node name="Lost" type="Label" parent="Wasp"]
+margin_left = 152.0
+margin_right = 184.0
+margin_bottom = 16.0
+theme = ExtResource( 1 )
+custom_colors/font_color = Color( 0.513726, 0.462745, 0.611765, 1 )
+text = "0"
+align = 1
+valign = 1
+
+[node name="Time" type="Label" parent="Wasp"]
+margin_left = 192.0
+margin_right = 240.0
+margin_bottom = 16.0
+theme = ExtResource( 1 )
+custom_colors/font_color = Color( 0.513726, 0.462745, 0.611765, 1 )
+text = "0:00"
+align = 1
+valign = 1
+
+[node name="Mant" parent="." instance=ExtResource( 2 )]
+position = Vector2( 8, 168 )
+species = "Mant"
+
+[node name="Ate" type="Label" parent="Mant"]
+margin_left = 32.0
+margin_right = 64.0
+margin_bottom = 16.0
+theme = ExtResource( 1 )
+custom_colors/font_color = Color( 0.160784, 0.678431, 1, 1 )
+text = "0"
+align = 1
+valign = 1
+
+[node name="Fed" type="Label" parent="Mant"]
+margin_left = 72.0
+margin_right = 104.0
+margin_bottom = 16.0
+theme = ExtResource( 1 )
+custom_colors/font_color = Color( 0.160784, 0.678431, 1, 1 )
+text = "0"
+align = 1
+valign = 1
+
+[node name="Won" type="Label" parent="Mant"]
+margin_left = 112.0
+margin_right = 144.0
+margin_bottom = 16.0
+theme = ExtResource( 1 )
+custom_colors/font_color = Color( 0.160784, 0.678431, 1, 1 )
+text = "0"
+align = 1
+valign = 1
+
+[node name="Lost" type="Label" parent="Mant"]
+margin_left = 152.0
+margin_right = 184.0
+margin_bottom = 16.0
+theme = ExtResource( 1 )
+custom_colors/font_color = Color( 0.160784, 0.678431, 1, 1 )
+text = "0"
+align = 1
+valign = 1
+
+[node name="Time" type="Label" parent="Mant"]
+margin_left = 192.0
+margin_right = 240.0
+margin_bottom = 16.0
+theme = ExtResource( 1 )
+custom_colors/font_color = Color( 0.160784, 0.678431, 1, 1 )
+text = "0:00"
+align = 1
+valign = 1
+
+[node name="Slug" parent="." instance=ExtResource( 2 )]
+position = Vector2( 8, 192 )
+species = "Slug"
+
+[node name="Ate" type="Label" parent="Slug"]
+margin_left = 32.0
+margin_right = 64.0
+margin_bottom = 16.0
+theme = ExtResource( 1 )
+custom_colors/font_color = Color( 0.513726, 0.462745, 0.611765, 1 )
+text = "0"
+align = 1
+valign = 1
+
+[node name="Fed" type="Label" parent="Slug"]
+margin_left = 72.0
+margin_right = 104.0
+margin_bottom = 16.0
+theme = ExtResource( 1 )
+custom_colors/font_color = Color( 0.513726, 0.462745, 0.611765, 1 )
+text = "0"
+align = 1
+valign = 1
+
+[node name="Won" type="Label" parent="Slug"]
+margin_left = 112.0
+margin_right = 144.0
+margin_bottom = 16.0
+theme = ExtResource( 1 )
+custom_colors/font_color = Color( 0.513726, 0.462745, 0.611765, 1 )
+text = "0"
+align = 1
+valign = 1
+
+[node name="Lost" type="Label" parent="Slug"]
+margin_left = 152.0
+margin_right = 184.0
+margin_bottom = 16.0
+theme = ExtResource( 1 )
+custom_colors/font_color = Color( 0.513726, 0.462745, 0.611765, 1 )
+text = "0"
+align = 1
+valign = 1
+
+[node name="Time" type="Label" parent="Slug"]
+margin_left = 192.0
+margin_right = 240.0
+margin_bottom = 16.0
+theme = ExtResource( 1 )
+custom_colors/font_color = Color( 0.513726, 0.462745, 0.611765, 1 )
+text = "0:00"
+align = 1
+valign = 1
+
+[node name="Spid" parent="." instance=ExtResource( 2 )]
+position = Vector2( 8, 216 )
+species = "Spid"
+
+[node name="Ate" type="Label" parent="Spid"]
+margin_left = 32.0
+margin_right = 64.0
+margin_bottom = 16.0
+theme = ExtResource( 1 )
+custom_colors/font_color = Color( 0.160784, 0.678431, 1, 1 )
+text = "0"
+align = 1
+valign = 1
+
+[node name="Fed" type="Label" parent="Spid"]
+margin_left = 72.0
+margin_right = 104.0
+margin_bottom = 16.0
+theme = ExtResource( 1 )
+custom_colors/font_color = Color( 0.160784, 0.678431, 1, 1 )
+text = "0"
+align = 1
+valign = 1
+
+[node name="Won" type="Label" parent="Spid"]
+margin_left = 112.0
+margin_right = 144.0
+margin_bottom = 16.0
+theme = ExtResource( 1 )
+custom_colors/font_color = Color( 0.160784, 0.678431, 1, 1 )
+text = "0"
+align = 1
+valign = 1
+
+[node name="Lost" type="Label" parent="Spid"]
+margin_left = 152.0
+margin_right = 184.0
+margin_bottom = 16.0
+theme = ExtResource( 1 )
+custom_colors/font_color = Color( 0.160784, 0.678431, 1, 1 )
+text = "0"
+align = 1
+valign = 1
+
+[node name="Time" type="Label" parent="Spid"]
+margin_left = 192.0
+margin_right = 240.0
+margin_bottom = 16.0
+theme = ExtResource( 1 )
+custom_colors/font_color = Color( 0.160784, 0.678431, 1, 1 )
+text = "0:00"
+align = 1
+valign = 1
+
+[node name="RevealTimer" type="Timer" parent="."]
+wait_time = 6.0
+one_shot = true
+autostart = true
+
+[node name="ContinueTimer" type="Timer" parent="."]
+wait_time = 15.0
+one_shot = true
+autostart = true
+
+[connection signal="timeout" from="ContinueTimer" to="." method="_on_ContinueTimer_timeout"]

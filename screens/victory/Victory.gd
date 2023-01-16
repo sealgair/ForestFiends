@@ -31,6 +31,7 @@ func _ready():
 			'species': player.get_species(),
 			'palette': player.palette
 		})
+		Global.add_player_stats(player)
 
 	for p in range(4):
 		var pl = p+1

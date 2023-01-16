@@ -1,13 +1,14 @@
 extends Node2D
 
 var palette = 0
+export (String, "Shrew", "Bird", "Frog", "Turt", "Wasp", "Mant", "Slug", "Spid") var species = "Shrew"
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass
+	set_species(species)
 
-
-func set_species(species):
+func set_species(new_species):
+	species = new_species
 	if species in Global.species:
 		var instance = Global.species[species].instance()
 		instance.palette = palette

@@ -92,8 +92,10 @@ func _process(delta):
 				else:
 					cursor.queue_free()
 					cursors.erase(p)
-			
-		
+					# reset timer when cursors go away
+					$ContinueTimer.start() 
+	$ContinueTimer.paused = cursors.size() > 0
+
 func start_game():
 	var start_players = []
 	for p in cursors.keys():
@@ -103,3 +105,7 @@ func start_game():
 	ScreenManager.load_screen("play", {
 		"start_data": start_players
 	})
+
+
+func _on_ContinueTimer_timeout():
+	ScreenManager.load_screen("stats")
