@@ -27,7 +27,7 @@ func is_mobile():
 func special_pressed():
 	slimed = slime_time
 	velocity.x = run_speed * 2
-	if $AnimatedSprite.flip_h:
+	if not $AnimatedSprite.flip_h:
 		velocity.x *= -1
 
 
