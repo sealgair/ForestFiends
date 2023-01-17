@@ -103,12 +103,13 @@ func make_web(start, end, player, decay=null):
 
 
 func make_score(player):
-	# TODO:
-	#local kpm = player.kills / (self.gametime/60)
-	#local ktd = player.kills - player.deaths
-	#local kpc = player.kills / self.totalkills
-	#return max(0, ceil(kpm * 800 + ktd * 500 + kpc * 2000))
-	return max(0, player.ate * 5 - player.fed * 2)
+	var kpm = player.ate / player.time / 60
+	var ktd = player.ate - player.fed
+	var tot = 0
+	for p in players:
+		tot += p.ate
+	var kpc = player.ate / tot
+	return max(0, ceil(kpm * 800 + ktd * 500 + kpc * 2000))
 
 
 func end():

@@ -64,7 +64,7 @@ func _process(delta):
 		ret *= Vector2(-1, 1)
 	$Reticle.transform.origin = ret
 		
-	var an = attackNode.get_ref()
+	var an = attack_node.get_ref()
 	$Tongue.visible = an != null
 	if an:
 		var l = easeoutback(an.life/an.live)

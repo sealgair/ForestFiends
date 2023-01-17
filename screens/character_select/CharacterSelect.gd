@@ -42,11 +42,11 @@ func _process(delta):
 	for p in range(4):
 		var player_selector = player_selectors[p]
 		var just_pressed = {}
-		var dir = Vector2(0,0)
 		for btn in inputs[p].keys():
 			just_pressed[btn] = Input.is_action_just_pressed(inputs[p][btn])
 		
 		# x & y are flipped to make the inline definition of 'selectors' look right above
+		var dir = Vector2(0,0)
 		if just_pressed['left']:
 			dir.y -= 1
 		if just_pressed['right']:
@@ -116,7 +116,7 @@ func start_game():
 
 
 func _on_ContinueTimer_timeout():
-	ScreenManager.load_screen("stats")
+	ScreenManager.load_screen("highscores")
 
 
 func _on_ForceStartTimer_timeout():

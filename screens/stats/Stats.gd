@@ -37,7 +37,7 @@ func _process(delta):
 	revealed = floor(revealed * aminals.size())
 	for a in range(aminals.size()):
 		aminals[a].visible = a < revealed
-		
+	
 	for p in range(4):
 		var input_a = 'ui_a{p}'.format({"p": p+1})
 		var input_b = 'ui_b{p}'.format({"p": p+1})
@@ -46,4 +46,4 @@ func _process(delta):
 
 
 func _on_ContinueTimer_timeout():
-	ScreenManager.load_screen("select")
+	ScreenManager.load_screen("highscores")

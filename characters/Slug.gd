@@ -52,7 +52,7 @@ func _process(delta):
 	
 	
 	# extend spikes
-	var an = attackNode.get_ref()
+	var an = attack_node.get_ref()
 	for spike in spikes:
 		spike.visible = an != null
 	if an:

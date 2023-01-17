@@ -31,7 +31,7 @@ var velocity = Vector2()
 var to_velocity = Vector2()
 var jumping = false
 var size = Vector2(16, 16) # todo: dynamic
-var attackNode = weakref(null)
+var attack_node = weakref(null)
 var dead = false
 var poisoned_by = null
 var slimed = 0
@@ -90,7 +90,7 @@ func make_attack():
 	instance.set_name("attack")
 	instance.configure(attack_anim)
 	add_child(instance)
-	attackNode = weakref(instance)
+	attack_node = weakref(instance)
 	$AnimatedSprite.play("attack")
 	return instance
 
@@ -200,7 +200,7 @@ func wrap_screen(amount):
 	transform.origin += amount
 
 func is_attacking():
-	return attackNode.get_ref()
+	return attack_node.get_ref()
 
 func get_animation():
 	if is_attacking():
@@ -233,7 +233,7 @@ func _process(delta):
 		slimed = max(0, slimed - delta)
 		
 		$AnimatedSprite.animation = get_animation()
-		var an = attackNode.get_ref()
+		var an = attack_node.get_ref()
 		if an:
 			an.get_node("AnimatedSprite").flip_h = $AnimatedSprite.flip_h
 			an.transform.origin.x = abs(an.transform.origin.x)

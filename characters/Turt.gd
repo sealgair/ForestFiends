@@ -47,7 +47,7 @@ func is_vulnerable():
 func _process(delta):
 	._process(delta)
 	$Head.flip_h = $AnimatedSprite.flip_h
-	var an = attackNode.get_ref()
+	var an = attack_node.get_ref()
 	$Head.visible = not defending and not dead
 	$Head.animation = "idle"
 	if an:

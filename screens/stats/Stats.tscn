@@ -519,7 +519,7 @@ align = 1
 valign = 1
 
 [node name="RevealTimer" type="Timer" parent="."]
-wait_time = 6.0
+wait_time = 3.0
 one_shot = true
 autostart = true
 

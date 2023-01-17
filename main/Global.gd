@@ -1,6 +1,7 @@
 extends Node
 
-var stafilename = "user://stats.save"
+var statsfilename = "user://stats.save"
+var highscoresfilename = "user://highscores.save"
 var species = {
 	'Shrew': load("res://characters/Shrew.tscn"),
 	'Bird': load("res://characters/Bird.tscn"),
@@ -12,6 +13,7 @@ var species = {
 	'Spid': load("res://characters/Spid.tscn"),
 }
 var stats = {}
+var highscores = []
 var screens = {
 	'stats': "res://screens/stats/Stats.tscn",
 	'select': "res://screens/character_select/CharacterSelect.tscn",
@@ -27,6 +29,7 @@ var player_colors = [
 
 func _init():
 	stats = load_stats()
+	highscores = load_highscores()
 
 
 func make_stats():
@@ -42,7 +45,7 @@ func make_stats():
 
 
 func add_player_stats(player):
-	var stat = stats[player.gets_species()]
+	var stat = stats[player.get_species()]
 	for key in stat.keys():
 		var val = player.get(key)
 		if val != null:
@@ -52,7 +55,7 @@ func add_player_stats(player):
 
 func save_stats():
 	var save_file = File.new()
-	save_file.open(stafilename, File.WRITE)
+	save_file.open(statsfilename, File.WRITE)
 	save_file.store_string(to_json(stats))
 	save_file.close()
 
@@ -60,8 +63,8 @@ func save_stats():
 func load_stats():
 	var file_stats = {}
 	var save_file = File.new()
-	if save_file.file_exists(stafilename):
-		save_file.open(stafilename, File.READ)
+	if save_file.file_exists(statsfilename):
+		save_file.open(statsfilename, File.READ)
 		var data = parse_json(save_file.get_as_text())
 		if data:
 			file_stats = data
@@ -71,6 +74,54 @@ func load_stats():
 			file_stats[name] = make_stats()
 	return file_stats
 
+
+func check_highscore(score):
+	for highscore in highscores:
+		if score > highscore['score']:
+			return true
+	return false
+
+
+func add_highscore(name, aminal, score):
+	for i in range(highscores.size()):
+		var highscore = highscores[i]
+		if score > highscore['score']:
+			highscores.insert(i, {
+				'name': name,
+				'species': aminal,
+				'score': score,
+			})
+	highscores = highscores.slice(0, 9)
+	save_highscores()
+
+
+func save_highscores():
+	var save_file = File.new()
+	save_file.open(highscoresfilename, File.WRITE)
+	save_file.store_string(to_json(highscores))
+	save_file.close()
+
+
+func load_highscores():
+	var loaded_scores = []
+	var save_file = File.new()
+	if save_file.file_exists(highscoresfilename):
+		save_file.open(highscoresfilename, File.READ)
+		var data = parse_json(save_file.get_as_text())
+		if data:
+			loaded_scores = data
+		save_file.close()
+	if loaded_scores.size() < 1:
+		# initialize with example values
+		var names = species.keys()
+		for i in range(10):
+			loaded_scores.append({
+				'name': 'ABC',
+				'species': names[i % names.size()],
+				'score': (11-i)*1000
+			})
+	
+	return loaded_scores
 
 func center(points):
 	var sum = Vector2()
