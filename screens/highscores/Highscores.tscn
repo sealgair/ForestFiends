@@ -1,17 +1,19 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://main/MenuTheme.tres" type="Theme" id=1]
-[ext_resource path="res://screens/highscores/Highscores.gd" type="Script" id=2]
+[ext_resource path="res://screens/Screen.tscn" type="PackedScene" id=2]
+[ext_resource path="res://screens/highscores/Highscores.gd" type="Script" id=3]
 
-[node name="Highscores" type="Node2D"]
-script = ExtResource( 2 )
+[node name="Highscores" instance=ExtResource( 2 )]
+script = ExtResource( 3 )
+next_screen = "stats"
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="ColorRect" type="ColorRect" parent="." index="2"]
 margin_right = 256.0
 margin_bottom = 256.0
 color = Color( 0, 0, 0, 1 )
 
-[node name="Title" type="Label" parent="."]
+[node name="Title" type="Label" parent="." index="3"]
 margin_right = 256.0
 margin_bottom = 24.0
 theme = ExtResource( 1 )
@@ -20,19 +22,7 @@ text = "High Scores"
 align = 1
 valign = 1
 
-[node name="Line2D" type="Line2D" parent="."]
+[node name="Line2D" type="Line2D" parent="." index="4"]
 points = PoolVector2Array( 0, 24, 256, 24 )
 width = 2.0
 default_color = Color( 0, 0.894118, 0.211765, 1 )
-
-[node name="ContinueTimer" type="Timer" parent="."]
-wait_time = 15.0
-one_shot = true
-autostart = true
-
-[node name="RevealTimer" type="Timer" parent="."]
-wait_time = 3.0
-one_shot = true
-autostart = true
-
-[connection signal="timeout" from="ContinueTimer" to="." method="_on_ContinueTimer_timeout"]

@@ -1,4 +1,4 @@
-extends Node2D
+extends "res://screens/Screen.gd"
 
 var blink = 1
 var time = 0
@@ -6,47 +6,25 @@ var letter_index = 0
 var score
 var aminal
 var score_name = "   "
-var inputs
 
-var alphabet = " ABCDEFGHIJLKMNOPQRSTUVWXYZ0123456789!"
+var alphabet = " ABCDEFGHIJLKMNOPQRSTUVWXYZ0123456789"
+var input
 
 func _ready():
 	set_player(1, "Shrew", 0)
 
 
 func set_player(p, new_aminal, new_score):
+	input = inputs[p-1]
 	aminal = new_aminal
 	score = new_score
 	$Label.text = "Player %d got a high score!\nEnter your name:" % p
 	
-	inputs = {
-		'up': 'ui_up{p}'.format({"p": p}),
-		'down': 'ui_down{p}'.format({"p": p}),
-		'left': 'ui_left{p}'.format({"p": p}),
-		'right': 'ui_right{p}'.format({"p": p}),
-		'select': 'ui_a{p}'.format({"p": p}),
-		'cancel': 'ui_b{p}'.format({"p": p}),
-	}
-
 
 func _process(delta):
 	time += delta
 		
-	# TODO: lift this into a base class
-	var just_pressed = {}
-	for btn in inputs.keys():
-		just_pressed[btn] = Input.is_action_just_pressed(inputs[btn])
-	var dir = Vector2(0,0)
-	if just_pressed['left']:
-		dir.x -= 1
-	if just_pressed['right']:
-		dir.x += 1
-	if just_pressed['up']:
-		dir.y -= 1
-	if just_pressed['down']:
-		dir.y += 1
-		
-	if just_pressed['select']:
+	if input.is_just_pressed('select'):
 		if letter_index == 2:
 			Global.add_highscore(score_name, aminal, score)
 			queue_free()
@@ -55,11 +33,12 @@ func _process(delta):
 			letter_index += 1
 			score_name[letter_index] = was
 			
-	if just_pressed['cancel']:
+	if input.is_just_pressed('cancel'):
 		score_name[letter_index] = ' '
 		if letter_index > 0:
 			letter_index -= 1
 	
+	var dir = input.direction_just_pressed()
 	if dir.x != 0:
 		var was = score_name[letter_index]
 		letter_index = wrapi(letter_index + dir.x, 0, 3)

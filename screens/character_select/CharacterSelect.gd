@@ -1,8 +1,7 @@
-extends Node2D
+extends "res://screens/Screen.gd"
 
 var Cursor = preload("res://screens/character_select/Cursor.tscn")
 
-var inputs = {}
 var cursors = {}
 var selectors
 var player_selectors
@@ -20,16 +19,6 @@ func _ready():
 		$Player3Selector, 
 		$Player4Selector, 
 	]
-	for p in range(4):
-		var pl = p+1
-		inputs[p] = {
-			'up': 'ui_up{p}'.format({"p": pl}),
-			'down': 'ui_down{p}'.format({"p": pl}),
-			'left': 'ui_left{p}'.format({"p": pl}),
-			'right': 'ui_right{p}'.format({"p": pl}),
-			'select': 'ui_a{p}'.format({"p": pl}),
-			'cancel': 'ui_b{p}'.format({"p": pl}),
-		}
 
 
 func _process(delta):
@@ -41,20 +30,10 @@ func _process(delta):
 	
 	for p in range(4):
 		var player_selector = player_selectors[p]
-		var just_pressed = {}
-		for btn in inputs[p].keys():
-			just_pressed[btn] = Input.is_action_just_pressed(inputs[p][btn])
+		var input = inputs[p]
 		
 		# x & y are flipped to make the inline definition of 'selectors' look right above
-		var dir = Vector2(0,0)
-		if just_pressed['left']:
-			dir.y -= 1
-		if just_pressed['right']:
-			dir.y += 1
-		if just_pressed['up']:
-			dir.x -= 1
-		if just_pressed['down']:
-			dir.x += 1
+		var dir = input.direction_just_pressed(true)
 		
 		var cursor = null
 		if cursors.has(p):
@@ -75,7 +54,7 @@ func _process(delta):
 			cursor.position = cell.position
 			player_selector.set_palette(cursor.palette)
 		
-			if just_pressed['select']:
+			if input.is_just_pressed('select'):
 				if cursor.selected:
 					var ready = true
 					for c in cursors.values():
@@ -86,7 +65,7 @@ func _process(delta):
 					cursor.set_selected(true)
 					player_selector.set_species(cell.species)
 			
-			if just_pressed['cancel']:
+			if input.is_just_pressed('cancel'):
 				if cursor.selected:
 					cursor.set_selected(false)
 					player_selector.set_species(null)
@@ -113,10 +92,6 @@ func start_game():
 	ScreenManager.load_screen("play", {
 		"start_data": start_players
 	})
-
-
-func _on_ContinueTimer_timeout():
-	ScreenManager.load_screen("highscores")
 
 
 func _on_ForceStartTimer_timeout():

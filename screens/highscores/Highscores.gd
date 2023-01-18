@@ -1,9 +1,8 @@
-extends Node2D
+extends "res://screens/Screen.gd"
 
-var ScoreRow = preload("res://screens/highscores/ScoreRow.tscn")
-var rows = []
+const ScoreRow = preload("res://screens/highscores/ScoreRow.tscn")
 
-# Called when the node enters the scene tree for the first time.
+
 func _ready():
 	var scores = Global.highscores
 	for i in range(scores.size()):
@@ -14,14 +13,3 @@ func _ready():
 		score_row.transform.origin.y = 24 + i * score_row.size.y
 		rows.append(score_row)
 
-
-func _process(delta):
-	var revealed = ($RevealTimer.time_left-1) / ($RevealTimer.wait_time-1)
-	revealed = 1 - revealed
-	revealed = floor(revealed * rows.size())
-	for i in range(rows.size()):
-		rows[i].visible = i < revealed
-
-
-func _on_ContinueTimer_timeout():
-	ScreenManager.load_screen("stats")

@@ -1,4 +1,4 @@
-extends Node2D
+extends "res://screens/Screen.gd"
 
 var players = []
 var player_data = []
@@ -6,7 +6,6 @@ var PlayerVictory = preload("res://screens/victory/PlayerVictory.tscn")
 var EnterScore = preload("res://screens/victory/EnterScore.tscn")
 var enter_node = weakref(null)
 var enter_score
-var inputs = {}
 
 func score_sorter(a, b):
 	return a.score < b.score
@@ -41,23 +40,19 @@ func _ready():
 			add_child(enter)
 			enter_node = weakref(enter)
 	
-	for p in range(4):
-		var pl = p+1
-		inputs[p] = {
-			'replay': 'ui_a{p}'.format({"p": pl}),
-			'change': 'ui_b{p}'.format({"p": pl}),
-		}
+	for input in inputs:
+		input.set_mappings({
+			'replay': 'a',
+			'change': 'b'
+		})
+
 
 func _process(delta):
 	$ContinueTimer.paused = enter_node.get_ref() != null
 	if enter_node.get_ref() == null:
-		for i in range(4):
-			var inp = inputs[i]
-			if Input.is_action_just_pressed(inp['replay']):
+		for input in inputs:
+			if input.is_just_pressed('replay'):
 				ScreenManager.load_screen('play', {'start_data': player_data})
-			if Input.is_action_just_pressed(inp['change']):
+			if input.is_just_pressed('change'):
 				ScreenManager.load_screen('select')
 
-
-func _on_ContinueTimer_timeout():
-	ScreenManager.load_screen("highscores")

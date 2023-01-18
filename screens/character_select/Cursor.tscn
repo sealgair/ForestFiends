@@ -115,6 +115,7 @@ frames = SubResource( 1 )
 [node name="Player2" type="AnimatedSprite" parent="."]
 position = Vector2( 16, 28 )
 frames = SubResource( 7 )
+animation = "selected"
 
 [node name="Player3" type="AnimatedSprite" parent="."]
 position = Vector2( 4, 16 )

@@ -1,5 +1,8 @@
 extends KinematicBody2D
 
+const PlayerInput = preload("res://main/PlayerInput.gd")
+const attack_scene = preload("res://characters/Attack.tscn")
+
 
 export (int) var order = 1
 export (int) var palette = null
@@ -10,7 +13,6 @@ var score = 0
 var time = 0
 var distance = 0
 
-var PlayerInput = preload("res://main/PlayerInput.gd")
 var input
 var run_speed = 100
 var jump_speed = -450
@@ -40,7 +42,6 @@ var slime_time = 2
 var webs = []
 var web_points = {}
 
-var attack_scene = preload("res://characters/Attack.tscn")
 var attack_anim = "default"
 
 func _ready():
