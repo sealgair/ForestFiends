@@ -10,7 +10,8 @@ var score = 0
 var time = 0
 var distance = 0
 
-var inputs = {}
+var PlayerInput = preload("res://main/PlayerInput.gd")
+var input
 var run_speed = 100
 var jump_speed = -450
 var gravity = 1200
@@ -45,12 +46,11 @@ var attack_anim = "default"
 func _ready():
 	screen_size = get_viewport_rect().size
 	# button mappings
-	inputs['right'] = "ui_right{p}".format({'p': order})
-	inputs['left'] = "ui_left{p}".format({'p': order})
-	inputs['up'] = "ui_up{p}".format({'p': order})
-	inputs['down'] = "ui_down{p}".format({'p': order})
-	inputs['special'] = "ui_a{p}".format({'p': order}) 
-	inputs['attack'] = "ui_b{p}".format({'p': order})
+	input = PlayerInput.new(order)
+	input.set_mappings({
+		'attack': 'a',
+		'special': 'b'
+	})
 	if palette == null:
 		palette = order - 1
 	$AnimatedSprite.material.set_shader_param("palette", palette)
@@ -75,7 +75,7 @@ func special_released():
 	pass
 
 func is_special_pressed():
-	return Input.is_action_pressed(inputs['special'])
+	return input.is_pressed('special')
 
 
 func attack_pressed():
@@ -100,7 +100,7 @@ func attack_released():
 
 
 func is_attack_pressed():
-	return Input.is_action_pressed(inputs['attack'])
+	return input.is_pressed('attack')
 
 
 func is_mobile():
@@ -122,10 +122,7 @@ func facing2():
 
 func axes_pressed():
 	if is_mobile():
-		return Vector2(
-			Input.get_axis(inputs['left'], inputs['right']),
-			Input.get_axis(inputs['up'], inputs['down'])
-		)
+		return input.direction_pressed()
 	else:
 		return Vector2(0,0)
 
@@ -152,14 +149,14 @@ func handle_input(delta):
 		
 		# can't attack / special if webbed
 		if webs.size() <= 0:
-			if Input.is_action_just_pressed(inputs['special']):
+			if input.is_just_pressed('special'):
 				special_pressed()
-			if Input.is_action_just_released(inputs['special']):
+			if input.is_just_released('special'):
 				special_released()
 				
-			if Input.is_action_just_pressed(inputs['attack']):
+			if input.is_just_pressed('attack'):
 				attack_pressed()
-			if Input.is_action_just_released(inputs['attack']):
+			if input.is_just_released('attack'):
 				attack_released()
 
 

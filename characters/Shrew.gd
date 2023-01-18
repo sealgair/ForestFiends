@@ -45,7 +45,7 @@ func _process(delta):
 		dashing = 0
 	if was_dashing and dashing <= 0:
 		# flip and attack at the end of the dash
-		if Input.get_axis(inputs['left'], inputs['right']) == 0:
+		if input.direction_pressed().x == 0:
 			to_velocity.x = 0
 			$AnimatedSprite.flip_h = not $AnimatedSprite.flip_h
 	

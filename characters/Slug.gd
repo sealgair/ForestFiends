@@ -21,7 +21,7 @@ func slime():
 
 
 func is_mobile():
-	return not Input.is_action_pressed(inputs['attack'])
+	return not input.is_pressed('attack')
 
 
 func special_pressed():
