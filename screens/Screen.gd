@@ -2,7 +2,7 @@ extends Node2D
 
 const PlayerInput = preload("res://main/PlayerInput.gd")
 
-export (String) var next_screen = "highscores"
+export (String, "highscores", "stats", "info") var next_screen = "highscores"
 export (bool) var is_idle_screen = true
 var rows = []
 var inputs = []

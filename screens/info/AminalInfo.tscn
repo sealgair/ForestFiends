@@ -1,0 +1,46 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://screens/Screen.tscn" type="PackedScene" id=1]
+[ext_resource path="res://screens/info/AminalDemo.tscn" type="PackedScene" id=2]
+[ext_resource path="res://main/HeaderTheme.tres" type="Theme" id=3]
+[ext_resource path="res://main/MenuTheme.tres" type="Theme" id=4]
+[ext_resource path="res://screens/info/AminalInfo.gd" type="Script" id=5]
+
+[node name="AminalInfo" instance=ExtResource( 1 )]
+script = ExtResource( 5 )
+
+[node name="ContinueTimer" parent="." index="0"]
+wait_time = 8.0
+
+[node name="Background" type="ColorRect" parent="." index="2"]
+margin_right = 256.0
+margin_bottom = 256.0
+color = Color( 0.513726, 0.462745, 0.611765, 1 )
+
+[node name="Border" type="ColorRect" parent="." index="3"]
+margin_left = 60.0
+margin_top = 28.0
+margin_right = 196.0
+margin_bottom = 164.0
+color = Color( 0.494118, 0.145098, 0.32549, 1 )
+
+[node name="Title" type="Label" parent="." index="4"]
+margin_left = 80.0
+margin_top = 5.0
+margin_right = 176.0
+margin_bottom = 21.0
+theme = ExtResource( 3 )
+text = "Shrew"
+align = 1
+
+[node name="AminalDemo" parent="." index="5" instance=ExtResource( 2 )]
+
+[node name="Description" type="Label" parent="." index="6"]
+margin_left = 8.0
+margin_top = 176.0
+margin_right = 248.0
+margin_bottom = 248.0
+theme = ExtResource( 4 )
+text = "I must not fear. Fear is the mind-killer. Fear is the little-death that brings total obliteration. I will face my fear. I will permit it to pass over me and through me. And when it has gone past I will turn the inner eye to see its path. Where the fear has gone there will be nothing. Only I will remain."
+autowrap = true
+clip_text = true

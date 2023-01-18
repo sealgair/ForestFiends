@@ -12,13 +12,18 @@ var species = {
 	'Slug': load("res://characters/Slug.tscn"),
 	'Spid': load("res://characters/Spid.tscn"),
 }
+var aminal_names = {
+	"Shrew": "Sherm",
+	"Bird": "Borb",
+	"Frog": "Freg",
+	"Turt": "Timt",
+	"Wasp": "Wensp",
+	"Mant": "Manti",
+	"Slug": "Slaul",
+	"Spid": "Spid",
+}
 var stats = {}
 var highscores = []
-var screens = {
-	'stats': "res://screens/stats/Stats.tscn",
-	'select': "res://screens/character_select/CharacterSelect.tscn",
-	'play': "res://screens/arena/Map.tscn",
-}
 var player_colors = [
 	Color("ff004d"),
 	Color("83769c"),
