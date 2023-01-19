@@ -7,6 +7,7 @@ export (bool) var is_idle_screen = true
 var rows = []
 var inputs = []
 
+
 func _ready():
 	for i in range(4):
 		var input = PlayerInput.new(i+1)
@@ -15,6 +16,7 @@ func _ready():
 			'cancel': 'b'
 		})
 		inputs.append(input)
+	$StartPrompt.visible = is_idle_screen
 
 
 func _process(delta):
