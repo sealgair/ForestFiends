@@ -28,7 +28,7 @@ animations = [ {
 [sub_resource type="RectangleShape2D" id=4]
 extents = Vector2( 8, 4 )
 
-[node name="Slime" type="Area2D"]
+[node name="Slime" type="Area2D" groups=["slime"]]
 collision_layer = 8
 collision_mask = 2
 script = ExtResource( 2 )

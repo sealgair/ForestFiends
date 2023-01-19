@@ -13,19 +13,31 @@ func _ready():
 	$Score.text = String(score_limit)
 	var spawn_points = $RespawnTiles.get_used_cells()
 	for player_data in start_data:
-		var player = Global.species[player_data['species']].instance()
-		player.order = player_data['order']
-		player.palette = player_data['palette']
 		var sp = spawn_points[randi() % spawn_points.size()]
 		spawn_points.erase(sp)
-		player.init(sp * player.size)
-		add_child(player)
-		player.connect("respawn", self, "spawn")
-		player.connect("made_hit", self, "hit")
-		player.connect("make_slime", self, "make_slime")
-		player.connect("make_web", self, "make_web")
-		players.append(player)
+		player_data['spawn_point'] = sp
+		add_player(player_data)
 
+
+func add_player(player_data):
+	var player = Global.species[player_data['species']].instance()
+	player.order = player_data['order']
+	player.palette = player_data['palette']
+	player.init(player_data['spawn_point'] * player.size)
+	add_child(player)
+	player.connect("respawn", self, "spawn")
+	player.connect("made_hit", self, "hit")
+	player.connect("make_slime", self, "make_slime")
+	player.connect("make_web", self, "make_web")
+	players.append(player)
+	return player
+
+
+func clean():
+	for web in get_tree().get_nodes_in_group("webs"):
+		web.queue_free()
+	for slime in get_tree().get_nodes_in_group("slime"):
+		slime.queue_free()
 
 func hit():
 	score = 0

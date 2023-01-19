@@ -6,13 +6,13 @@
 [ext_resource path="res://main/MenuTheme.tres" type="Theme" id=4]
 
 [sub_resource type="ConvexPolygonShape2D" id=10]
-points = PoolVector2Array( 15.8409, 16, 0.363274, 16, 0.363274, 0.696297, 15.8409, 0.696297 )
+points = PoolVector2Array( 16, 16, 0, 16, 0, 0, 16, 0 )
 
 [sub_resource type="ConvexPolygonShape2D" id=11]
-points = PoolVector2Array( 16, 16, 0.110054, 16, 0.110054, 0.292534, 16, 0.292534 )
+points = PoolVector2Array( 16, 16, 0, 16, 0, 0, 16, 0 )
 
 [sub_resource type="ConvexPolygonShape2D" id=12]
-points = PoolVector2Array( 16, 16, 0, 15.9047, 0, 0, 16, 0.696297 )
+points = PoolVector2Array( 16, 16, 0, 15.9047, 0, 0, 16, 0 )
 
 [sub_resource type="ConvexPolygonShape2D" id=13]
 points = PoolVector2Array( 16, 16, 0, 16, 0, 0, 16, 0 )
