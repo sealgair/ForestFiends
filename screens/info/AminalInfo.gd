@@ -1,6 +1,6 @@
 extends "res://screens/Screen.gd"
 
-const ComputerInput = preload("res://main/ComputerInput.gd")
+const ScriptedInput = preload("res://main/ScriptedInput.gd")
 
 var aminal
 var descriptions = {
@@ -140,7 +140,6 @@ var scripts = {
 		script_step(8, 'attack', 0.6),
 	]
 }
-var aminal_script
 
 var order
 var aminal_index = 0
@@ -167,16 +166,6 @@ func _process(delta):
 	$Description.text = description.substr(0, revealed)
 	# todo: make this a node or something
 	input._process(delta)
-	
-	var elapsed = $ContinueTimer.wait_time - $ContinueTimer.time_left
-	$Debug.text = "%2.1f" % elapsed
-	for key in input.pressed:
-		if input.pressed[key] > 0:
-			$Debug.text += "\n%s" % key
-	for step in aminal_script:
-		if not step['done'] and elapsed > step['start']:
-			input.press(step['action'], step['time'])
-			step['done'] = true
 
 
 func set_aminal(aminal_type):
@@ -185,7 +174,7 @@ func set_aminal(aminal_type):
 		$AminalDetail.players.empty()
 		aminal.queue_free()
 	
-	input = ComputerInput.new()
+	input = ScriptedInput.new(scripts[aminal_type])
 	input.set_mappings({
 		'attack': 'a',
 		'special': 'b'
@@ -204,8 +193,6 @@ func set_aminal(aminal_type):
 	$ContinueTimer.start()
 	$Title.text = Global.aminal_names[aminal_type]
 	
-	aminal_script = scripts[aminal_type]
-
 
 func _on_ContinueTimer_timeout():
 	aminal_index += 1

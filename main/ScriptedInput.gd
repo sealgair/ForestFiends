@@ -2,8 +2,11 @@ extends "PlayerInput.gd"
 
 var pressed = {}
 var was_pressed = {}
+var action_script
+var elapsed = 0
 
-func _init(player=1).(player):
+func _init(script).(1):
+	action_script = script
 	for action in actions.keys():
 		pressed[action] = 0
 		was_pressed[action] = false
@@ -50,3 +53,10 @@ func _process(delta):
 	for action in actions.keys():
 		was_pressed[action] = pressed[action] > 0
 		pressed[action] = max(0, pressed[action] - delta)
+
+	for step in action_script:
+		if not step['done'] and elapsed > step['start']:
+			press(step['action'], step['time'])
+			step['done'] = true
+	
+	elapsed += delta
