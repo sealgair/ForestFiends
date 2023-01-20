@@ -1,4 +1,4 @@
-extends Object
+extends Node2D
 
 var player_order = 1
 var actions = {}

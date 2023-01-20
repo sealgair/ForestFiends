@@ -47,11 +47,7 @@ var attack_anim = "default"
 func _ready():
 	screen_size = get_viewport_rect().size
 	# button mappings
-	input = PlayerInput.new(order)
-	input.set_mappings({
-		'attack': 'a',
-		'special': 'b'
-	})
+	set_input(PlayerInput.new(order))
 	if palette == null:
 		palette = order - 1
 	$AnimatedSprite.material.set_shader_param("palette", palette)
@@ -65,6 +61,17 @@ func init(start_pos):
 
 func get_species():
 	return "Player"
+
+
+func set_input(new_input):
+	if input != null:
+		input.queue_free()
+	input = new_input
+	add_child(input)
+	input.set_mappings({
+		'attack': 'a',
+		'special': 'b'
+	})
 
 
 func special_pressed():

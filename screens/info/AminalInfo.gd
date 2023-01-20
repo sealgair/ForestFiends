@@ -164,8 +164,6 @@ func _process(delta):
 	revealed = 1 - revealed
 	revealed = floor(revealed * description.length())
 	$Description.text = description.substr(0, revealed)
-	# todo: make this a node or something
-	input._process(delta)
 
 
 func set_aminal(aminal_type):
@@ -174,19 +172,14 @@ func set_aminal(aminal_type):
 		$AminalDetail.players.empty()
 		aminal.queue_free()
 	
-	input = ScriptedInput.new(scripts[aminal_type])
-	input.set_mappings({
-		'attack': 'a',
-		'special': 'b'
-	})
-	
 	aminal = $AminalDetail.add_player({
 		'species': aminal_type,
 		'order': 0,
 		'palette': floor(randf() * 4),
 		'spawn_point': Vector2(2.5,2.5)
 	})
-	aminal.input = input
+	input = ScriptedInput.new(scripts[aminal_type])
+	aminal.set_input(input)
 	
 	description = join(descriptions[aminal_type])
 	$RevealTimer.start()
