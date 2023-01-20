@@ -13,6 +13,7 @@ func _ready():
 	$Label.visible = true
 
 func set_palette(palette):
+	# TODO: make sure it's not already used
 	$AminalSprite.set_palette(palette)
 
 func set_species(new_species):
@@ -36,9 +37,19 @@ func set_aminal(instance):
 		$Label.visible = true
 
 func make_player():
-	return {
-		'order': player_order,
-		'species': species,
-		'palette': palette
-	}
+	if species == "":
+		# player hasn't chosen, use computer
+		return {
+			'order': player_order,
+			'species': 'Shrew', # TODO: random (that's not used?)
+			'palette': floor(randf() * 4), # TODO: makesure it's not already used
+			'computer': true
+		}
+	else:
+		return {
+			'order': player_order,
+			'species': species,
+			'palette': palette,
+			'computer': false
+		}
 	

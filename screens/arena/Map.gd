@@ -24,6 +24,8 @@ func add_player(player_data):
 	player.order = player_data['order']
 	player.palette = player_data['palette']
 	player.init(player_data['spawn_point'] * player.size)
+	# don't need to use setterif it's before it's added as child
+	player.computer = player_data['computer']
 	add_child(player)
 	player.connect("respawn", self, "spawn")
 	player.connect("made_hit", self, "hit")

@@ -176,7 +176,8 @@ func set_aminal(aminal_type):
 		'species': aminal_type,
 		'order': 0,
 		'palette': floor(randf() * 4),
-		'spawn_point': Vector2(2.5,2.5)
+		'spawn_point': Vector2(2.5,2.5),
+		'computer': false
 	})
 	input = ScriptedInput.new(scripts[aminal_type])
 	aminal.set_input(input)

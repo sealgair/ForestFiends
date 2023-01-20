@@ -50,4 +50,13 @@ wait_time = 15.0
 one_shot = true
 autostart = true
 
+[node name="StartPrompt" type="Label" parent="."]
+visible = false
+margin_top = 248.0
+margin_right = 256.0
+margin_bottom = 256.0
+theme = ExtResource( 2 )
+text = "Press any button to start"
+align = 1
+
 [connection signal="timeout" from="ContinueTimer" to="." method="_on_ContinueTimer_timeout"]

@@ -1,11 +1,13 @@
 extends KinematicBody2D
 
 const PlayerInput = preload("res://main/PlayerInput.gd")
+const ComputerInput = preload("res://main/ComputerInput.gd")
 const attack_scene = preload("res://characters/Attack.tscn")
 
 
 export (int) var order = 1
 export (int) var palette = null
+export (bool) var computer = false
 
 var ate = 0
 var fed = 0
@@ -46,8 +48,7 @@ var attack_anim = "default"
 
 func _ready():
 	screen_size = get_viewport_rect().size
-	# button mappings
-	set_input(PlayerInput.new(order))
+	set_computer(computer)
 	if palette == null:
 		palette = order - 1
 	$AnimatedSprite.material.set_shader_param("palette", palette)
@@ -62,6 +63,14 @@ func init(start_pos):
 func get_species():
 	return "Player"
 
+
+func set_computer(is_computer):
+	computer = is_computer
+	if computer:
+		set_input(ComputerInput.new())
+	else:
+		set_input(PlayerInput.new(order))
+	
 
 func set_input(new_input):
 	if input != null:
@@ -79,6 +88,7 @@ func special_pressed():
 		jumping = true
 		velocity.y = jump_speed
 
+
 func special_released():
 	pass
 
@@ -90,6 +100,7 @@ func attack_pressed():
 	if attack_timeout <= 0:
 		attack_timeout = attack_wait
 		make_attack()
+
 
 func make_attack():
 	var instance = attack_scene.instance()
@@ -150,28 +161,33 @@ func moved(delta):
 
 
 func handle_input(delta):
-	if not dead:
-		var axes = axes_pressed()
-		move(axes.x, axes.y)
-		moved(delta)
-		
-		# can't attack / special if webbed
-		if webs.size() <= 0:
-			if input.is_just_pressed('special'):
-				special_pressed()
-			if input.is_just_released('special'):
-				special_released()
-				
-			if input.is_just_pressed('attack'):
-				attack_pressed()
-			if input.is_just_released('attack'):
-				attack_released()
+	var axes = axes_pressed()
+	move(axes.x, axes.y)
+	moved(delta)
+	
+	# can't attack / special if webbed
+	if webs.size() <= 0:
+		if input.is_just_pressed('special'):
+			special_pressed()
+		if input.is_just_released('special'):
+			special_released()
+			
+		if input.is_just_pressed('attack'):
+			attack_pressed()
+		if input.is_just_released('attack'):
+			attack_released()
 
 
 func _physics_process(delta):
 	if jumping and is_on_floor():
 		jumping = false
-	handle_input(delta)
+	
+	if dead:
+		to_velocity = Vector2()
+	else:
+		if computer:
+			think(delta)
+		handle_input(delta)
 	var dv = to_velocity - velocity
 	var rate = accelerate
 	if slimed:
@@ -220,7 +236,6 @@ func get_animation():
 func _process(delta):
 	if not is_attacking():
 		attack_timeout = max(0, attack_timeout - delta)
-	
 	if not dead:
 		time += delta
 		var poison_opacity = 0
@@ -321,3 +336,7 @@ func _on_PoisonTimer_timeout():
 		poisoned_by.score(self)
 		die()
 		poisoned_by = null
+
+
+func think(delta):
+	input.press('right')

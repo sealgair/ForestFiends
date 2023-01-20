@@ -12,7 +12,7 @@ func press(action, time=0.05):
 	pressed[action] = time
 
 
-func _process(delta):
+func do_process(delta):
 	for action in actions.keys():
 		was_pressed[action] = pressed[action] > 0
 		pressed[action] = max(0, pressed[action] - delta)

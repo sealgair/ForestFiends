@@ -26,6 +26,10 @@ func press(action):
 	pressed[action] = 1
 
 
+func hold(action):
+	pressed[action] = 2
+
+
 func release(action):
 	pressed[action] = 0
 	was_pressed[action] = true
@@ -56,9 +60,17 @@ func direction_pressed():
 	return dir
 
 
+# to be overridden
+func do_process(delta):
+	for action in actions.keys():
+		# was_pressed should only state true for one tick
+		was_pressed[action] = false
+		if pressed[action] == 1:
+			pressed[action] = 0
+		# otherwise it's being held, so keep it
+
+
 func _process(delta):
-	# was_pressed should only state true for one tick
 	#  Setting process_priority to 10 should ensure this gets handled
 	#  after any relevant processing
-	for key in was_pressed:
-		was_pressed[key] = false
+	do_process(delta)

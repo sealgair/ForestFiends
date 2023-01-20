@@ -85,8 +85,7 @@ func _process(delta):
 
 func start_game():
 	var start_players = []
-	for p in cursors.keys():
-		var player = player_selectors[p]
+	for player in player_selectors:
 		start_players.append(player.make_player())
 	
 	ScreenManager.load_screen("play", {
