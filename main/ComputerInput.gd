@@ -25,6 +25,15 @@ func set_mappings(mappings):
 func press(action):
 	pressed[action] = 1
 
+func press_axis(direction):
+	if direction.y > 0:
+		press('down')
+	elif direction.y < 0:
+		press('up')
+	if direction.x > 0:
+		press('right')
+	elif direction.x < 0:
+		press('left')
 
 func hold(action):
 	pressed[action] = 2

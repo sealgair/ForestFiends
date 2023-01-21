@@ -45,6 +45,7 @@ var webs = []
 var web_points = {}
 
 var attack_anim = "default"
+var enemies = []
 
 func _ready():
 	screen_size = get_viewport_rect().size
@@ -52,6 +53,12 @@ func _ready():
 	if palette == null:
 		palette = order - 1
 	$AnimatedSprite.material.set_shader_param("palette", palette)
+	
+	var map = get_tree().root.get_node("Map")
+	if map:
+		for player in map.players:
+			if player != self:
+				enemies.append(player)
 	
 
 func init(start_pos):
@@ -333,10 +340,38 @@ func easeoutback(t, p=4):
 
 func _on_PoisonTimer_timeout():
 	if poisoned_by:
-		poisoned_by.score(self)
+		poisoned_by.make_score(self)
 		die()
 		poisoned_by = null
 
 
+var wander = 0
+var attack_accuracy = 0.8
+var attack_cooldown = 0
 func think(delta):
-	input.press('right')
+	var closest = 32
+	var target = null
+	attack_cooldown = max(attack_cooldown-delta, 0)
+	for enemy in enemies:
+		var dist = abs(position.y - enemy.position.y)
+		if not enemy.dead and closest > dist:
+			target = enemy
+			closest = dist
+	if target and attack_cooldown <= 0:
+		var dist = target.position.x - position.x
+		input.press_axis(Vector2(dist, 0))
+		if abs(dist) < 8:
+			attack_cooldown = 0.5
+			if randf() <= attack_accuracy:
+				input.press('attack')
+	else:
+		if wander > 0:
+			wander = max(wander-1, 0)
+		if wander < 0: 
+			wander = min(wander+1, 0)
+		if wander == 0:
+			# come up with a new direction
+			wander = 1 + randf() * 10
+			wander *= sign(randf() - 0.5)
+		if abs(wander) > 1:
+			input.press_axis(Vector2(-1, 0))

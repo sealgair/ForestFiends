@@ -117,13 +117,19 @@ func make_web(start, end, player, decay=null):
 
 
 func make_score(player):
-	var kpm = player.ate / player.time / 60
-	var ktd = player.ate - player.fed
+	# kills per second
+	var kps = player.ate / player.time
+	kps *= 1200
+	# kill to death
+	var ktd = max(0, player.ate - player.fed)
+	ktd *= 200
+	# percent of total
 	var tot = 0
 	for p in players:
 		tot += p.ate
 	var kpc = player.ate / tot
-	return max(0, ceil(kpm * 800 + ktd * 500 + kpc * 2000))
+	kpc *= 1000
+	return ceil(kps + ktd + kpc) + player.ate * 100
 
 
 func end():

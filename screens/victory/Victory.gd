@@ -8,7 +8,7 @@ var enter_node = weakref(null)
 var enter_score
 
 func score_sorter(a, b):
-	return a.score < b.score
+	return a.score > b.score
 
 func _ready():
 	var column = get_viewport_rect().size.x / players.size()
@@ -34,10 +34,10 @@ func _ready():
 			'palette': player.palette
 		})
 		Global.add_player_stats(player)
-		if Global.check_highscore(player.score):
+		if Global.check_highscore(0 if player.computer else player.score):
 			var enter = EnterScore.instance()
-			enter.set_player(player.order, player.get_species(), player.score)
 			add_child(enter)
+			enter.set_player(player.order, player.get_species(), player.score)
 			enter_node = weakref(enter)
 	
 	for input in inputs:
