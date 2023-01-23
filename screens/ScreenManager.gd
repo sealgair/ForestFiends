@@ -2,7 +2,7 @@ extends Node
 
 var screens = {
 	'select': preload("res://screens/character_select/CharacterSelect.tscn"),
-	'play': preload("res://screens/arena/Map.tscn"),
+	'play': preload("res://screens/arena/Arena.tscn"),
 	'victory': preload("res://screens/victory/Victory.tscn"),
 	'highscores': preload("res://screens/highscores/Highscores.tscn"),
 	'stats': preload("res://screens/stats/Stats.tscn"),

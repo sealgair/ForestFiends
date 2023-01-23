@@ -56,7 +56,7 @@ func _ready():
 		palette = order - 1
 	$AnimatedSprite.material.set_shader_param("palette", palette)
 	
-	var map = get_tree().root.get_node("Map")
+	var map = get_tree().root.get_node("Arena")
 	if map:
 		for player in map.players:
 			if player != self:

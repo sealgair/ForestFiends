@@ -114,6 +114,7 @@ margin_bottom = 24.0
 theme = ExtResource( 2 )
 custom_colors/font_color = Color( 1, 0.945098, 0.909804, 1 )
 text = "And I guess a quip goes here or something"
+valign = 1
 autowrap = true
 
 [connection signal="timeout" from="ContinueTimer" to="." method="_on_ContinueTimer_timeout"]

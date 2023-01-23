@@ -32,7 +32,8 @@ func _ready():
 		player_data.append({
 			'order': player.order,
 			'species': player.get_species(),
-			'palette': player.palette
+			'palette': player.palette,
+			'computer': player.computer
 		})
 		Global.add_player_stats(player)
 		if Global.check_highscore(0 if player.computer else player.score):
