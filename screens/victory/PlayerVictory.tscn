@@ -47,14 +47,23 @@ animations = [ {
 [node name="PlayerVictory" type="Node2D"]
 script = ExtResource( 3 )
 
+[node name="Player" type="Label" parent="."]
+margin_left = -48.0
+margin_top = -16.0
+margin_right = -24.0
+theme = ExtResource( 2 )
+text = "CPU1"
+align = 1
+valign = 1
+
 [node name="Place" type="Label" parent="."]
-margin_left = -16.0
-margin_top = -33.0
-margin_right = 16.0
-margin_bottom = -23.0
+margin_left = -48.0
+margin_right = -24.0
+margin_bottom = 16.0
 theme = ExtResource( 2 )
 text = "1st"
 align = 1
+valign = 1
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 scale = Vector2( 0.944444, 0.944444 )
@@ -62,35 +71,33 @@ frames = SubResource( 2 )
 animation = "gold"
 
 [node name="Ate" type="Label" parent="."]
-margin_left = -32.0
-margin_top = 27.0
-margin_right = 32.0
-margin_bottom = 37.0
+margin_left = 24.0
+margin_top = -17.0
+margin_right = 88.0
+margin_bottom = -7.0
 theme = ExtResource( 2 )
 custom_colors/font_color = Color( 1, 0, 0.301961, 1 )
-text = "Ate: "
-align = 1
+text = "Ate: 100"
 
 [node name="Fed" type="Label" parent="."]
-margin_left = -32.0
-margin_top = 42.0
-margin_right = 32.0
-margin_bottom = 52.0
+margin_left = 24.0
+margin_top = -2.0
+margin_right = 88.0
+margin_bottom = 8.0
 theme = ExtResource( 2 )
 custom_colors/font_color = Color( 0.494118, 0.145098, 0.32549, 1 )
-text = "Fed:"
-align = 1
+text = "Fed: 100"
 
 [node name="Points" type="Label" parent="."]
-margin_left = -32.0
-margin_top = 57.0
-margin_right = 32.0
-margin_bottom = 80.0
+margin_left = 24.0
+margin_top = 13.0
+margin_right = 72.0
+margin_bottom = 32.0
 theme = ExtResource( 2 )
 custom_colors/font_color = Color( 1, 0.92549, 0.152941, 1 )
-text = "Pts:
+text = "Pts: 10,000,000
 "
-align = 1
+autowrap = true
 clip_text = true
 
 [node name="AminalSprite" parent="." instance=ExtResource( 4 )]
@@ -98,5 +105,15 @@ position = Vector2( -8, -8 )
 
 [node name="ContinueTimer" type="Timer" parent="."]
 wait_time = 25.0
+
+[node name="Quip" type="Label" parent="."]
+margin_left = 76.0
+margin_top = -21.0
+margin_right = 200.0
+margin_bottom = 24.0
+theme = ExtResource( 2 )
+custom_colors/font_color = Color( 1, 0.945098, 0.909804, 1 )
+text = "And I guess a quip goes here or something"
+autowrap = true
 
 [connection signal="timeout" from="ContinueTimer" to="." method="_on_ContinueTimer_timeout"]

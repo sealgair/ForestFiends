@@ -14,6 +14,8 @@ var fed = 0
 var score = 0
 var time = 0
 var distance = 0
+var attacks = 0
+var specials = 0
 
 var input
 var run_speed = 100
@@ -94,6 +96,7 @@ func special_pressed():
 	if is_on_floor():
 		jumping = true
 		velocity.y = jump_speed
+		specials += 1
 
 
 func special_released():
@@ -110,6 +113,7 @@ func attack_pressed():
 
 
 func make_attack():
+	attacks += 1
 	var instance = attack_scene.instance()
 	instance.attacker = self
 	instance.transform.origin += attack_offset
