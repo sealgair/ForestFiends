@@ -123,7 +123,7 @@ func load_highscores():
 			loaded_scores.append({
 				'name': 'ABC',
 				'species': names[i % names.size()],
-				'score': (11-i)*1000
+				'score': (10-i)*100
 			})
 	
 	return loaded_scores

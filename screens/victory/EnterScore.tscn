@@ -5,6 +5,7 @@
 
 [node name="EnterScore" type="Node2D"]
 script = ExtResource( 2 )
+is_idle_screen = false
 
 [node name="ColorRect" type="ColorRect" parent="."]
 margin_left = 32.0
@@ -50,6 +51,22 @@ align = 1
 valign = 1
 
 [node name="StartPrompt" type="Label" parent="."]
+margin_top = 248.0
+margin_right = 256.0
+margin_bottom = 256.0
+theme = ExtResource( 1 )
+text = "Press any button to start"
+align = 1
+
+[node name="ContinueTimer" type="Timer" parent="."]
+wait_time = 15.0
+
+[node name="RevealTimer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+autostart = true
+
+[node name="StartPrompt2" type="Label" parent="."]
 margin_top = 248.0
 margin_right = 256.0
 margin_bottom = 256.0

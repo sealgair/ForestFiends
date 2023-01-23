@@ -13,13 +13,16 @@ func _ready():
 	players.sort_custom(self, 'score_sorter')
 	var prev = null
 	var place = 1
-	var awards = make_awards(players)
-	var player_displays = [
-		$Player1,
-		$Player2,
-		$Player3,
-		$Player4,
-	]
+	var awards
+	var player_displays
+	if players.size() > 0:
+		awards = make_awards(players)
+		player_displays = [
+			$Player1,
+			$Player2,
+			$Player3,
+			$Player4,
+		]
 	for p in range(players.size()):
 		var player = players[p]
 		if prev and prev.score != player.score:
@@ -97,7 +100,7 @@ func make_awards(players):
 	awards[most(specials)].append("I guess you think you're pretty special.")
 	awards[least(specials)].append("Keeping it simple? That's ok, I get confused too.")
 	awards[most(attacks)].append("If you attack enough, you're bound to hit something.")
-	awards[least(attacks)].append("You must be a lover, not a fighter")
+	awards[least(attacks)].append("You must be a lover, not a fighter.")
 	awards[most(deaths)].append("Oof. Well, you spent *some* time alive...")
 	awards[least(deaths)].append("That's right, don't let them touch you.")
 	for p in range(awards.size()):
