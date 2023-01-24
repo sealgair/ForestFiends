@@ -24,36 +24,36 @@ visible = false
 position = Vector2( 33, 32 )
 
 [node name="MapChoice2" parent="." index="5" instance=ExtResource( 2 )]
-visible = false
 position = Vector2( 112, 32 )
+map_name = "Cave"
 
 [node name="MapChoice3" parent="." index="6" instance=ExtResource( 2 )]
 position = Vector2( 192, 32 )
-map_name = "Cave"
+map_name = "Plains"
 
 [node name="MapChoice4" parent="." index="7" instance=ExtResource( 2 )]
-visible = false
 position = Vector2( 32, 112 )
+map_name = "Mountain"
 
 [node name="MapChoice5" parent="." index="8" instance=ExtResource( 2 )]
 visible = false
 position = Vector2( 112, 112 )
 
 [node name="MapChoice6" parent="." index="9" instance=ExtResource( 2 )]
-visible = false
 position = Vector2( 192, 112 )
+map_name = "Desert"
 
 [node name="MapChoice7" parent="." index="10" instance=ExtResource( 2 )]
 position = Vector2( 33, 200 )
-map_name = "Desert"
+map_name = "Shelf"
 
 [node name="MapChoice8" parent="." index="11" instance=ExtResource( 2 )]
-visible = false
 position = Vector2( 112, 200 )
+map_name = "Sky"
 
 [node name="MapChoice9" parent="." index="12" instance=ExtResource( 2 )]
 position = Vector2( 192, 200 )
-map_name = "Mountain"
+map_name = "Jungle"
 
 [node name="PlayerChoice" type="Label" parent="." index="13"]
 margin_left = 80.0

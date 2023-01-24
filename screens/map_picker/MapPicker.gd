@@ -13,13 +13,13 @@ func _ready():
 	]
 	
 	# randomly pick a (non-computer) player to pick the level
-	var humans = []
+	var humans = [1]
 	for p in range(start_players.size()):
 		if not start_players[p]['computer']:
 			humans.append(p)
 	var i = Global.rand_choice(humans)
 	input = inputs[0]
-	$PlayerChoice.text = "Player %d chooses" % i
+	$PlayerChoice.text = "Player %d chooses" % (i+1)
 
 
 func _process(delta):

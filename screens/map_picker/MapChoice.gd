@@ -1,7 +1,7 @@
 extends Node2D
 
 
-export (String, "Basic", "Cave", "Plains", "Mountain", "Desert", "Sky", "Jungle") var map_name = "Basic"
+export (String, "Basic", "Cave", "Plains", "Mountain", "Desert", "Sky", "Jungle", "Shelf") var map_name = "Basic"
 var is_selected = false
 var map_scene
 

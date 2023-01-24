@@ -96,6 +96,7 @@ func add_highscore(name, aminal, score):
 				'species': aminal,
 				'score': score,
 			})
+			break
 	highscores = highscores.slice(0, 9)
 	save_highscores()
 
