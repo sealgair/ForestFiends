@@ -36,8 +36,8 @@ position = Vector2( 32, 112 )
 map_name = "Mountain"
 
 [node name="MapChoice5" parent="." index="8" instance=ExtResource( 2 )]
-visible = false
 position = Vector2( 112, 112 )
+map_name = "Random"
 
 [node name="MapChoice6" parent="." index="9" instance=ExtResource( 2 )]
 position = Vector2( 192, 112 )

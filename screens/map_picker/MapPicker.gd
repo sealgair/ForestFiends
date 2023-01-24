@@ -1,7 +1,7 @@
 extends "res://screens/Screen.gd"
 
 var map_choices = []
-var cursor = Vector2(0,0)
+var cursor = Vector2(1,1)
 var input
 var start_players = []
 
