@@ -88,8 +88,8 @@ func start_game():
 	for player in player_selectors:
 		start_players.append(player.make_player())
 	
-	ScreenManager.load_screen("play", {
-		"start_data": start_players
+	ScreenManager.load_screen("choose_map", {
+		"start_players": start_players
 	})
 
 

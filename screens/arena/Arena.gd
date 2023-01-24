@@ -7,16 +7,27 @@ var score = 0
 
 var slime_scene = preload("res://characters/Slime.tscn")
 var web_scene = preload("res://characters/Web.tscn")
+var map_scene = preload("res://maps/Basic.tscn")
 
 func _ready():
+	set_map(map_scene.instance())
+	
 	randomize()
 	$Score.text = String(score_limit)
-	var spawn_points = $RespawnTiles.get_used_cells()
+	var spawn_points = $Map.get_spawn_points()
 	for player_data in start_data:
 		var sp = spawn_points[randi() % spawn_points.size()]
 		spawn_points.erase(sp)
 		player_data['spawn_point'] = sp
 		add_player(player_data)
+
+
+func set_map(new_map):
+	var old_map = $Map
+	remove_child(old_map)
+	old_map.queue_free()
+	new_map.set_name("Map")
+	add_child(new_map)
 
 
 func add_player(player_data):
@@ -74,11 +85,11 @@ func spawn(player, spawn_point=null):
 	if spawn_point == null:
 		var furthest = null
 		# find spawn point furthest from other players
-		for sp in $RespawnTiles.get_used_cells():
-			sp *= $TileMap.cell_size
+		for sp in $Map.get_spawn_points():
+			sp *= $Map.get_cell_size()
 			var webbed = false
 			for web in webs:
-				if web.intersection_center(Rect2(sp, $RespawnTiles.cell_size)):
+				if web.intersection_center(Rect2(sp, $Map.get_cell_size())):
 					webbed = true
 					break
 			if not webbed:
@@ -90,13 +101,14 @@ func spawn(player, spawn_point=null):
 
 
 func make_slime(position, palette=0):
-	var tile_pos = position / $TileMap.cell_size
-	var tile_id = $TileMap.get_cellv(tile_pos)
-	if tile_id != $TileMap.INVALID_CELL:
-		var instance = slime_scene.instance()
-		instance.transform.origin = position
-		instance.set_palette(palette)
-		add_child(instance)
+	if $Map != null:
+		var tile_pos = position / $Map.get_cell_size()
+		var tile_id = $Map.get_cellv(tile_pos)
+		if tile_id != TileMap.INVALID_CELL:
+			var instance = slime_scene.instance()
+			instance.transform.origin = position
+			instance.set_palette(palette)
+			add_child(instance)
 
 
 func get_webs():

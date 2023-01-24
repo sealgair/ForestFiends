@@ -2,6 +2,7 @@ extends Node
 
 var screens = {
 	'select': preload("res://screens/character_select/CharacterSelect.tscn"),
+	'choose_map': preload("res://screens/map_picker/MapPicker.tscn"),
 	'play': preload("res://screens/arena/Arena.tscn"),
 	'victory': preload("res://screens/victory/Victory.tscn"),
 	'highscores': preload("res://screens/highscores/Highscores.tscn"),
@@ -9,9 +10,6 @@ var screens = {
 	'info': preload("res://screens/info/AminalINfo.tscn"),
 }
 
-func _ready():
-	pass # Replace with function body.
-	
 
 func load_screen(screen_name, parameters={}):
 	var screen = screens[screen_name].instance()

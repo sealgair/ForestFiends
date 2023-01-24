@@ -3,14 +3,14 @@ extends Node
 var statsfilename = "user://stats.save"
 var highscoresfilename = "user://highscores.save"
 var species = {
-	'Shrew': load("res://characters/Shrew.tscn"),
-	'Bird': load("res://characters/Bird.tscn"),
-	'Frog': load("res://characters/Frog.tscn"),
-	'Turt': load("res://characters/Turt.tscn"),
-	'Wasp': load("res://characters/Wasp.tscn"),
-	'Mant': load("res://characters/Mant.tscn"),
-	'Slug': load("res://characters/Slug.tscn"),
-	'Spid': load("res://characters/Spid.tscn"),
+	'Shrew': preload("res://characters/Shrew.tscn"),
+	'Bird': preload("res://characters/Bird.tscn"),
+	'Frog': preload("res://characters/Frog.tscn"),
+	'Turt': preload("res://characters/Turt.tscn"),
+	'Wasp': preload("res://characters/Wasp.tscn"),
+	'Mant': preload("res://characters/Mant.tscn"),
+	'Slug': preload("res://characters/Slug.tscn"),
+	'Spid': preload("res://characters/Spid.tscn"),
 }
 var aminal_names = {
 	"Shrew": "Sherm",
@@ -144,3 +144,7 @@ static func comma_sep(n: int) -> String:
 		i /= 1000
 
 	return "%s%s%s" % ["-" if n < 0 else "", i, result]
+
+static func rand_choice(list):
+	var i = floor(randf() * list.size())
+	return list[i]

@@ -5,15 +5,8 @@
 [node name="AminalDetail" instance=ExtResource( 1 )]
 scale = Vector2( 2, 2 )
 
-[node name="ColorRect" parent="." index="0"]
-margin_right = 64.0
-margin_bottom = 64.0
-
-[node name="TileMap" parent="." index="1"]
-tile_data = PoolIntArray( 0, 3, 0, 1, 3, 0, 2, 3, 0, 3, 3, 0, 65536, 1, 0, 65539, 1, 0, 131072, 1, 0, 131075, 1, 0, 196608, 0, 0, 196609, 0, 0, 196610, 0, 0, 196611, 0, 0 )
-
-[node name="AnimatedSprite" parent="." index="3"]
+[node name="AnimatedSprite" parent="." index="1"]
 visible = false
 
-[node name="Score" parent="." index="4"]
+[node name="Score" parent="." index="2"]
 visible = false

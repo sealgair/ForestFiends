@@ -152,7 +152,9 @@ static func join(lines):
 	return result
 
 
+var demo_scene = preload("res://maps/Demo.tscn")
 func _ready():
+	$AminalDetail.set_map(demo_scene.instance())
 	order = descriptions.keys()
 	randomize()
 	order.shuffle()
