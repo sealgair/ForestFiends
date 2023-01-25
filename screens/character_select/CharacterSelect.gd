@@ -20,6 +20,13 @@ func _ready():
 		$Player4Selector, 
 	]
 
+func duplicate_palette(player_selector):
+	for other_selector in player_selectors:
+		if other_selector != player_selector \
+				and other_selector.species == player_selector.species \
+				and other_selector.palette == player_selector.palette:
+			return true
+	return false
 
 func _process(delta):
 	for row in selectors:
@@ -52,8 +59,13 @@ func _process(delta):
 				cursor.move(dir)
 				cell = selectors[cursor.cell.x][cursor.cell.y]
 			cursor.position = cell.position
-			player_selector.set_palette(cursor.palette)
-		
+			if cursor.selected:
+				player_selector.set_palette(cursor.palette)
+				if dir.length() != 0:
+					while duplicate_palette(player_selector):
+						cursor.move(dir)
+						player_selector.set_palette(cursor.palette)
+			
 			if input.is_just_pressed('select'):
 				if cursor.selected:
 					var ready = true
@@ -64,6 +76,9 @@ func _process(delta):
 				else:
 					cursor.set_selected(true)
 					player_selector.set_species(cell.species)
+					while duplicate_palette(player_selector):
+						cursor.move(Vector2(1,0))
+						player_selector.set_palette(cursor.palette)
 			
 			if input.is_just_pressed('cancel'):
 				if cursor.selected:
@@ -86,7 +101,16 @@ func _process(delta):
 func start_game():
 	var start_players = []
 	for player in player_selectors:
-		start_players.append(player.make_player())
+		var player_data = player.make_player()
+		for other_data in start_players:
+			var dupe = true
+			while dupe:
+				if other_data['species'] == player_data['species'] \
+						and other_data['palette'] == player_data['palette']:
+					player_data['palette'] = wrapi(player_data['palette'] + 1, 0, 4)
+				else:
+					dupe = false
+		start_players.append(player_data)
 	
 	ScreenManager.load_screen("choose_map", {
 		"start_players": start_players

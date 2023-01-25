@@ -12,8 +12,8 @@ func _ready():
 	$Sky.visible = false
 	$Label.visible = true
 
-func set_palette(palette):
-	# TODO: make sure it's not already used
+func set_palette(new_palette):
+	palette = new_palette
 	$AminalSprite.set_palette(palette)
 
 func set_species(new_species):

@@ -7,7 +7,7 @@ var screens = {
 	'victory': preload("res://screens/victory/Victory.tscn"),
 	'highscores': preload("res://screens/highscores/Highscores.tscn"),
 	'stats': preload("res://screens/stats/Stats.tscn"),
-	'info': preload("res://screens/info/AminalINfo.tscn"),
+	'info': preload("res://screens/info/AminalInfo.tscn"),
 }
 
 

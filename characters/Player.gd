@@ -61,17 +61,17 @@ func _ready():
 		for player in map.players:
 			if player != self:
 				enemies.append(player)
-	
 
 func init(start_pos):
 	position = start_pos
 	ate = 0
 	fed = 0
 
-
 func get_species():
 	return "Player"
 
+func make_slime(position, palette=0):
+	pass # to implement in slug
 
 func set_computer(is_computer):
 	computer = is_computer
@@ -79,7 +79,6 @@ func set_computer(is_computer):
 		set_input(ComputerInput.new())
 	else:
 		set_input(PlayerInput.new(order))
-	
 
 func set_input(new_input):
 	if input != null:
