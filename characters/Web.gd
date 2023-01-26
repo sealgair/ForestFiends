@@ -3,7 +3,7 @@ extends Area2D
 var started = false
 var spinner = null
 var texture = preload("res://art/spid.png")
-var decay_max = 15
+var decay_max = 20
 var decay = decay_max
 var shaking = Vector2()
 var new_shaking = Vector2()
