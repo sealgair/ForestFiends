@@ -24,10 +24,12 @@ func _ready():
 
 func set_map(new_map):
 	var old_map = $Map
+	var pos = old_map.get_position_in_parent()
 	remove_child(old_map)
 	old_map.queue_free()
 	new_map.set_name("Map")
 	add_child(new_map)
+	move_child(new_map, pos)
 
 
 func add_player(player_data):
