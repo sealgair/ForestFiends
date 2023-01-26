@@ -170,4 +170,4 @@ tile_data = PoolIntArray( -65529, 536870915, 0, -65528, 536870915, 0, -65527, 53
 [node name="RespawnTiles" parent="Background" index="1"]
 visible = true
 tile_set = SubResource( 16 )
-tile_data = PoolIntArray(  )
+tile_data = PoolIntArray( 3, 536870912, 0, 65546, 536870912, 0, 196608, 536870912, 0, 196622, 536870912, 0, 327685, 536870912, 0, 327689, 536870912, 0, 524299, 536870912, 0, 589829, 536870912, 0, 720910, 536870912, 0, 786435, 536870912, 0, 917513, 536870912, 0 )
