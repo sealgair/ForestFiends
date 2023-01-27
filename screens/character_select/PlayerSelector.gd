@@ -36,13 +36,17 @@ func set_aminal(instance):
 		$Sky.visible = false
 		$Label.visible = true
 
-func make_player():
+func make_player(existing_palettes):
 	if species == "":
 		# player hasn't chosen, use computer
+		var species = Global.rand_choice(['Shrew', 'Slug']) # TODO: pick less used first?
+		var palette = floor(randf() * 4)
+		while palette in existing_palettes.get(species, []):
+			palette = wrapi(palette+1, 0, 4)
 		return {
 			'order': player_order,
-			'species': 'Shrew', # TODO: random (that's not used?)
-			'palette': floor(randf() * 4), # TODO: makesure it's not already used
+			'species': species,
+			'palette': palette,
 			'computer': true
 		}
 	else:

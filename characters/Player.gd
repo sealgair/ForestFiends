@@ -30,6 +30,10 @@ var attack_offset = Vector2(16,0)
 var revive_countdown = 0
 var revive_time = 2
 
+var special_wait = 1
+var special_timeout = 0
+
+
 var screen_size
 signal made_hit
 signal respawn(player)
@@ -106,9 +110,7 @@ func is_special_pressed():
 
 
 func attack_pressed():
-	if attack_timeout <= 0:
-		attack_timeout = attack_wait
-		make_attack()
+	make_attack()
 
 
 func make_attack():
@@ -178,12 +180,16 @@ func handle_input(delta):
 	# can't attack / special if webbed
 	if webs.size() <= 0:
 		if input.is_just_pressed('special'):
-			special_pressed()
+			if special_timeout <= 0:
+				special_timeout = special_wait
+				special_pressed()
 		if input.is_just_released('special'):
 			special_released()
 			
 		if input.is_just_pressed('attack'):
-			attack_pressed()
+			if attack_timeout <= 0:
+				attack_timeout = attack_wait
+				attack_pressed()
 		if input.is_just_released('attack'):
 			attack_released()
 
@@ -246,6 +252,8 @@ func get_animation():
 func _process(delta):
 	if not is_attacking():
 		attack_timeout = max(0, attack_timeout - delta)
+	special_timeout = max(0, special_timeout - delta)
+	
 	if not dead:
 		time += delta
 		var poison_opacity = 0
@@ -348,6 +356,10 @@ func _on_PoisonTimer_timeout():
 		poisoned_by = null
 
 
+func abs2(vec2):
+	return Vector2(abs(vec2.x), abs(vec2.y))
+
+
 var brain = {
 	'wander': 0,
 	'attack_accuracy': 0.8,
@@ -356,8 +368,14 @@ var brain = {
 	'target': null,
 	'aggro': true
 }
+
+
+func should_special(enemy):
+	return false
+
+
 func think(delta):
-	var closest = 32
+	var closest = 16*5
 	brain.attack_cooldown = max(brain.attack_cooldown-delta, 0)
 	if brain.target:
 		if brain.target.dead or position.distance_to(brain.target.position) > closest:
@@ -376,6 +394,8 @@ func think(delta):
 		if not brain.aggro:
 			dist *= -1
 		input.press_axis(Vector2(dist, 0))
+		if should_special(brain.target):
+			input.press('special')
 		if abs(dist) < 8:
 			brain.attack_cooldown = 0.5
 			if randf() <= brain.attack_accuracy:

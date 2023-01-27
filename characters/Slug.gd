@@ -66,3 +66,11 @@ func _process(delta):
 		# hold attack to keep spikes out
 		if is_attack_pressed():
 			an.extend()
+
+
+func should_special(enemy):
+	var dv = abs2(position - enemy.position)
+	if dv.y < 16:
+		if dv.x < 16*4 and dv.x > 16:
+			return true
+	return false

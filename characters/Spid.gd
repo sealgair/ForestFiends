@@ -77,10 +77,6 @@ func unitize(vec):
 	return vec
 
 
-func abs2(vec2):
-	return Vector2(abs(vec2.x), abs(vec2.y))
-
-
 func flip(vec2):
 	return Vector2(vec2.y, vec2.x)
 

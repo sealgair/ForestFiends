@@ -115,6 +115,7 @@ flip_h = true
 [node name="AnimatedSprite" parent="." index="3"]
 material = SubResource( 31 )
 frames = SubResource( 32 )
+frame = 0
 
 [node name="SlimeFinder" type="Area2D" parent="." index="9"]
 collision_layer = 2

@@ -100,16 +100,17 @@ func _process(delta):
 
 func start_game():
 	var start_players = []
+	var existing_palettes = {}
 	for player in player_selectors:
-		var player_data = player.make_player()
-		for other_data in start_players:
-			var dupe = true
-			while dupe:
-				if other_data['species'] == player_data['species'] \
-						and other_data['palette'] == player_data['palette']:
-					player_data['palette'] = wrapi(player_data['palette'] + 1, 0, 4)
-				else:
-					dupe = false
+		if player.species != "":
+			var palettes = existing_palettes.get(player.species, [])
+			palettes.append(player.palette)
+			existing_palettes[player.species] = palettes
+	for player in player_selectors:
+		var player_data = player.make_player(existing_palettes)
+		var palettes = existing_palettes.get(player_data['species'], [])
+		palettes.append(player_data['palette'])
+		existing_palettes[player_data['species']] = palettes
 		start_players.append(player_data)
 	
 	ScreenManager.load_screen("choose_map", {
