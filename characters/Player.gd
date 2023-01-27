@@ -348,33 +348,49 @@ func _on_PoisonTimer_timeout():
 		poisoned_by = null
 
 
-var wander = 0
-var attack_accuracy = 0.8
-var attack_cooldown = 0
+var brain = {
+	'wander': 0,
+	'attack_accuracy': 0.8,
+	'attack_cooldown': 0,
+	'direction': 1,
+	'target': null,
+	'aggro': true
+}
 func think(delta):
 	var closest = 32
-	var target = null
-	attack_cooldown = max(attack_cooldown-delta, 0)
-	for enemy in enemies:
-		var dist = abs(position.y - enemy.position.y)
-		if not enemy.dead and closest > dist:
-			target = enemy
-			closest = dist
-	if target and attack_cooldown <= 0:
-		var dist = target.position.x - position.x
+	brain.attack_cooldown = max(brain.attack_cooldown-delta, 0)
+	if brain.target:
+		if brain.target.dead or position.distance_to(brain.target.position) > closest:
+			brain.target = null
+		if is_on_wall():
+			brain.target = null
+	if not brain.target:
+		for enemy in enemies:
+			var dist = position.distance_to(enemy.position)
+			if not enemy.dead and closest > dist:
+				brain.aggro = true
+				brain.target = enemy
+				closest = dist
+	if brain.target and brain.attack_cooldown <= 0:
+		var dist = brain.target.position.x - position.x
+		if not brain.aggro:
+			dist *= -1
 		input.press_axis(Vector2(dist, 0))
 		if abs(dist) < 8:
-			attack_cooldown = 0.5
-			if randf() <= attack_accuracy:
+			brain.attack_cooldown = 0.5
+			if randf() <= brain.attack_accuracy:
 				input.press('attack')
+				brain.aggro = false
 	else:
-		if wander > 0:
-			wander = max(wander-1, 0)
-		if wander < 0: 
-			wander = min(wander+1, 0)
-		if wander == 0:
+		if is_on_wall():
+			brain.direction *= -1
+		if brain.wander > 0:
+			brain.wander = max(brain.wander-1, 0)
+		if brain.wander < 0: 
+			brain.wander = min(brain.wander+1, 0)
+		if brain.wander == 0:
 			# come up with a new direction
-			wander = 1 + randf() * 10
-			wander *= sign(randf() - 0.5)
-		if abs(wander) > 1:
-			input.press_axis(Vector2(-1, 0))
+			brain.wander = 1 + randf() * 10
+			brain.wander *= sign(randf() - 0.5)
+		if abs(brain.wander) > 1:
+			input.press_axis(Vector2(brain.direction, 0))
