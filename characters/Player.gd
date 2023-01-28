@@ -385,10 +385,10 @@ func should_special(enemy):
 
 func think(delta):
 	$PathVis.clear_points()
-	var closest = 16*10
+	var closest = null
 	brain.attack_cooldown = max(brain.attack_cooldown-delta, 0)
 	if brain.target:
-		if brain.target.dead or position.distance_to(brain.target.position) > closest:
+		if brain.target.dead:
 			brain.target = null
 		if is_on_wall():
 			brain.target = null
@@ -396,15 +396,13 @@ func think(delta):
 		for enemy in enemies:
 			if not enemy.dead:
 				var dist = pathfinder.distance_between(position, enemy.position)
-				if dist != 0 and closest > dist:
+				if closest == null or (dist != 0 and closest > dist):
 					brain.aggro = true
 					brain.target = enemy
 					closest = dist
 	if brain.target and brain.attack_cooldown <= 0:
-		var path = pathfinder.path_between(position, brain.target.position)
-		if path.size() <= 1:
-			brain.target = null
-		else:
+		var path = pathfinder.path_to_enemy(brain.target)
+		if path.size() > 1:
 			for point in path:
 				$PathVis.add_point(point - position)
 			var next = path[1]
@@ -414,11 +412,11 @@ func think(delta):
 			input.press_axis(Vector2(dir, 0))
 #		if should_special(brain.target):
 #			input.press('special')
-#		if abs(position.x - brain.target.position.x) < 8:
-#			brain.attack_cooldown = 0.5
-#			if randf() <= brain.attack_accuracy:
-#				input.press('attack')
-#				brain.aggro = false
+		if abs(position.x - brain.target.position.x) < 8:
+			brain.attack_cooldown = 0.5
+			if randf() <= brain.attack_accuracy:
+				input.press('attack')
+				brain.aggro = false
 	else:
 		return
 		if is_on_wall():

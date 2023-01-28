@@ -87,6 +87,20 @@ func path_between(a, b):
 	var point_b = get_closest_point(b)
 	return get_point_path(point_a, point_b)
 
+func path_to_enemy(enemy):
+	var point_a = get_closest_point(player.position)
+	var point_b = get_closest_point(enemy.position)
+	var path = get_point_path(point_a, point_b)
+	while path.size() == 0:
+		var pos = get_point_position(point_b)
+		point_b = get_point_exact(pos + Vector2(0, cell_size.y))
+		if point_b == null:
+			break
+		else:
+			path = get_point_path(point_a, point_b)
+		
+	return path
+
 func distance_between(a, b):
 	var dist = 0
 	var prev = null

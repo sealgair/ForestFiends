@@ -120,4 +120,3 @@ script = ExtResource( 2 )
 material = SubResource( 2 )
 frames = SubResource( 22 )
 animation = "dive"
-frame = 0
