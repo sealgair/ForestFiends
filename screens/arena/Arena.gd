@@ -5,6 +5,7 @@ var players = []
 export (int) var score_limit = 10
 var score = 0
 
+var PlayerPath = preload("res://brain/PlayerPath.gd")
 var slime_scene = preload("res://characters/Slime.tscn")
 var web_scene = preload("res://characters/Web.tscn")
 var map_scene = preload("res://maps/Basic.tscn")
@@ -36,7 +37,7 @@ func add_player(player_data):
 	var player = Global.species[player_data['species']].instance()
 	player.order = player_data['order']
 	player.palette = player_data['palette']
-	player.init(player_data['spawn_point'] * player.size)
+	player.init(player_data['spawn_point'] * player.size, PlayerPath.new(player, $Map/Background/TileMap))
 	# don't need to use setterif it's before it's added as child
 	player.computer = player_data['computer']
 	add_child(player)

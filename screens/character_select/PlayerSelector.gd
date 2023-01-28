@@ -49,7 +49,7 @@ func make_player(existing_palettes):
 			'palette': palette,
 			'computer': true
 		}
-	else:
+	else:	
 		return {
 			'order': player_order,
 			'species': species,

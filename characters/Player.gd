@@ -53,6 +53,8 @@ var web_points = {}
 var attack_anim = "default"
 var enemies = []
 
+var pathfinder
+
 func _ready():
 	screen_size = get_viewport_rect().size
 	set_computer(computer)
@@ -66,10 +68,17 @@ func _ready():
 			if player != self:
 				enemies.append(player)
 
-func init(start_pos):
+func init(start_pos, paths):
 	position = start_pos
+	pathfinder = paths
 	ate = 0
 	fed = 0
+	$PathVis.default_color = [
+		Color(0,0,1),
+		Color(1,0,0),
+		Color(0,1,0),
+		Color(1,1,0),
+	][order-1]
 
 func get_species():
 	return "Player"
@@ -375,7 +384,8 @@ func should_special(enemy):
 
 
 func think(delta):
-	var closest = 16*5
+	$PathVis.clear_points()
+	var closest = 16*10
 	brain.attack_cooldown = max(brain.attack_cooldown-delta, 0)
 	if brain.target:
 		if brain.target.dead or position.distance_to(brain.target.position) > closest:
@@ -384,24 +394,33 @@ func think(delta):
 			brain.target = null
 	if not brain.target:
 		for enemy in enemies:
-			var dist = position.distance_to(enemy.position)
-			if not enemy.dead and closest > dist:
-				brain.aggro = true
-				brain.target = enemy
-				closest = dist
+			if not enemy.dead:
+				var dist = pathfinder.distance_between(position, enemy.position)
+				if dist != 0 and closest > dist:
+					brain.aggro = true
+					brain.target = enemy
+					closest = dist
 	if brain.target and brain.attack_cooldown <= 0:
-		var dist = brain.target.position.x - position.x
-		if not brain.aggro:
-			dist *= -1
-		input.press_axis(Vector2(dist, 0))
-		if should_special(brain.target):
-			input.press('special')
-		if abs(dist) < 8:
-			brain.attack_cooldown = 0.5
-			if randf() <= brain.attack_accuracy:
-				input.press('attack')
-				brain.aggro = false
+		var path = pathfinder.path_between(position, brain.target.position)
+		if path.size() <= 1:
+			brain.target = null
+		else:
+			for point in path:
+				$PathVis.add_point(point - position)
+			var next = path[1]
+			var dir = next.x - position.x
+			if abs(dir) > 64:
+				dir *= -1 # wrap around mapl
+			input.press_axis(Vector2(dir, 0))
+#		if should_special(brain.target):
+#			input.press('special')
+#		if abs(position.x - brain.target.position.x) < 8:
+#			brain.attack_cooldown = 0.5
+#			if randf() <= brain.attack_accuracy:
+#				input.press('attack')
+#				brain.aggro = false
 	else:
+		return
 		if is_on_wall():
 			brain.direction *= -1
 		if brain.wander > 0:

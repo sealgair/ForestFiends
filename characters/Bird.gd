@@ -10,6 +10,7 @@ var flapped = 0.0
 func _ready():
 	._ready()
 	gravity *= .25
+	special_wait = 0.1
 
 
 func get_species():
