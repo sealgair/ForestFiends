@@ -107,11 +107,12 @@ func start_game():
 			palettes.append(player.palette)
 			existing_palettes[player.species] = palettes
 	for player in player_selectors:
-		var player_data = player.make_player(existing_palettes)
-		var palettes = existing_palettes.get(player_data['species'], [])
-		palettes.append(player_data['palette'])
-		existing_palettes[player_data['species']] = palettes
-		start_players.append(player_data)
+		if player.player_order < 3:
+			var player_data = player.make_player(existing_palettes)
+			var palettes = existing_palettes.get(player_data['species'], [])
+			palettes.append(player_data['palette'])
+			existing_palettes[player_data['species']] = palettes
+			start_players.append(player_data)
 	
 	ScreenManager.load_screen("choose_map", {
 		"start_players": start_players

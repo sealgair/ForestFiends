@@ -42,15 +42,26 @@ func _init(the_player, tilemap: TileMap):
 		if below == null:
 			# grounded
 			for x in [1, -1]:
-				var side = get_point_exact(pos + Vector2(x, 0))
+				var side_pos = pos + Vector2(x, 0)
+				var side = get_point_exact(side_pos)
 				if side:
 					connect_points(point, side)
-				# TODO: jumping over gaps
+					# gotta make sure side doesn't have ground under it
+					if get_point_exact(side_pos + Vector2(0, 1)) != null:
+						# jumping over gaps
+						for i in range(player.jump_dist):
+							var jump_pos = pos + Vector2((i+1)*x, 0)
+							var jump_to = get_point_exact(jump_pos)
+							if jump_to != null:
+								var jump_on = get_point_exact(jump_pos + Vector2(0, 1))
+								if jump_on == null:
+									connect_points(side, jump_to)
+									break
 				# TODO: jumping up ledges
 		else:
 			# falling
 			connect_points(point, below, false)
-	
+			
 	# update points to map coords
 	map_dimensions *= cell_size
 	var offset = cell_size / 2  # so coords are at center of tile
@@ -87,19 +98,40 @@ func path_between(a, b):
 	var point_b = get_closest_point(b)
 	return get_point_path(point_a, point_b)
 
+func ground_below(point, breadth=1, step=1):
+	"""
+	Breadth-first recursive check of points below that given in a cone
+	shape, to find the highest ground it might land on
+	"""
+	var pos = get_point_position(point)
+	var pos_below = pos + Vector2(0, cell_size.y)
+	pos_below.y = wrapi(pos_below.y, 0, map_dimensions.y)
+	# breadth-first check of nodes below current (directly and to both sides)
+	for b in range(breadth+1):
+		for x in [b * cell_size.x, -b * cell_size.x]:
+			var pos_beside = pos_below + Vector2(x, 0)
+			pos_beside.x = wrapi(pos_beside.x, 0, map_dimensions.x)
+			var check_point = get_point_exact(pos_beside)
+			if check_point == null:
+				return point
+	# nothing found at this level, check the next level
+	return ground_below(get_point_exact(pos_below), breadth+step, step)
+
 func path_to_enemy(enemy):
 	var point_a = get_closest_point(player.position)
 	var point_b = get_closest_point(enemy.position)
-	var path = get_point_path(point_a, point_b)
-	while path.size() == 0:
-		var pos = get_point_position(point_b)
-		point_b = get_point_exact(pos + Vector2(0, cell_size.y))
-		if point_b == null:
-			break
-		else:
-			path = get_point_path(point_a, point_b)
-		
-	return path
+	point_b = ground_below(point_b)
+	return get_point_path(point_a, point_b)
+
+func distance_to_enemy(enemy):
+	var dist = 0
+	var prev = null
+	var path = path_to_enemy(enemy)
+	for point in path:
+		if prev != null:
+			dist += wrap_dist(point, prev)
+		prev = point
+	return dist
 
 func distance_between(a, b):
 	var dist = 0

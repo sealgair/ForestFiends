@@ -2,6 +2,7 @@ extends KinematicBody2D
 
 const PlayerInput = preload("res://main/PlayerInput.gd")
 const ComputerInput = preload("res://main/ComputerInput.gd")
+const PlayerPath = preload("res://brain/PlayerPath.gd")
 const attack_scene = preload("res://characters/Attack.tscn")
 
 
@@ -23,6 +24,9 @@ var jump_speed = -450
 var gravity = 1200
 var accelerate = 10
 var decelerate = 20
+
+var jump_height = 0
+var jump_dist = 0
 
 var attack_wait = 1
 var attack_timeout = 0
@@ -53,6 +57,7 @@ var web_points = {}
 var attack_anim = "default"
 var enemies = []
 
+var tilemap
 var pathfinder
 
 func _ready():
@@ -68,9 +73,10 @@ func _ready():
 			if player != self:
 				enemies.append(player)
 
-func init(start_pos, paths):
+func init(start_pos, the_tilemap):
 	position = start_pos
-	pathfinder = paths
+	tilemap = the_tilemap
+	pathfinder = PlayerPath.new(self, tilemap)
 	ate = 0
 	fed = 0
 	$PathVis.default_color = [
@@ -371,52 +377,57 @@ func abs2(vec2):
 
 var brain = {
 	'wander': 0,
-	'attack_accuracy': 0.8,
-	'attack_cooldown': 0,
 	'direction': 1,
 	'target': null,
-	'aggro': true
+	'attack_accuracy': 0,
 }
 
 
-func should_special(enemy):
+func should_special(enemy, path=[]):
 	return false
 
 
 func think(delta):
+	$Debug.text = ""
 	$PathVis.clear_points()
+	
 	var closest = null
-	brain.attack_cooldown = max(brain.attack_cooldown-delta, 0)
-	if brain.target:
-		if brain.target.dead:
-			brain.target = null
-		if is_on_wall():
-			brain.target = null
+	if brain.target and brain.target.dead:
+		brain.target = null
 	if not brain.target:
 		for enemy in enemies:
 			if not enemy.dead:
-				var dist = pathfinder.distance_between(position, enemy.position)
+				var dist = pathfinder.distance_to_enemy(enemy)
 				if closest == null or (dist != 0 and closest > dist):
 					brain.aggro = true
 					brain.target = enemy
 					closest = dist
-	if brain.target and brain.attack_cooldown <= 0:
+	if brain.target:
 		var path = pathfinder.path_to_enemy(brain.target)
+		var next = null
 		if path.size() > 1:
-			for point in path:
-				$PathVis.add_point(point - position)
-			var next = path[1]
-			var dir = next.x - position.x
-			if abs(dir) > 64:
-				dir *= -1 # wrap around mapl
-			input.press_axis(Vector2(dir, 0))
-#		if should_special(brain.target):
-#			input.press('special')
+			next = path[0]
+			while abs(next.y - position.y) < 16 and abs(next.x - position.x) < 8:
+				path.remove(0)
+				if path.size() > 0:
+					next = path[0]
+				else:
+					next = null
+					break
+			if next:
+				var dir = next.x - position.x
+				for point in path:
+					$PathVis.add_point(point - position)
+			
+				if abs(dir) > 16*8:
+					dir *= -1 # wrap around map
+				input.press_axis(Vector2(dir, 0))
+		if should_special(brain.target, path):
+			input.press('special')
 		if abs(position.x - brain.target.position.x) < 8:
 			brain.attack_cooldown = 0.5
 			if randf() <= brain.attack_accuracy:
 				input.press('attack')
-				brain.aggro = false
 	else:
 		return
 		if is_on_wall():

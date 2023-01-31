@@ -5,10 +5,10 @@ var dash_time = 0.5
 var dash_speed = run_speed * 2
 
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	._ready()
+func init(start_pos, the_tilemap):
 	jump_speed = -200
+	jump_dist = 3
+	.init(start_pos, the_tilemap)
 	
 
 func get_species():
@@ -52,9 +52,20 @@ func _process(delta):
 	._process(delta)
 
 
-func should_special(enemy):
-	var dv = abs2(position - enemy.position)
-	if dv.y < 16:
-		if dv.x < 16*4 and dv.x > 16:
+func should_special(enemy, path=[]):
+#	var dv = abs2(position - enemy.position)
+#	if dv.y < 16:
+#		if dv.x < 16*4 and dv.x > 16:
+#			return true
+	var corner = $BRCorner if facing() > 0 else $BLCorner
+	if is_on_floor() and corner.get_overlapping_bodies().size() == 0:
+		# on a ledge, check if our path is to jump
+		var jumpto = null
+		for point in path:
+			if abs(point.y - position.y) < 16:
+				jumpto = point
+			else:
+				break
+		if jumpto and abs(jumpto.x - position.x) > 16:
 			return true
 	return false

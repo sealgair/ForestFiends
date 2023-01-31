@@ -68,7 +68,7 @@ func _process(delta):
 			an.extend()
 
 
-func should_special(enemy):
+func should_special(enemy, next=null):
 	var dv = abs2(position - enemy.position)
 	if dv.y < 16:
 		if dv.x < 16*4 and dv.x > 16:
