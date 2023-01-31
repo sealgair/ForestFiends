@@ -53,19 +53,20 @@ func _process(delta):
 
 
 func should_special(enemy, path=[]):
-#	var dv = abs2(position - enemy.position)
-#	if dv.y < 16:
-#		if dv.x < 16*4 and dv.x > 16:
-#			return true
+	if brain.special_accuracy > 0.5:
+		var dv = abs2(position - enemy.position)
+		if dv.y < size.y:
+			if dv.x < size.x*4 and dv.x > size.x:
+				return true
 	var corner = $BRCorner if facing() > 0 else $BLCorner
 	if is_on_floor() and corner.get_overlapping_bodies().size() == 0:
 		# on a ledge, check if our path is to jump
 		var jumpto = null
 		for point in path:
-			if abs(point.y - position.y) < 16:
+			if abs(point.y - position.y) < size.y:
 				jumpto = point
 			else:
 				break
-		if jumpto and abs(jumpto.x - position.x) > 16:
+		if jumpto and abs(jumpto.x - position.x) > size.x:
 			return true
 	return false

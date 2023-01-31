@@ -9,6 +9,7 @@
 [node name="Screen" instance=ExtResource( 3 )]
 script = ExtResource( 5 )
 is_idle_screen = false
+max_computers = 4
 
 [node name="ForceStartTimer" type="Timer" parent="." index="2"]
 wait_time = 20.0

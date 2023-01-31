@@ -5,7 +5,7 @@ var Cursor = preload("res://screens/character_select/Cursor.tscn")
 var cursors = {}
 var selectors
 var player_selectors
-
+export (int) var max_computers = 4
 
 func _ready():
 	selectors = [
@@ -101,13 +101,16 @@ func _process(delta):
 func start_game():
 	var start_players = []
 	var existing_palettes = {}
+	var computers = 0
 	for player in player_selectors:
 		if player.species != "":
 			var palettes = existing_palettes.get(player.species, [])
 			palettes.append(player.palette)
 			existing_palettes[player.species] = palettes
 	for player in player_selectors:
-		if player.player_order < 3:
+		if player.species == "":
+			computers += 1
+		if player.species != "" or computers <= max_computers:
 			var player_data = player.make_player(existing_palettes)
 			var palettes = existing_palettes.get(player_data['species'], [])
 			palettes.append(player_data['palette'])

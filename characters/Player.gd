@@ -379,7 +379,8 @@ var brain = {
 	'wander': 0,
 	'direction': 1,
 	'target': null,
-	'attack_accuracy': 0,
+	'attack_accuracy': 0.5,
+	'special_accuracy': 0.5,
 }
 
 
@@ -388,7 +389,6 @@ func should_special(enemy, path=[]):
 
 
 func think(delta):
-	$Debug.text = ""
 	$PathVis.clear_points()
 	
 	var closest = null
