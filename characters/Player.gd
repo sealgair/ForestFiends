@@ -370,10 +370,8 @@ func _on_PoisonTimer_timeout():
 		die()
 		poisoned_by = null
 
-
 func abs2(vec2):
 	return Vector2(abs(vec2.x), abs(vec2.y))
-
 
 var brain = {
 	'wander': 0,
@@ -383,10 +381,8 @@ var brain = {
 	'special_accuracy': 0.5,
 }
 
-
 func should_special(enemy, path=[]):
 	return false
-
 
 func think(delta):
 	$PathVis.clear_points()
