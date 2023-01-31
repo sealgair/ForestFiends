@@ -381,6 +381,9 @@ var brain = {
 	'special_accuracy': 0.5,
 }
 
+func should_attack(enemy):
+	return abs(position.x - enemy.position.x) < 8
+
 func should_special(enemy, path=[]):
 	return false
 
@@ -420,7 +423,7 @@ func think(delta):
 				input.press_axis(Vector2(dir, 0))
 		if should_special(brain.target, path):
 			input.press('special')
-		if abs(position.x - brain.target.position.x) < 8:
+		if should_attack(brain.target):
 			brain.attack_cooldown = 0.5
 			if randf() <= brain.attack_accuracy:
 				input.press('attack')

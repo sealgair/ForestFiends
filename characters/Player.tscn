@@ -122,6 +122,7 @@ __meta__ = {
 material = SubResource( 17 )
 frames = SubResource( 8 )
 animation = "idle"
+frame = 1
 playing = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -146,6 +147,7 @@ wait_time = 6.0
 one_shot = true
 
 [node name="PathVis" type="Line2D" parent="."]
+visible = false
 width = 3.0
 default_color = Color( 0.4, 0.501961, 1, 1 )
 

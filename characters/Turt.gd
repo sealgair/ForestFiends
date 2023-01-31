@@ -70,3 +70,9 @@ func _on_DefendTimer_timeout():
 func _on_DefendCooldown_timeout():
 	if is_special_pressed():
 		special_pressed()
+
+func should_attack(enemy):
+	return abs(position.x - enemy.position.x) < 18
+
+func should_special(enemy, path=[]):
+	return abs(position.x - enemy.position.x) < 8 and randf() <= brain.special_accuracy

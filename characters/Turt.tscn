@@ -126,7 +126,6 @@ animation = "idle"
 material = SubResource( 22 )
 frames = SubResource( 29 )
 animation = "defend"
-frame = 1
 
 [node name="DefendTimer" type="Timer" parent="." index="7"]
 wait_time = 3.0
