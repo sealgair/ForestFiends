@@ -2,8 +2,8 @@ extends KinematicBody2D
 
 const PlayerInput = preload("res://main/PlayerInput.gd")
 const ComputerInput = preload("res://main/ComputerInput.gd")
-const PlayerPath = preload("res://brain/PlayerPath.gd")
 const attack_scene = preload("res://characters/Attack.tscn")
+var PlayerPath = preload("res://brain/PlayerPath.gd")
 
 
 export (int) var order = 1
@@ -414,13 +414,9 @@ func think(delta):
 					next = null
 					break
 			if next:
-				var dir = next.x - position.x
 				for point in path:
 					$PathVis.add_point(point - position)
-			
-				if abs(dir) > 16*8:
-					dir *= -1 # wrap around map
-				input.press_axis(Vector2(dir, 0))
+				move_toward_point(next)
 		if should_special(brain.target, path):
 			input.press('special')
 		if should_attack(brain.target):
@@ -441,3 +437,9 @@ func think(delta):
 			brain.wander *= sign(randf() - 0.5)
 		if abs(brain.wander) > 1:
 			input.press_axis(Vector2(brain.direction, 0))
+
+func move_toward_point(point):
+	var dir = point.x - position.x
+	if abs(dir) > 16*8:
+		dir *= -1 # wrap around map
+	input.press_axis(Vector2(dir, 0))

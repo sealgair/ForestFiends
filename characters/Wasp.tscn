@@ -97,4 +97,3 @@ script = ExtResource( 2 )
 material = SubResource( 22 )
 frames = SubResource( 31 )
 animation = "attack"
-frame = 1
