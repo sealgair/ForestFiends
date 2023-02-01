@@ -39,8 +39,13 @@ func set_aminal(instance):
 func make_player(existing_palettes):
 	if species == "":
 		# player hasn't chosen, use computer
-		# TODO: weighted random choice
-		var species = Global.rand_choice(['Shrew', 'Slug', 'Turt', 'Wasp'])
+		var species = Global.weighted_rand_choice({
+			'Shrew': 2,
+			'Slug': 1,
+			'Turt': 2,
+			'Wasp': 1,
+			'Bird': 2,
+		})
 		var palette = floor(randf() * 4)
 		while palette in existing_palettes.get(species, []):
 			palette = wrapi(palette+1, 0, 4)

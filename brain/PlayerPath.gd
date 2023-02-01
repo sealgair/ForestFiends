@@ -48,7 +48,8 @@ func build_nodes(tilemap):
 
 func connect_node(point):
 	var pos = get_point_position(point)
-	var below = get_point_exact(pos + Vector2(0, cell_size.y))
+	var below_pos = pos + Vector2(0, cell_size.y)
+	var below = get_point_exact(below_pos)
 	if below == null:
 		# grounded
 		for x in [cell_size.x, -cell_size.x]:
@@ -67,10 +68,22 @@ func connect_node(point):
 							if jump_on == null:
 								connect_points(side, jump_to)
 								break
-			# TODO: jumping up ledges
+			else:
+				# can we jump on the ledge
+				for y in range(1, player.jump_height):
+					var above_side = get_point_exact(side_pos - Vector2(0, y * cell_size.y))
+					if above_side:
+						connect_points(point, above_side)
+						break   # first open cell we can jump to
+					
 	else:
 		# falling
 		connect_points(point, below, false)
+		for x in [cell_size.x, -cell_size.x]:
+			var side = get_point_exact(below_pos + Vector2(x, 0))
+			if side:
+				connect_points(point, side, false)
+
 
 func get_point_exact(pos: Vector2):
 	pos = wrapp(pos)

@@ -149,3 +149,14 @@ static func comma_sep(n: int) -> String:
 static func rand_choice(list):
 	var i = floor(randf() * list.size())
 	return list[i]
+
+static func weighted_rand_choice(choices):
+	var total = 0
+	for weight in choices.values():
+		total += weight
+	var choose = randf() * total
+	var spot = 0
+	for option in choices.keys():
+		spot += choices[option]
+		if spot > choose:
+			return option

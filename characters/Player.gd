@@ -377,14 +377,35 @@ var brain = {
 	'wander': 0,
 	'direction': 1,
 	'target': null,
-	'attack_accuracy': 0.5,
-	'special_accuracy': 0.5,
+	'attack_accuracy': 0.2,
+	'special_accuracy': 0.2,
 }
 
 func should_attack(enemy):
 	return abs(position.x - enemy.position.x) < 8
 
 func should_special(enemy, path=[]):
+	return false
+
+func should_jump(enemy, path=[]):
+	if path.size() == 0:
+		return false
+	if jump_dist > 0:
+		var corner = $BRCorner if facing() > 0 else $BLCorner
+		if is_on_floor() and corner.get_overlapping_bodies().size() == 0:
+			# on a ledge, check if our path is to jump
+			var jumpto = null
+			for point in path:
+				if abs(point.y - position.y) < size.y:
+					jumpto = point
+				else:
+					break
+			if jumpto and abs(jumpto.x - position.x) > size.x:
+				return true
+	if jump_height > 0:
+		var dy = position.y - path[0].y
+		if dy > 0 and dy < 16*8:  # make sure we're not wrapping
+			return true
 	return false
 
 func think(delta):
@@ -417,7 +438,8 @@ func think(delta):
 				for point in path:
 					$PathVis.add_point(point - position)
 				move_toward_point(next)
-		if should_special(brain.target, path):
+		if (randf() <= brain.special_accuracy and should_special(brain.target, path)) \
+				or should_jump(brain.target, path):
 			input.press('special')
 		if should_attack(brain.target):
 			brain.attack_cooldown = 0.5

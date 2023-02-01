@@ -7,15 +7,15 @@ var max_flaps = 3
 var flapped = 0.0
 
 
-func _ready():
-	._ready()
+func init(start_pos, the_tilemap):
 	gravity *= .25
 	special_wait = 0.1
-
+	jump_height = 3
+	jump_dist = 4
+	.init(start_pos, the_tilemap)
 
 func get_species():
 	return "Bird"
-
 
 func special_pressed():
 	if flaps <= max_flaps and flapped <= 0:
@@ -55,3 +55,15 @@ func _process(delta):
 		flaps = 0
 	._process(delta)
 	flapped = max(flapped-delta, 0)
+
+func should_jump(enemy, path=[]):
+	# should jump again only at the top of previous jump 
+	#  (about to switch from rising to falling)
+	return velocity.y > -1 and .should_jump(enemy, path)
+
+func should_attack(enemy):
+	if self.is_on_floor():
+		return .should_attack(enemy)
+	else:
+		var dist = position - enemy.position
+		return dist.y > 0 and dist.y < 24 and abs(dist.x) < 16
