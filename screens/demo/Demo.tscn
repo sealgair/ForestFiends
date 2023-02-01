@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://screens/arena/Arena.tscn" type="PackedScene" id=1]
+[ext_resource path="res://screens/demo/Demo.gd" type="Script" id=2]
+
+[node name="Demo" instance=ExtResource( 1 )]
+script = ExtResource( 2 )
+next_screen = "highscores"
+
+[node name="Score" parent="." index="2"]
+visible = false
+
+[node name="ContinueTimer" type="Timer" parent="." index="5"]
+wait_time = 60.0
+one_shot = true
+autostart = true
+
+[connection signal="timeout" from="ContinueTimer" to="." method="_on_ContinueTimer_timeout"]

@@ -1,8 +1,14 @@
 extends Node2D
 
-var start_data = []
+var start_data = [
+	{'order': 1, 'species': "", 'palette': 0, 'computer': true},
+	{'order': 2, 'species': "", 'palette': 0, 'computer': true},
+	{'order': 3, 'species': "", 'palette': 0, 'computer': true},
+	{'order': 4, 'species': "", 'palette': 0, 'computer': true},
+]
 var players = []
 export (int) var score_limit = 10
+export (int) var max_computers = 4
 var score = 0
 
 var slime_scene = preload("res://characters/Slime.tscn")
@@ -15,12 +21,46 @@ func _ready():
 	randomize()
 	$Score.text = String(score_limit)
 	var spawn_points = $Map.get_spawn_points()
+	var species_choices = {
+		'Shrew': 3,
+		'Slug': 1,
+		'Turt': 2,
+		'Wasp': 1,
+		'Bird': 3,
+		'Frog': 2,
+	}
+	
+	var existing_palettes = {}
 	for player_data in start_data:
-		var sp = spawn_points[randi() % spawn_points.size()]
-		spawn_points.erase(sp)
-		player_data['spawn_point'] = sp
-		add_player(player_data)
-
+		if not player_data.computer:
+			var palettes = existing_palettes.get(player_data.species, [])
+			palettes.append(player_data.palette)
+			existing_palettes[player_data.species] = palettes
+		
+	var computers = 0
+	for player_data in start_data:
+		if player_data.computer and computers < max_computers:
+			computers += 1
+			player_data.species = Global.weighted_rand_choice(species_choices)
+			var palette = randi() % 4
+			var species_palettes = existing_palettes.get(player_data.species, [])
+			while palette in species_palettes:
+				palette = wrapi(palette+1, 0, 4)
+			player_data.palette = palette
+			species_palettes.append(palette)
+			existing_palettes[player_data.species] = species_palettes
+		
+		if player_data.species:
+			var sp = spawn_points[randi() % spawn_points.size()]
+			spawn_points.erase(sp)
+			player_data.spawn_point = sp
+			add_player(player_data)
+	
+	# populate enemies lists after all players are created
+	#  (otherwise they'll be missing some)
+	for player in players:
+		player.make_enemies(players)
+		
 
 func set_map(new_map):
 	var old_map = $Map
@@ -30,7 +70,6 @@ func set_map(new_map):
 	new_map.set_name("Map")
 	add_child(new_map)
 	move_child(new_map, pos)
-
 
 func add_player(player_data):
 	var player = Global.species[player_data['species']].instance()

@@ -67,12 +67,11 @@ func _ready():
 	if palette == null:
 		palette = order - 1
 	$AnimatedSprite.material.set_shader_param("palette", palette)
-	
-	var map = get_tree().root.get_node("Arena")
-	if map:
-		for player in map.players:
-			if player != self:
-				enemies.append(player)
+
+func make_enemies(all_players):
+	for player in all_players:
+		if player != self:
+			enemies.append(player)
 
 func init(start_pos, the_tilemap):
 	position = start_pos
