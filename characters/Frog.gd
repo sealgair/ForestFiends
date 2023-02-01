@@ -6,9 +6,13 @@ var look_angle = 0
 var look_change = 0
 var texture = preload("res://art/forg.png")
 
-func _ready():
+func init(start_pos, the_tilemap):
 	run_speed = 150
 	jump_speed = -60
+	attack_range = 16
+	jump_height = 3
+	jump_dist = 3
+	.init(start_pos, the_tilemap)
 	attack_anim = "tongue"
 	var image = texture.get_data()
 	image.lock()
@@ -58,7 +62,7 @@ func _process(delta):
 	else:
 		jump_time = max(jump_time - delta, 0)
 	
-	var ret = Vector2(-16, 0)
+	var ret = Vector2(-attack_range, 0)
 	ret = ret.rotated(look_angle)
 	if $AnimatedSprite.flip_h:
 		ret *= Vector2(-1, 1)
@@ -71,3 +75,16 @@ func _process(delta):
 		ret = ret * l * 2
 		an.transform.origin = ret
 		$Tongue.set_point_position(1, ret)
+
+func should_attack(enemy):
+	var dist = position - enemy.position
+	var angle = look_angle - atan2(dist.y, dist.x)
+	input.press_axis(Vector2(0, angle))
+	if abs(angle) < TAU/8:
+		return dist.length() < attack_range
+
+func move_toward_point(point):
+	.move_toward_point(point)
+	if position.y - point.y <= 4 or is_on_floor():
+		# dont' jump if we need to go down
+		input.press('special')

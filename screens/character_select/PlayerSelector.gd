@@ -40,11 +40,12 @@ func make_player(existing_palettes):
 	if species == "":
 		# player hasn't chosen, use computer
 		var species = Global.weighted_rand_choice({
-			'Shrew': 2,
+			'Shrew': 3,
 			'Slug': 1,
 			'Turt': 2,
 			'Wasp': 1,
-			'Bird': 2,
+			'Bird': 3,
+			'Frog': 2,
 		})
 		var palette = floor(randf() * 4)
 		while palette in existing_palettes.get(species, []):

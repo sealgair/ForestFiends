@@ -27,6 +27,7 @@ var decelerate = 20
 
 var jump_height = 0
 var jump_dist = 0
+var attack_range = 8
 
 var attack_wait = 1
 var attack_timeout = 0
@@ -382,7 +383,7 @@ var brain = {
 }
 
 func should_attack(enemy):
-	return abs(position.x - enemy.position.x) < 8
+	return abs(position.x - enemy.position.x) < attack_range
 
 func should_special(enemy, path=[]):
 	return false
