@@ -22,6 +22,5 @@ func hit():
 	# don't track hits in demo mode
 	pass
 
-
 func _on_ContinueTimer_timeout():
 	ScreenManager.load_screen(next_screen)

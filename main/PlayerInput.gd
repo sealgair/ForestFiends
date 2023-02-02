@@ -12,20 +12,19 @@ func _init(player):
 			'p': player_order
 		})
 
-
 func set_mappings(mappings):
 	for key in mappings:
 		var action = mappings[key]
 		actions[key] = actions[action]
 
+func override():
+	return false
 
 func is_pressed(action):
 	return Input.is_action_pressed(actions[action])
 
-
 func is_just_pressed(action):
 	return Input.is_action_just_pressed(actions[action])
-
 
 func is_any_just_pressed(actions):
 	for action in actions:
@@ -33,17 +32,14 @@ func is_any_just_pressed(actions):
 			return true
 	return false
 
-
 func is_just_released(action):
 	return Input.is_action_just_released(actions[action])
-
 
 func direction_pressed():
 	return Vector2(
 		Input.get_axis(actions['left'], actions['right']),
 		Input.get_axis(actions['up'], actions['down'])
 	)
-
 
 func direction_just_pressed(flip=false):
 	var dir = Vector2(0,0)

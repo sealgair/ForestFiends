@@ -4,13 +4,11 @@ var action_script
 var elapsed = 0
 
 
-func _init(script):
+func _init(script).(0):
 	action_script = script
-
 
 func press(action, time=0.05):
 	pressed[action] = time
-
 
 func do_process(delta):
 	for action in actions.keys():

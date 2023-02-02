@@ -2,17 +2,21 @@ extends "PlayerInput.gd"
 
 var pressed = {}
 var was_pressed = {}
+var overrides = {}
 
-
-func _init().(1):
+func _init(player).(player):
 	for action in actions.keys():
 		pressed[action] = 0
 		was_pressed[action] = false
-
+	
+	for action in ['a', 'b']:
+		overrides[action] = "ui_{action}{p}".format({
+			'action': action,
+			'p': player_order
+		})
 
 func _ready():
 	process_priority = 10
-
 
 func set_mappings(mappings):
 	.set_mappings(mappings)
@@ -21,6 +25,9 @@ func set_mappings(mappings):
 		pressed[action] = 0
 		was_pressed[action] = false
 
+func override():
+	return Input.is_action_pressed(overrides['a']) \
+	   and Input.is_action_pressed(overrides['b'])
 
 func press(action):
 	pressed[action] = 1
@@ -38,23 +45,18 @@ func press_axis(direction):
 func hold(action):
 	pressed[action] = 2
 
-
 func release(action):
 	pressed[action] = 0
 	was_pressed[action] = true
 
-
 func is_pressed(action):
 	return pressed[action] > 0
-
 
 func is_just_pressed(action):
 	return is_pressed(action) and not was_pressed[action]
 
-
 func is_just_released(action):
 	return not is_pressed(action) and was_pressed[action]
-
 
 func direction_pressed():
 	var dir = Vector2()
@@ -68,7 +70,6 @@ func direction_pressed():
 		dir.y += 1
 	return dir
 
-
 # to be overridden
 func do_process(delta):
 	for action in actions.keys():
@@ -77,7 +78,6 @@ func do_process(delta):
 		if pressed[action] == 1:
 			pressed[action] = 0
 		# otherwise it's being held, so keep it
-
 
 func _process(delta):
 	#  Setting process_priority to 10 should ensure this gets handled

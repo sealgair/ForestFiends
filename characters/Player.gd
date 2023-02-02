@@ -5,7 +5,6 @@ const ComputerInput = preload("res://main/ComputerInput.gd")
 const attack_scene = preload("res://characters/Attack.tscn")
 var PlayerPath = preload("res://brain/PlayerPath.gd")
 
-
 export (int) var order = 1
 export (int) var palette = null
 export (bool) var computer = false
@@ -37,7 +36,6 @@ var revive_time = 2
 
 var special_wait = 1
 var special_timeout = 0
-
 
 var screen_size
 signal made_hit
@@ -95,7 +93,7 @@ func make_slime(position, palette=0):
 func set_computer(is_computer):
 	computer = is_computer
 	if computer:
-		set_input(ComputerInput.new())
+		set_input(ComputerInput.new(order))
 	else:
 		set_input(PlayerInput.new(order))
 
@@ -109,13 +107,11 @@ func set_input(new_input):
 		'special': 'b'
 	})
 
-
 func special_pressed():
 	if is_on_floor():
 		jumping = true
 		velocity.y = jump_speed
 		specials += 1
-
 
 func special_released():
 	pass
@@ -123,10 +119,8 @@ func special_released():
 func is_special_pressed():
 	return input.is_pressed('special')
 
-
 func attack_pressed():
 	make_attack()
-
 
 func make_attack():
 	attacks += 1
@@ -140,22 +134,17 @@ func make_attack():
 	$AnimatedSprite.play("attack")
 	return instance
 
-
 func attack_released():
 	pass
-
 
 func is_attack_pressed():
 	return input.is_pressed('attack')
 
-
 func is_mobile():
 	return true
 
-
 func facing():
 	return facing2().x
-
 
 func facing2():
 	var result = Vector2(-1, 1)
@@ -165,13 +154,11 @@ func facing2():
 		result.y = -1
 	return result
 
-
 func axes_pressed():
 	if is_mobile():
 		return input.direction_pressed()
 	else:
 		return Vector2(0,0)
-
 
 # warning-ignore:unused_argument
 func move(x, y):
@@ -181,13 +168,15 @@ func move(x, y):
 	if x != 0:
 		$AnimatedSprite.flip_h = x > 0
 
-
 # warning-ignore:unused_argument
 func moved(delta):
 	pass
 
-
 func handle_input(delta):
+	if computer and input.override():
+		set_input(PlayerInput.new(order))
+		computer = false
+	
 	var axes = axes_pressed()
 	move(axes.x, axes.y)
 	moved(delta)
@@ -207,7 +196,6 @@ func handle_input(delta):
 				attack_pressed()
 		if input.is_just_released('attack'):
 			attack_released()
-
 
 func _physics_process(delta):
 	if jumping and is_on_floor():
@@ -292,31 +280,25 @@ func _process(delta):
 			an.transform.origin.x = abs(an.transform.origin.x)
 			an.transform.origin.x *= facing()
 
-
 func is_vulnerable():
 	return not self.dead and revive_countdown <= 0
-
 
 func make_score(other):
 	ate += 1
 	emit_signal("made_hit")
 	if other == poisoned_by:
 		poisoned_by = null
-	
 
 func hit(other):
 	make_score(other)
 	other.die()
 
-
 func poison(other):
 	poisoned_by = other
 	$PoisonTimer.start()
 
-
 func slime():
 	slimed = slime_time
-
 
 func ensnare(web):
 	var point = web.intersection_center(self)
@@ -326,11 +308,9 @@ func ensnare(web):
 	else:
 		point = web.intersection_center(self)
 
-
 func desnare(web):
 	web_points.erase(web.get_instance_id())
 	webs.erase(web)
-
 
 func die():
 	fed += 1
@@ -338,16 +318,13 @@ func die():
 		dead = true
 		$AnimatedSprite.play('dead')
 		$RespawnTimer.start()
-	
-	
+
 func _on_RespawnTimer_timeout():
 	$AnimatedSprite.play('decay')
-
 
 func _on_AnimatedSprite_animation_finished():
 	if $AnimatedSprite.animation == "decay":
 		emit_signal("respawn", self)
-
 
 func revive(new_pos):
 	velocity = Vector2()
@@ -359,10 +336,8 @@ func revive(new_pos):
 	# for invincibilty after revive
 	revive_countdown = revive_time
 
-
 func easeoutback(t, p=4):
 	return 1-pow(2*(t-.5), p)
-
 
 func _on_PoisonTimer_timeout():
 	if poisoned_by:
