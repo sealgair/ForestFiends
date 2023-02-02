@@ -2,6 +2,7 @@ extends Node2D
 
 
 export (String, "Basic", "Cave", "Plains", "Mountain", "Desert", "Sky", "Jungle", "Shelf", "Random") var map_name = "Basic"
+const map_choices = ["Basic", "Cave", "Plains", "Mountain", "Desert", "Sky", "Jungle", "Shelf"]
 var is_selected = false
 var map_scene
 
@@ -22,10 +23,9 @@ func set_selected(selected):
 
 func set_map(map_name):
 	var old_scene = map_scene
-	var choices = ["Basic", "Cave", "Plains", "Mountain", "Desert", "Sky", "Jungle", "Shelf"]
 	if map_name == "Random":
 		while map_scene == old_scene:
-			map_scene = load("res://maps/{name}.tscn".format({'name': Global.rand_choice(choices)}))
+			map_scene = load("res://maps/{name}.tscn".format({'name': Global.rand_choice(map_choices)}))
 	else:
 		map_scene = load("res://maps/{name}.tscn".format({'name': map_name}))
 	var new_map = map_scene.instance()
@@ -42,7 +42,7 @@ func set_map(map_name):
 	if map_name == "Random":
 		$Label.text = map_name
 		# load a new scene if we get chosen, it's a different scene than the one displayed
-		map_scene = load("res://maps/{name}.tscn".format({'name': Global.rand_choice(choices)}))
+		map_scene = load("res://maps/{name}.tscn".format({'name': Global.rand_choice(map_choices)}))
 	else:
 		$Label.text = new_map.title
 

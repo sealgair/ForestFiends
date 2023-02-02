@@ -4,7 +4,6 @@ const PlayerInput = preload("res://main/PlayerInput.gd")
 export (String, "highscores", "stats", "info") var next_screen = "highscores"
 var inputs = []
 
-
 func _ready():
 	for i in range(4):
 		var input = PlayerInput.new(i+1)

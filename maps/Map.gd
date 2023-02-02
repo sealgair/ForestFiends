@@ -2,7 +2,6 @@ extends Node2D
 
 export (String) var title = "Map"
 
-
 func _ready():
 	$Background.rect_clip_content = true
 	$Background/RespawnTiles.visible = false

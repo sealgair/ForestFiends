@@ -13,9 +13,14 @@ var score = 0
 
 var slime_scene = preload("res://characters/Slime.tscn")
 var web_scene = preload("res://characters/Web.tscn")
-var map_scene = preload("res://maps/Basic.tscn")
+var map_scene = null
+
+const MapChoice = preload("res://screens/map_picker/MapChoice.tscn")
 
 func _ready():
+	if map_scene == null:
+		var map_name = Global.rand_choice(MapChoice.instance().map_choices)
+		map_scene = load("res://maps/{name}.tscn".format({'name': map_name}))
 	set_map(map_scene.instance())
 	
 	randomize()
