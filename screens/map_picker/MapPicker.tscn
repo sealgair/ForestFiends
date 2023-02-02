@@ -14,9 +14,6 @@ margin_right = 256.0
 margin_bottom = 256.0
 color = Color( 0.670588, 0.321569, 0.211765, 1 )
 
-[node name="ContinueTimer" parent="." index="1"]
-autostart = false
-
 [node name="StartPrompt" parent="." index="3"]
 visible = false
 
@@ -62,5 +59,17 @@ margin_bottom = 16.0
 theme = ExtResource( 4 )
 custom_colors/font_color = Color( 1, 0.92549, 0.152941, 1 )
 text = "Player 1 chooses"
+align = 1
+valign = 1
+
+[node name="Countdown" type="Label" parent="." index="14"]
+margin_left = 88.0
+margin_top = 240.0
+margin_right = 168.0
+margin_bottom = 254.0
+theme = ExtResource( 4 )
+custom_colors/font_color = Color( 0, 0.894118, 0.211765, 1 )
+custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
+text = "seconds"
 align = 1
 valign = 1
