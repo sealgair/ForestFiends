@@ -160,3 +160,21 @@ static func weighted_rand_choice(choices):
 		spot += choices[option]
 		if spot > choose:
 			return option
+
+static func floor2(vec2):
+	return Vector2(
+		floor(vec2.x), 
+		floor(vec2.y)
+	)
+
+static func round2(vec2):
+	return Vector2(
+		int(round(vec2.x)), 
+		int(round(vec2.y))
+	)
+
+static func average(values):
+	var sum = 0
+	for value in values:
+		sum += value
+	return sum / values.size()

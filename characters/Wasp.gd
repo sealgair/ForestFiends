@@ -22,7 +22,7 @@ func move(x, y):
 	.move(x, y)
 	to_velocity.y = y * run_speed
 
-func move_toward_point(point):
+func move_toward_point(point, retreat=false):
 	var dir = point - position
 	 # wrap around map
 	if abs(dir.x) > 16*8:

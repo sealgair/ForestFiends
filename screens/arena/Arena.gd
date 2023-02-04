@@ -33,6 +33,7 @@ func _ready():
 		'Wasp': 1,
 		'Bird': 3,
 		'Frog': 2,
+		'Mant': 1,
 	}
 	
 	var existing_palettes = {}
@@ -66,7 +67,6 @@ func _ready():
 	for player in players:
 		player.make_enemies(players)
 		
-
 func set_map(new_map):
 	var old_map = $Map
 	var pos = old_map.get_position_in_parent()
@@ -90,7 +90,6 @@ func add_player(player_data):
 	players.append(player)
 	return player
 
-
 func clean():
 	for web in get_tree().get_nodes_in_group("webs"):
 		web.queue_free()
@@ -107,23 +106,14 @@ func hit():
 	else:
 		$Score.text = String(score_limit - score)
 
-func average(values):
-	var sum = 0
-	for value in values:
-		sum += value
-	return sum / values.size()
-
-
 func spawnpoint_distance(spawnpoint):
 	var distances = []
 	for player in players:
 		distances.append((player.position - spawnpoint).length())
-	return average(distances)
-
+	return Global.average(distances)
 
 func spawnpoint_sorter(a, b):
 	return spawnpoint_distance(a) > spawnpoint_distance(b)
-
 
 func spawn(player, spawn_point=null):
 	var webs = get_webs()
@@ -144,7 +134,6 @@ func spawn(player, spawn_point=null):
 					spawn_point = sp
 	player.revive(spawn_point)
 
-
 func make_slime(position, palette=0):
 	if $Map != null:
 		var tile_pos = position / $Map.get_cell_size()
@@ -155,14 +144,12 @@ func make_slime(position, palette=0):
 			instance.set_palette(palette)
 			add_child(instance)
 
-
 func get_webs():
 	var webs = []
 	for child in get_children():
 		if child.get_groups().has("webs"):
 			webs.append(child)
 	return webs
-
 
 func make_web(start, end, player, decay=null):
 	var web = web_scene.instance()
@@ -171,7 +158,6 @@ func make_web(start, end, player, decay=null):
 	web.set_start(start)
 	web.set_end(end)
 	web.start_decay(decay)
-
 
 func make_score(player):
 	# kills per second
@@ -188,12 +174,10 @@ func make_score(player):
 	kpc *= 1000
 	return ceil(kps + ktd + kpc) + player.ate * 100
 
-
 func end():
 	for player in players:
 		player.score = make_score(player)
 	ScreenManager.load_screen("victory", {'players': players})
-
 
 func _on_VictoryTimer_timeout():
 	end()

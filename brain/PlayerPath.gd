@@ -4,9 +4,6 @@ var player
 var cell_size
 var map_dimensions = Vector2(16, 16)
 
-static func floor2(vec2):
-	return Vector2(floor(vec2.x), floor(vec2.y))
-
 static func absmin(vals):
 	var found = null
 	for val in vals:
@@ -22,68 +19,53 @@ func wrapp(pos):
 
 func _init(the_player, tilemap: TileMap):
 	player = the_player
+	map_dimensions = Vector2(tilemap.cell_quadrant_size, tilemap.cell_quadrant_size)
 	cell_size = tilemap.cell_size
-	map_dimensions = Vector2(
-		tilemap.cell_quadrant_size, 
-		tilemap.cell_quadrant_size
-	) * cell_size
 	
-	build_nodes(tilemap)
-	
-	# make connections
-	for point in get_points():
-		connect_node(point)
-
-func build_nodes(tilemap):
-	var offset = cell_size / 2  # so coords are at center of tile
-	for y in range(tilemap.cell_quadrant_size):
-		for x in range(tilemap.cell_quadrant_size):
-			var pos = Vector2(x, y)
-			var cell = tilemap.get_cellv(pos)
+	# make points
+	for y in range(map_dimensions.y):
+		for x in range(map_dimensions.x):
+			var point = Vector2(x, y)
+			var cell = tilemap.get_cellv(point)
 			if cell == tilemap.INVALID_CELL:  
 				# invalid cells are the air we can move through
 				var id = get_available_point_id()
-				pos = pos * cell_size + offset
-				add_point(id, pos)
-
-func connect_node(point):
-	var pos = get_point_position(point)
-	var below_pos = pos + Vector2(0, cell_size.y)
-	var below = get_point_exact(below_pos)
-	if below == null:
-		# grounded
-		for x in [cell_size.x, -cell_size.x]:
-			var side_pos = pos + Vector2(x, 0)
-			var side = get_point_exact(side_pos)
-			if side:
-				connect_points(point, side)
-				# gotta make sure side doesn't have ground under it
-				if get_point_exact(side_pos + Vector2(0, cell_size.y)) != null:
-					# jumping over gaps
-					for i in range(player.jump_dist):
-						var jump_pos = pos + Vector2((i+1)*x, 0)
-						var jump_to = get_point_exact(jump_pos)
-						if jump_to != null:
-							var jump_on = get_point_exact(jump_pos + Vector2(0, cell_size.y))
-							if jump_on == null:
-								connect_points(side, jump_to)
-								break
-			else:
-				# can we jump on the ledge
-				for y in range(1, player.jump_height):
-					var above_side = get_point_exact(side_pos - Vector2(0, y * cell_size.y))
-					if above_side:
-						connect_points(point, above_side)
-						break   # first open cell we can jump to
-					
-	else:
-		# falling
-		connect_points(point, below, false)
-		for x in [cell_size.x, -cell_size.x]:
-			var side = get_point_exact(below_pos + Vector2(x, 0))
-			if side:
-				connect_points(point, side, false)
-
+				add_point(id, point)
+	
+	# make connections
+	for point in get_points():
+		var pos = get_point_position(point)
+		var below = get_point_exact(pos + Vector2(0, 1))
+		if below == null:
+			# grounded
+			for x in [1, -1]:
+				var side_pos = pos + Vector2(x, 0)
+				var side = get_point_exact(side_pos)
+				if side:
+					connect_points(point, side)
+					# gotta make sure side doesn't have ground under it
+					if get_point_exact(side_pos + Vector2(0, 1)) != null:
+						# jumping over gaps
+						for i in range(player.jump_dist):
+							var jump_pos = pos + Vector2((i+1)*x, 0)
+							var jump_to = get_point_exact(jump_pos)
+							if jump_to != null:
+								var jump_on = get_point_exact(jump_pos + Vector2(0, 1))
+								if jump_on == null:
+									connect_points(side, jump_to)
+									break
+				# TODO: jumping up ledges
+		else:
+			# falling
+			connect_points(point, below, false)
+			
+	# update points to map coords
+	map_dimensions *= cell_size
+	var offset = cell_size / 2  # so coords are at center of tile
+	for point in get_points():
+		var pos = get_point_position(point)
+		pos = pos * cell_size + offset
+		set_point_position(point, pos)
 
 func get_point_exact(pos: Vector2):
 	pos = wrapp(pos)
@@ -139,19 +121,14 @@ func path_to_enemy(enemy):
 	return get_point_path(point_a, point_b)
 
 func distance_to_enemy(enemy):
-	var dist = 0
-	var prev = null
-	var path = path_to_enemy(enemy)
-	for point in path:
-		if prev != null:
-			dist += wrap_dist(point, prev)
-		prev = point
-	return dist
+	return path_distance(path_to_enemy(enemy))
 
 func distance_between(a, b):
+	return path_distance(path_between(a, b))
+
+func path_distance(path):
 	var dist = 0
 	var prev = null
-	var path = path_between(a, b)
 	for point in path:
 		if prev != null:
 			dist += wrap_dist(point, prev)

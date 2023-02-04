@@ -52,6 +52,7 @@ var slimed = 0
 var slime_time = 2
 var webs = []
 var web_points = {}
+var hidden = false
 
 var attack_anim = "default"
 var enemies = []
@@ -318,6 +319,7 @@ func die():
 		dead = true
 		$AnimatedSprite.play('dead')
 		$RespawnTimer.start()
+	reset_brain()
 
 func _on_RespawnTimer_timeout():
 	$AnimatedSprite.play('decay')
@@ -348,16 +350,23 @@ func _on_PoisonTimer_timeout():
 func abs2(vec2):
 	return Vector2(abs(vec2.x), abs(vec2.y))
 
-var brain = {
-	'wander': 0,
-	'direction': 1,
-	'target': null,
-	'attack_accuracy': 0.2,
-	'special_accuracy': 0.2,
-}
+var brain = init_brain()
+func init_brain():
+	return {
+		'wander': 0,
+		'direction': 1,
+		'target': null,
+		'attack_accuracy': 0.5,
+		'special_accuracy': 0.5,
+		'state': 'attack',
+	}
+
+func reset_brain():
+	brain.target = null
 
 func should_attack(enemy):
-	return abs(position.x - enemy.position.x) < attack_range
+	return abs(position.y - enemy.position.y) < size.y/2 \
+			and abs(position.x - enemy.position.x) < attack_range
 
 func should_special(enemy, path=[]):
 	return false
@@ -383,6 +392,21 @@ func should_jump(enemy, path=[]):
 			return true
 	return false
 
+func closest_enemy(path=true):
+	var closest = null
+	var target = null
+	for enemy in enemies:
+		if not enemy.dead and not enemy.hidden:
+			var dist
+			if path:
+				dist = pathfinder.distance_to_enemy(enemy)
+			else:
+				dist = (enemy.position - position).length()
+			if closest == null or (dist != 0 and closest > dist):
+				target = enemy
+				closest = dist
+	return target
+
 func think(delta):
 	$PathVis.clear_points()
 	
@@ -390,36 +414,19 @@ func think(delta):
 	if brain.target and brain.target.dead:
 		brain.target = null
 	if not brain.target:
-		for enemy in enemies:
-			if not enemy.dead:
-				var dist = pathfinder.distance_to_enemy(enemy)
-				if closest == null or (dist != 0 and closest > dist):
-					brain.aggro = true
-					brain.target = enemy
-					closest = dist
+		brain.target = closest_enemy()
 	if brain.target:
 		var path = pathfinder.path_to_enemy(brain.target)
-		var next = null
-		if path.size() > 1:
-			next = path[0]
-			while abs(next.y - position.y) < 16 and abs(next.x - position.x) < 8:
-				path.remove(0)
-				if path.size() > 0:
-					next = path[0]
-				else:
-					next = null
-					break
-			if next:
-				for point in path:
-					$PathVis.add_point(point - position)
-				move_toward_point(next)
-		if (randf() <= brain.special_accuracy and should_special(brain.target, path)) \
-				or should_jump(brain.target, path):
+		if not follow_path(path):
+			# too clsoe for paths
+			move_toward_point(brain.target.position)
+		if randf() <= brain.special_accuracy * delta and should_special(brain.target, path):
 			input.press('special')
 		if should_attack(brain.target):
 			brain.attack_cooldown = 0.5
 			if randf() <= brain.attack_accuracy:
 				input.press('attack')
+			brain.target = null
 	else:
 		return
 		if is_on_wall():
@@ -435,8 +442,31 @@ func think(delta):
 		if abs(brain.wander) > 1:
 			input.press_axis(Vector2(brain.direction, 0))
 
-func move_toward_point(point):
+func follow_path(path, retreat=false):
+	var moved = false
+	var next = null
+	if path.size() > 1:
+		next = path[0]
+		while abs(next.y - position.y) < 16 and abs(next.x - position.x) < 8:
+			path.remove(0)
+			if path.size() > 0:
+				next = path[0]
+			else:
+				next = null
+				break
+		if next:
+			for point in path:
+				$PathVis.add_point(point - position)
+			move_toward_point(next, retreat)
+			moved = true
+	if should_jump(brain.target, path):
+		input.press('special')
+	return moved
+
+func move_toward_point(point, retreat=false):
 	var dir = point.x - position.x
 	if abs(dir) > 16*8:
 		dir *= -1 # wrap around map
+	if retreat:
+		dir *= -1 # run away!
 	input.press_axis(Vector2(dir, 0))
