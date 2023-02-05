@@ -27,7 +27,7 @@ func set_mappings(mappings):
 
 func override():
 	return Input.is_action_pressed(overrides['a']) \
-	   and Input.is_action_pressed(overrides['b'])
+		and Input.is_action_pressed(overrides['b'])
 
 func press(action):
 	pressed[action] = 1

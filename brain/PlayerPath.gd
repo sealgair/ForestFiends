@@ -61,7 +61,14 @@ func connect_node(point):
 							if jump_on == null:
 								connect_points(side, jump_to)
 								break
-			# TODO: jumping up ledges
+					# TODO: jump over gaps with height differences
+			else:
+				# look up to see if we can jump
+				for i in range(1, player.jump_height):
+					var jump_pos = pos - Vector2(0, i*cell_size.y)
+					var jump_point = get_point_exact(jump_pos)
+					if jump_point != null:
+						connect_points(point, jump_point)
 	else:
 		# falling
 		connect_points(point, below, false)
