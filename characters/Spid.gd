@@ -10,20 +10,21 @@ var web_parts = {}
 var top_web = null
 var WebTracker = preload("res://characters/WebTracker.gd")
 
-
 signal make_web(start, end, player)
 
 
-func _ready():
+func init(start_pos, the_tilemap):
 	sides = [$RightTouch, $LeftTouch, $TopTouch, $BottomTouch]
 	corners = [$ULCorner, $URCorner, $BLCorner, $BRCorner]
+	jump_height = 2
+	jump_dist = 3
 	base_gravity = gravity
 	jumping = true
-
+	PlayerPath = load("res://brain/WaspPath.gd")
+	.init(start_pos, the_tilemap)
 
 func get_species():
 	return "Spid"
-	
 	
 func get_animation():
 	var pressed = axes_pressed()
@@ -68,7 +69,6 @@ func get_animation():
 	else:
 		return "idle"
 
-
 func unitize(vec):
 	if vec.x != 0:
 		vec.x = vec.x / abs(vec.x)
@@ -76,10 +76,8 @@ func unitize(vec):
 		vec.y = vec.y / abs(vec.y)
 	return vec
 
-
 func flip(vec2):
 	return Vector2(vec2.y, vec2.x)
-
 
 func side_dir():
 	var touches = Vector2()
@@ -88,7 +86,6 @@ func side_dir():
 			touches += side.get_node("CollisionShape2D").transform.origin
 	return unitize(touches)
 
-
 func corner_count():
 	var count = 0
 	for corner in corners:
@@ -96,14 +93,12 @@ func corner_count():
 			count += 1
 	return count
 
-
 func corner_dir():
 	if corner_count() == 1:
 		for corner in corners:
 			if corner.get_overlapping_bodies().size() > 0:
 				return unitize(corner.get_node("CollisionShape2D").transform.origin)
 	return Vector2()
-
 
 func edge_point():
 	var corner = corner_dir()
@@ -114,14 +109,14 @@ func edge_point():
 	edge -= size/2 * corner  # back to center
 	return edge
 
-
 func attack_pressed():
 	if web_parts.size() == 0:
 		if not jumping:
 			start_web()
+			attack_timeout = 0 # no need to wait to stop the web
+			brain.will_jump = true
 	else:
 		stop_web(true)
-
 
 func butt_offset():
 	var facing = facing2()
@@ -147,7 +142,6 @@ func butt_offset():
 		butt *= size/2
 	return butt
 
-
 func start_web():
 	var web = WebTracker.new(position, self)
 	web_parts[Vector2()] = web
@@ -159,7 +153,6 @@ func start_web():
 		if corner_count() > 1:
 			web.offset += butt_offset()
 	top_web = web
-
 
 func stop_web(keep=false):
 	if keep:
@@ -179,11 +172,9 @@ func stop_web(keep=false):
 	web_parts = {}
 	top_web = null
 
-
 func update_web():
 	for web in web_parts.values():
 		web.update(position, butt_offset())
-
 
 func wrap_screen(amount):
 	.wrap_screen(amount)
@@ -203,7 +194,6 @@ func wrap_screen(amount):
 			web_parts[more_web.start_transform] = more_web
 		top_web = more_web
 
-
 func special_pressed():
 	if not jumping:
 		jumping = true
@@ -216,7 +206,6 @@ func special_pressed():
 		if side.y == 0:
 			jump_vel.y += .5
 		velocity += jump_vel * jump_speed
-
 
 func move(x,y):
 	var side = side_dir()
@@ -266,23 +255,110 @@ func move(x,y):
 			if (side.x == 0 or side.y == 0) and corner_count() != 1:
 				from_side = side * 1 # copy
 
-
 func die():
 	.die()
 	$AnimatedSprite.flip_v = false
 	$AnimatedSprite.rotation_degrees = 0
 	gravity = base_gravity
 
-
 func revive(new_pos):
 	.revive(new_pos)
 	jumping = true
 
-
 func _process(_delta):
 	update_web()
-
 
 func _on_Hit_body_entered(other):
 	if other.webs.size() > 0:
 		hit(other)
+
+func track_distance(amount):
+	.track_distance(amount)
+	if web_parts.size() == 0:
+		brain.web_dist -= amount
+
+func init_brain():
+	var data = .init_brain()
+	data.attack_accuracy = 1 # gets offset other ways
+	data.web_dist = next_web_dist()
+	data.web_target = null
+	data.will_jump = false
+	return data
+
+func next_web_dist():
+	return 16 + randf() * 16*4
+
+func opposing_surface():
+	var surface = null
+	var tile = Global.round2(position / tilemap.cell_size)
+	for d in range(1, jump_height+2):
+		var next = tile + -side_dir() * d
+		if tilemap.get_cellv(next) != tilemap.INVALID_CELL:
+			return next
+	return null
+
+func should_attack(enemy):
+	if not jumping:
+		if web_parts.size() > 0:
+			# has to cross air
+			var airs = 0
+			var web = web_parts[Vector2()]
+			var start = Global.round2(web.start / tilemap.cell_size)
+			var end = Global.round2((position + web.end_transform) / tilemap.cell_size)
+			var points = Global.points_on_line(start, end)
+			for point in points:
+				point = Global.wrap2(point, Vector2(), Vector2(16,16))
+				if tilemap.get_cellv(point) == tilemap.INVALID_CELL:
+					airs += 1
+					if airs >= 2:
+						return true
+			
+		else:
+			brain.web_target = null
+			if brain.web_dist <= 0:
+				brain.web_dist = next_web_dist()
+				return true
+	return false
+
+func should_jump(enemy, path=[]):
+	if brain.will_jump:
+		brain.will_jump = false
+		return true
+	else:
+		return .should_jump(enemy, path)
+
+func target_position():
+	if brain.target == null:
+		var closest = null
+		for enemy in enemies:
+			# if there's a webbed enemy, go there first
+			if enemy.webs.size() > 0 and not enemy.dead:
+				var dist = (enemy.position - position).length()
+				if closest == null or dist < closest:
+					closest = dist
+					brain.target = enemy
+	elif brain.target.dead or brain.target.webs.size() <= 0:
+		brain.target = null
+	
+	if brain.target:
+		return brain.target.position
+	else:
+		return safe_spot()
+
+func move_toward_point(point):
+	var dir = point - position
+	if dir.length() > 4:
+		# wrap around map
+		if abs(dir.x) > 16*8:
+			dir.x *= -1
+		if abs(dir.x) < 2:
+			dir.x = 0
+		if abs(dir.y) > 16*8:
+			dir.y *= -1
+		input.press_axis(dir)
+		
+		var sides = side_dir()
+		if sides.x == 0 and abs(dir.y) > 8:
+			input.press("special")
+		if sides.y == 0 and abs(dir.x) > 8:
+			input.press("special")

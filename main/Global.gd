@@ -173,8 +173,36 @@ static func round2(vec2):
 		int(round(vec2.y))
 	)
 
+static func clamp2(val, low, high):
+	return Vector2(
+		clamp(val.x, low.x, high.x),
+		clamp(val.y, low.y, high.y)
+	)
+
+static func wrap2(val, low, high):
+	return Vector2(
+		wrapf(val.x, low.x, high.x),
+		wrapf(val.y, low.y, high.y)
+	)
+
 static func average(values):
 	var sum = 0
 	for value in values:
 		sum += value
 	return sum / values.size()
+
+static func points_on_line(start, end):
+	var points = []
+	if start != end:
+		var diff = end - start
+		if abs(diff.y) < abs(diff.x):
+			var slope = diff.y / diff.x
+			for x in range(start.x, end.x, sign(diff.x)):
+				var y = round(slope * (x - start.x) + start.y)
+				points.append(Vector2(x, y))
+		else:
+			var slope = diff.x / diff.y
+			for y in range(start.y, end.y, sign(diff.y)):
+				var x = round(slope * (y - start.y) + start.x)
+				points.append(Vector2(x, y))
+	return points

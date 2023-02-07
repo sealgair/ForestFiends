@@ -42,7 +42,8 @@ func build_nodes(tilemap):
 
 func connect_node(point):
 	var pos = get_point_position(point)
-	var below = get_point_exact(pos + Vector2(0, cell_size.y))
+	var below_pos = pos + Vector2(0, cell_size.y)
+	var below = get_point_exact(below_pos)
 	if below == null:
 		# grounded
 		for x in [cell_size.x, -cell_size.x]:
@@ -50,7 +51,7 @@ func connect_node(point):
 			var side = get_point_exact(side_pos)
 			if side:
 				connect_points(point, side)
-				# gotta make sure side doesn't have ground under it
+				# gotta make oe side doesn't have ground under it
 				if get_point_exact(side_pos + Vector2(0, cell_size.y)) != null:
 					# jumping over gaps
 					for i in range(player.jump_dist):
@@ -65,13 +66,30 @@ func connect_node(point):
 			else:
 				# look up to see if we can jump
 				for i in range(1, player.jump_height):
-					var jump_pos = pos - Vector2(0, i*cell_size.y)
+					var jump_pos = side_pos - Vector2(0, i*cell_size.y)
 					var jump_point = get_point_exact(jump_pos)
 					if jump_point != null:
 						connect_points(point, jump_point)
+						break
+						
+		# jumping
+		var above = get_point_exact(pos - Vector2(0, cell_size.y))
+		for i in range(1, player.jump_height):
+			var jump_pos = pos - Vector2(0, i*cell_size.y)
+			var jump_point = get_point_exact(jump_pos)
+			if jump_point != null:
+				connect_points(point, jump_point)
+			
 	else:
 		# falling
 		connect_points(point, below, false)
+		# fall diagonally
+		for x in [cell_size.x, -cell_size.x]:
+			var side_pos = below_pos + Vector2(x, 0)
+			var side = get_point_exact(side_pos)
+			if side:
+				connect_points(point, side)
+	
 
 func get_point_exact(pos: Vector2):
 	pos = wrapp(pos)
@@ -102,11 +120,15 @@ func path_between(a, b):
 	return get_point_path(point_a, point_b)
 
 func ground_below(point, breadth=1, step=1):
+	var pos = get_point_position(point)
+	var below = ground_below_pos(pos)
+	return get_point_exact(below)
+	
+func ground_below_pos(pos, breadth=1, step=1):
 	"""
 	Breadth-first recursive check of points below that given in a cone
 	shape, to find the highest ground it might land on
 	"""
-	var pos = get_point_position(point)
 	var pos_below = pos + Vector2(0, cell_size.y)
 	pos_below.y = wrapi(pos_below.y, 0, map_dimensions.y)
 	# breadth-first check of nodes below current (directly and to both sides)
@@ -114,11 +136,10 @@ func ground_below(point, breadth=1, step=1):
 		for x in [b * cell_size.x, -b * cell_size.x]:
 			var pos_beside = pos_below + Vector2(x, 0)
 			pos_beside.x = wrapi(pos_beside.x, 0, map_dimensions.x)
-			var check_point = get_point_exact(pos_beside)
-			if check_point == null:
-				return point
+			if get_point_exact(pos_beside) == null:
+				return pos
 	# nothing found at this level, check the next level
-	return ground_below(get_point_exact(pos_below), breadth+step, step)
+	return ground_below_pos(pos_below, breadth+step, step)
 
 func path_to_enemy(enemy):
 	var point_a = get_closest_point(player.position)

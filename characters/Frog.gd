@@ -83,8 +83,8 @@ func should_attack(enemy):
 	if abs(angle) < TAU/8:
 		return dist.length() < attack_range
 
-func move_toward_point(point, retreat=false):
-	.move_toward_point(point, retreat)
+func move_toward_point(point):
+	.move_toward_point(point)
 	if position.y - point.y <= 4 or is_on_floor():
 		# dont' jump if we need to go down
 		input.press('special')

@@ -16,12 +16,10 @@ func _init(position, parent):
 	parent.add_child(web)
 	update(start)
 
-
 func update(position, butt_offset=Vector2()):
 	if web != null:
 		web.set_start(start - position + offset + start_transform)
 		web.set_end(butt_offset + end_transform)
-
 
 func queue_free():
 	web.queue_free()

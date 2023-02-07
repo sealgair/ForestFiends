@@ -27,13 +27,14 @@ func _ready():
 	$Score.text = String(score_limit)
 	var spawn_points = $Map.get_spawn_points()
 	var species_choices = {
-#		'Shrew': 3,
-#		'Slug': 1,
-#		'Turt': 2,
-#		'Wasp': 1,
+		'Shrew': 3,
+		'Slug': 1,
+		'Turt': 2,
+		'Wasp': 1,
 		'Bird': 3,
-#		'Frog': 2,
-#		'Mant': 1,
+		'Frog': 2,
+		'Mant': 1,
+		'Spid': 1,
 	}
 	
 	var existing_palettes = {}

@@ -90,26 +90,6 @@ func reset_brain():
 	brain.hiding_spot = null
 	brain.hiding = 0
 
-func can_stand(x, y):
-	return tilemap.get_cell(x, y) == tilemap.INVALID_CELL \
-			and tilemap.get_cell(x, y+1) != tilemap.INVALID_CELL
-
-func safe_spot():
-	var furthest = null
-	var spot = null
-	# ground tile furthest from enemies
-	for y in range(16):
-		for x in range(16):
-			if can_stand(x, y):
-				var dists = []
-				for enemy in enemies:
-					dists.append((enemy.position - position).length())
-				var dist = Global.average(dists)
-				if furthest == null or dist > furthest:
-					dist = furthest
-					spot = Vector2(x, y) * tilemap.cell_size
-	return spot
-
 func think(delta):
 	var hide = false
 	if brain.recon > 0 or revive_countdown > 0:

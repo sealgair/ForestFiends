@@ -198,6 +198,9 @@ func handle_input(delta):
 		if input.is_just_released('attack'):
 			attack_released()
 
+func track_distance(amount):
+	distance += amount
+
 func _physics_process(delta):
 	if jumping and is_on_floor():
 		jumping = false
@@ -227,7 +230,7 @@ func _physics_process(delta):
 		velocity.y += gravity * delta
 	var before = position
 	velocity = move_and_slide(velocity, Vector2(0, -1))
-	distance += (position - before).length()
+	track_distance((position - before).length())
 	
 	# use transform not position so as not to break physics
 	var screenwrap = Vector2(
@@ -359,10 +362,13 @@ func init_brain():
 		'attack_accuracy': 0.5,
 		'special_accuracy': 0.5,
 		'state': 'attack',
+		'seek_ground': true,
+		'safe_spot': null,
 	}
 
 func reset_brain():
 	brain.target = null
+	brain.safe_spot = null
 
 func should_attack(enemy):
 	return abs(position.y - enemy.position.y) < size.y/2 \
@@ -407,19 +413,60 @@ func closest_enemy(path=true):
 				closest = dist
 	return target
 
-func think(delta):
-	$PathVis.clear_points()
-	
-	var closest = null
+func can_stand(x, y):
+	return tilemap.get_cell(x, y) == tilemap.INVALID_CELL \
+			and tilemap.get_cell(x, y+1) != tilemap.INVALID_CELL
+
+func path_contains_enemy(path):
+	var prev = null
+	for point in path:
+		if prev != null:
+			for enemy in enemies:
+				if Geometry.segment_intersects_circle(prev, point, enemy.position, 16) != -1:
+					return true
+		prev = point
+	return false
+
+func safe_spot():
+	if brain.safe_spot == null:
+		var furthest = null
+		var spot = null
+		# ground tile furthest from enemies
+		for y in range(16):
+			for x in range(16):
+				if can_stand(x, y):
+					var pos = Vector2(x, y) * tilemap.cell_size
+					var path = pathfinder.path_between(position, pos)
+					if path and not path_contains_enemy(path):
+						var dist = pathfinder.path_distance(path)
+						if furthest == null or dist > furthest:
+							furthest = dist
+							spot = pos
+		brain.safe_spot = spot
+	return brain.safe_spot
+
+func target_position():
 	if brain.target and brain.target.dead:
 		brain.target = null
 	if not brain.target:
 		brain.target = closest_enemy()
 	if brain.target:
-		var path = pathfinder.path_to_enemy(brain.target)
+		return brain.target.position
+	return null
+
+func think(delta):
+	$PathVis.clear_points()
+	
+	var target = target_position()
+	if target != null:
+		var path
+		if brain.seek_ground:
+			path = pathfinder.path_between(position, pathfinder.ground_below_pos(target))
+		else:
+			path = pathfinder.path_between(position, target)
 		if not follow_path(path):
-			# too clsoe for paths
-			move_toward_point(brain.target.position)
+			# too close for paths
+			move_toward_point(target)
 		if randf() <= brain.special_accuracy * delta and should_special(brain.target, path):
 			input.press('special')
 		if should_attack(brain.target):
@@ -428,7 +475,7 @@ func think(delta):
 				input.press('attack')
 			brain.target = null
 	else:
-		return
+		return # TODO: less aggro state?
 		if is_on_wall():
 			brain.direction *= -1
 		if brain.wander > 0:
@@ -442,7 +489,7 @@ func think(delta):
 		if abs(brain.wander) > 1:
 			input.press_axis(Vector2(brain.direction, 0))
 
-func follow_path(path, retreat=false):
+func follow_path(path):
 	var moved = false
 	var next = null
 	if path.size() > 1:
@@ -457,16 +504,16 @@ func follow_path(path, retreat=false):
 		if next:
 			for point in path:
 				$PathVis.add_point(point - position)
-			move_toward_point(next, retreat)
+			move_toward_point(next)
 			moved = true
 	if should_jump(brain.target, path):
 		input.press('special')
 	return moved
 
-func move_toward_point(point, retreat=false):
+func move_toward_point(point):
 	var dir = point.x - position.x
 	if abs(dir) > 16*8:
 		dir *= -1 # wrap around map
-	if retreat:
-		dir *= -1 # run away!
-	input.press_axis(Vector2(dir, 0))
+	if abs(dir) > 3:
+		# don't spin in place
+		input.press_axis(Vector2(dir, 0))
