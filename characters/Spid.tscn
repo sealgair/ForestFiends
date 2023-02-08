@@ -106,7 +106,6 @@ script = ExtResource( 5 )
 [node name="AnimatedSprite" parent="." index="0"]
 material = SubResource( 27 )
 frames = SubResource( 30 )
-frame = 0
 
 [node name="Debug" parent="." index="2"]
 margin_left = -6.0
@@ -120,5 +119,8 @@ collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hit" index="0"]
 shape = SubResource( 42 )
+
+[node name="PathVis" parent="." index="7"]
+visible = true
 
 [connection signal="body_entered" from="Hit" to="." method="_on_Hit_body_entered"]

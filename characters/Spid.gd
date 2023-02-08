@@ -155,18 +155,21 @@ func start_web():
 			web.offset += butt_offset()
 	top_web = web
 
+func web_end():
+	var end = position
+	if edge_point().length() <= edge_grab:
+		end += corner_dir() * (size * (5.0/8.0))
+	else:
+		end += side_dir() * size/2
+	return end
+
 func stop_web(keep=false):
 	if keep:
-		var end = position
-		if edge_point().length() <= edge_grab:
-			end += corner_dir() * (size * (5.0/8.0))
-		else:
-			end += side_dir() * size/2
 		for web in web_parts.values():
 			emit_signal(
 				"make_web", 
 				web.start + web.offset + web.start_transform, 
-				end + web.end_transform, 
+				web_end() + web.end_transform, 
 				self)
 	for web in web_parts.values():
 		web.queue_free()
@@ -270,7 +273,7 @@ func _process(_delta):
 	update_web()
 
 func _on_Hit_body_entered(other):
-	if other.webs.size() > 0:
+	if not other.dead and other.webs.size() > 0:
 		hit(other)
 
 func track_distance(amount):
@@ -304,14 +307,15 @@ func should_attack(enemy):
 			# has to cross air
 			var airs = 0
 			var web = web_parts[Vector2()]
-			var start = Global.round2(web.start / tilemap.cell_size)
-			var end = Global.round2((position + web.end_transform) / tilemap.cell_size)
+			var start = web.start
+			var end = web_end()
 			var points = Global.points_on_line(start, end)
 			for point in points:
-				point = Global.wrap2(point, Vector2(), Vector2(16,16))
-				if tilemap.get_cellv(point) == tilemap.INVALID_CELL:
+				point = Global.wrap2(point, Vector2(), screen_size)
+				var tile = Global.round2(point / tilemap.cell_size)
+				if tilemap.get_cellv(tile) == tilemap.INVALID_CELL:
 					airs += 1
-					if airs >= 2:
+					if airs >= 16:
 						return true
 			
 		else:
