@@ -127,7 +127,7 @@ func spawn(player, spawn_point=null):
 			sp *= $Map.get_cell_size()
 			var webbed = false
 			for web in webs:
-				if web.intersection_center(Rect2(sp, $Map.get_cell_size())):
+				if web.intersection_center(sp, 12):
 					webbed = true
 					break
 			if not webbed:

@@ -305,12 +305,12 @@ func slime():
 	slimed = slime_time
 
 func ensnare(web):
-	var point = web.intersection_center(self)
+	var point = web.intersection_center(self.position)
 	if point != null:
 		webs.append(web)
 		web_points[web.get_instance_id()] = point
 	else:
-		point = web.intersection_center(self)
+		point = web.intersection_center(self.position)
 
 func desnare(web):
 	web_points.erase(web.get_instance_id())

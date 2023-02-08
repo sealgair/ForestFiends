@@ -67,37 +67,17 @@ func _process(delta):
 			$Line2D.modulate = Color(1,1,1,opacity)
 
 
-func intersection_center(square):
-	var center = square.position
-	var size = square.size/2
-	var square_lines = [
-		# top
-		[Vector2(center.x - size.x, center.y - size.y), 
-		 Vector2(center.x + size.x, center.y - size.y)],
-		# left
-		[Vector2(center.x - size.x, center.y - size.y), 
-		 Vector2(center.x - size.x, center.y + size.y)],
-		# right
-		[Vector2(center.x + size.x, center.y - size.y), 
-		 Vector2(center.x + size.x, center.y + size.y)],
-		# bottom
-		[Vector2(center.x - size.x, center.y + size.y), 
-		 Vector2(center.x + size.x, center.y + size.y)],
-	]
-	var intersections = []
-	var web_line = $Line2D.points
-	for line in square_lines:
-		var intersection = Geometry.segment_intersects_segment_2d(
-			web_line[0], web_line[1],
-			line[0], line[1]
-		)
-		if intersection != null:
-			intersections.append(intersection)
-	if intersections.size() > 0:
-		return Global.center(intersections)
-	else:
+func intersection_center(center, radius=8):
+	var start = $Line2D.points[0]
+	var end = $Line2D.points[1]
+	var intersect = Geometry.segment_intersects_circle(start, end, center, radius)
+	if intersect == -1:
 		return null
-
+	else:
+		var diff = end - start
+		var hyp = diff.length() * intersect
+		var angle = atan2(diff.y, diff.x)
+		return start + Vector2(cos(angle) * hyp, sin(angle) * hyp)
 
 func end_decay():
 	queue_free()
