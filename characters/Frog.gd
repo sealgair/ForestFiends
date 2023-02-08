@@ -85,6 +85,8 @@ func should_attack(enemy):
 
 func move_toward_point(point):
 	.move_toward_point(point)
-	if position.y - point.y <= 4 or is_on_floor():
-		# dont' jump if we need to go down
-		input.press('special')
+	if position.y - point.y > 0 or is_on_ceiling():
+		# let go of jump if we need to go down, or our head touched the roof
+		input.release('special')
+	elif is_on_floor():
+		input.hold('special')

@@ -513,6 +513,6 @@ func move_toward_point(point):
 	var dir = point - position
 	if abs(dir.x) > 16*8:
 		dir.x *= -1 # wrap around map
-	if abs(dir.x) > 6 or dir.y > 2:
+	if abs(dir.x) > 6 or (dir.y > 2 and is_on_floor()):
 		# don't spin in place
 		input.press_axis(Vector2(dir.x, 0))
