@@ -99,8 +99,10 @@ func think(delta):
 			players.append(enemy.order)
 			brain.tracked_tiles[pos] = players
 		brain.recon -= delta
-		var path = pathfinder.path_between(position, safe_spot())
-		follow_path(path)
+		var safe = safe_spot()
+		if safe:
+			var path = pathfinder.path_between(position, safe)
+			follow_path(path)
 	else:
 		if not hidden:
 			if poised:

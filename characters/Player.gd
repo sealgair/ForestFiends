@@ -429,20 +429,20 @@ func path_contains_enemy(path):
 
 func safe_spot():
 	if brain.safe_spot == null:
-		var furthest = null
-		var spot = null
-		# ground tile furthest from enemies
-		for y in range(16):
-			for x in range(16):
-				if can_stand(x, y):
-					var pos = Vector2(x, y) * tilemap.cell_size
-					var path = pathfinder.path_between(position, pos)
-					if path and not path_contains_enemy(path):
-						var dist = pathfinder.path_distance(path)
-						if furthest == null or dist > furthest:
-							furthest = dist
-							spot = pos
-		brain.safe_spot = spot
+		var target = closest_enemy()
+		# go to the first air tile under the first ground tile under the closest
+		# enemy
+		var spot = target.position + Vector2(0, tilemap.cell_size.y)
+		spot.y = wrapf(spot.y, 0, screen_size.y)
+		# find first ground
+		while tilemap.get_cellv(Global.round2(spot / tilemap.cell_size)) == tilemap.INVALID_CELL:
+			spot += Vector2(0, tilemap.cell_size.y)
+			spot.y = wrapf(spot.y, 0, screen_size.y)
+		# find first air
+		while tilemap.get_cellv(Global.round2(spot / tilemap.cell_size)) != tilemap.INVALID_CELL:
+			spot += Vector2(0, tilemap.cell_size.y)
+			spot.y = wrapf(spot.y, 0, screen_size.y)
+		brain.safe_spot = pathfinder.ground_below_pos(spot) 
 	return brain.safe_spot
 
 func target_position():
@@ -455,8 +455,6 @@ func target_position():
 	return null
 
 func think(delta):
-	$PathVis.clear_points()
-	
 	var target = target_position()
 	if target != null:
 		var path
@@ -502,6 +500,7 @@ func follow_path(path):
 				next = null
 				break
 		if next:
+			$PathVis.clear_points()
 			for point in path:
 				$PathVis.add_point(point - position)
 			move_toward_point(next)
@@ -511,9 +510,9 @@ func follow_path(path):
 	return moved
 
 func move_toward_point(point):
-	var dir = point.x - position.x
-	if abs(dir) > 16*8:
-		dir *= -1 # wrap around map
-	if abs(dir) > 3:
+	var dir = point - position
+	if abs(dir.x) > 16*8:
+		dir.x *= -1 # wrap around map
+	if abs(dir.x) > 6 or dir.y > 2:
 		# don't spin in place
-		input.press_axis(Vector2(dir, 0))
+		input.press_axis(Vector2(dir.x, 0))

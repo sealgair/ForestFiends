@@ -85,10 +85,11 @@ func connect_node(point):
 		connect_points(point, below, false)
 		# fall diagonally
 		for x in [cell_size.x, -cell_size.x]:
-			var side_pos = below_pos + Vector2(x, 0)
-			var side = get_point_exact(side_pos)
-			if side:
-				connect_points(point, side)
+			var side = get_point_exact(pos + Vector2(x, 0))
+			var side_below = get_point_exact(below_pos + Vector2(x, 0))
+			if side and side_below:
+				# needs to be an empty space above if we're gonna move while falling
+				connect_points(point, side_below, false)
 	
 
 func get_point_exact(pos: Vector2):
