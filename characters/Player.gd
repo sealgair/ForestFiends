@@ -371,8 +371,8 @@ func reset_brain():
 	brain.safe_spot = null
 
 func should_attack(enemy):
-	return abs(position.y - enemy.position.y) < size.y/2 \
-			and abs(position.x - enemy.position.x) < attack_range
+	var diff = enemy.position - position
+	return abs(diff.y) < size.y/2 and abs(diff.x) < attack_range
 
 func should_special(enemy, path=[]):
 	return false
@@ -398,16 +398,15 @@ func should_jump(enemy, path=[]):
 			return true
 	return false
 
-func closest_enemy(path=true):
+func can_be_target(enemy, filter_ops={}):
+	return enemy != null and not enemy.dead and not enemy.hidden
+
+func closest_enemy(filter_ops={}):
 	var closest = null
 	var target = null
 	for enemy in enemies:
-		if not enemy.dead and not enemy.hidden:
-			var dist
-			if path:
-				dist = pathfinder.distance_to_enemy(enemy)
-			else:
-				dist = (enemy.position - position).length()
+		if can_be_target(enemy, filter_ops):
+			var dist = pathfinder.distance_to_enemy(enemy)
 			if closest == null or (dist != 0 and closest > dist):
 				target = enemy
 				closest = dist
@@ -429,7 +428,9 @@ func path_contains_enemy(path):
 
 func safe_spot():
 	if brain.safe_spot == null:
-		var target = closest_enemy()
+		var target = closest_enemy({'safe': true})
+		if target == null:
+			return null
 		# go to the first air tile under the first ground tile under the closest
 		# enemy
 		var spot = target.position + Vector2(0, tilemap.cell_size.y)
@@ -446,7 +447,7 @@ func safe_spot():
 	return brain.safe_spot
 
 func target_position():
-	if brain.target and brain.target.dead:
+	if not can_be_target(brain.target):
 		brain.target = null
 	if not brain.target:
 		brain.target = closest_enemy()

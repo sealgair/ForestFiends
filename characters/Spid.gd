@@ -12,10 +12,11 @@ var WebTracker = preload("res://characters/WebTracker.gd")
 
 signal make_web(start, end, player)
 
-
-func init(start_pos, the_tilemap):
+func _ready():
 	sides = [$RightTouch, $LeftTouch, $TopTouch, $BottomTouch]
 	corners = [$ULCorner, $URCorner, $BLCorner, $BRCorner]
+
+func init(start_pos, the_tilemap):
 	jump_height = 2
 	jump_dist = 3
 	base_gravity = gravity
@@ -327,23 +328,17 @@ func should_jump(enemy, path=[]):
 	else:
 		return .should_jump(enemy, path)
 
+func can_be_target(enemy, filter_ops={}):
+	var can_be = .can_be_target(enemy)
+	if not filter_ops.get('safe', false):
+		can_be = can_be and enemy.webs.size() > 0
+	return can_be
+
 func target_position():
-	if brain.target == null:
-		var closest = null
-		for enemy in enemies:
-			# if there's a webbed enemy, go there first
-			if enemy.webs.size() > 0 and not enemy.dead:
-				var dist = (enemy.position - position).length()
-				if closest == null or dist < closest:
-					closest = dist
-					brain.target = enemy
-	elif brain.target.dead or brain.target.webs.size() <= 0:
-		brain.target = null
-	
-	if brain.target:
-		return brain.target.position
-	else:
-		return safe_spot()
+	var target = .target_position()
+	if target == null:
+		target = safe_spot()
+	return target
 
 func move_toward_point(point):
 	var dir = point - position

@@ -22,6 +22,9 @@ func move(x, y):
 	.move(x, y)
 	to_velocity.y = y * run_speed
 
+func can_be_target(enemy, filter_ops={}):
+	return .can_be_target(enemy) and enemy.poisoned_by != self
+
 func move_toward_point(point):
 	var dir = point - position
 	 # wrap around map

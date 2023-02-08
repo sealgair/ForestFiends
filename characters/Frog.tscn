@@ -103,6 +103,7 @@ default_color = Color( 1, 0, 0.301961, 1 )
 [node name="AnimatedSprite" parent="." index="1"]
 material = SubResource( 22 )
 frames = SubResource( 23 )
+frame = 0
 
 [node name="Reticle" type="AnimatedSprite" parent="." index="5"]
 position = Vector2( -16, 0 )

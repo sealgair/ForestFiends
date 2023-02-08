@@ -49,6 +49,8 @@ func _ready():
 		if player_data.computer and computers < max_computers:
 			computers += 1
 			player_data.species = Global.weighted_rand_choice(species_choices)
+			if computers < 2:
+				player_data.species = "Spid"
 			var palette = randi() % 4
 			var species_palettes = existing_palettes.get(player_data.species, [])
 			while palette in species_palettes:
