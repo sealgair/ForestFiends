@@ -48,7 +48,16 @@ func _ready():
 	for player_data in start_data:
 		if player_data.computer and computers < max_computers:
 			computers += 1
-			player_data.species = Global.weighted_rand_choice(species_choices)
+			var overrides = {
+#				1: 'Spid',
+#				2: 'Wasp',
+#				3: 'Frog',
+#				4: 'Bird',
+			}
+			if computers in overrides:
+				player_data.species = overrides[computers]
+			else:
+				player_data.species = Global.weighted_rand_choice(species_choices)
 			var palette = randi() % 4
 			var species_palettes = existing_palettes.get(player_data.species, [])
 			while palette in species_palettes:
