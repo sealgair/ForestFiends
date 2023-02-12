@@ -54,7 +54,7 @@ func _process(delta):
 
 func should_special(enemy, path=[]):
 	if randf() <= brain.special_accuracy:
-		var dv = abs2(position - enemy.position)
+		var dv = Global.abs2(position - enemy.position)
 		if dv.y < size.y:
 			if dv.x < size.x*4 and dv.x > size.x:
 				return true

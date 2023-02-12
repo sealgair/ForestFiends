@@ -9,7 +9,7 @@ var player_selectors
 func _ready():
 	selectors = [
 		[$Selector1, $Selector2, $Selector3,],
-		[$Selector4, null, $Selector6,],
+		[$Selector4, $Selector5, $Selector6,],
 		[$Selector7, $Selector8, $Selector9,],
 	]
 	player_selectors = [

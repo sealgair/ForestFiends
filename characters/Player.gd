@@ -202,6 +202,10 @@ func track_distance(amount):
 	distance += amount
 
 func _physics_process(delta):
+	do_physics_process(delta)
+
+func do_physics_process(delta):
+	# so it can be overridden
 	if jumping and is_on_floor():
 		jumping = false
 	
@@ -257,6 +261,10 @@ func get_animation():
 		return "idle"
 
 func _process(delta):
+	do_process(delta)
+
+func do_process(delta):
+	# so it can be overridden
 	if not is_attacking():
 		attack_timeout = max(0, attack_timeout - delta)
 	special_timeout = max(0, special_timeout - delta)
@@ -349,9 +357,6 @@ func _on_PoisonTimer_timeout():
 		poisoned_by.make_score(self)
 		die()
 		poisoned_by = null
-
-func abs2(vec2):
-	return Vector2(abs(vec2.x), abs(vec2.y))
 
 var brain = init_brain()
 func init_brain():

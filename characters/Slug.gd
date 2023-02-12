@@ -69,7 +69,7 @@ func _process(delta):
 
 
 func should_special(enemy, next=null):
-	var dv = abs2(position - enemy.position)
+	var dv = Global.abs2(position - enemy.position)
 	if dv.y < 16:
 		if dv.x < 16*4 and dv.x > 16:
 			return true

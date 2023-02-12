@@ -132,7 +132,7 @@ func butt_offset():
 		butt *= 12
 	elif sides.length() > 1:
 		# corner
-		butt = flip(abs2(from_side)) * -facing
+		butt = flip(Global.abs2(from_side)) * -facing
 		butt *= size/2
 	else:
 		#side
@@ -236,7 +236,7 @@ func move(x,y):
 				1 if x == corner.x else 0,
 				1 if y == corner.y else 0
 			)
-			var invert_input_mask = abs2(Vector2(1,1) - input_mask)
+			var invert_input_mask = Global.abs2(Vector2(1,1) - input_mask)
 			to_velocity = edge * run_speed/2 * invert_input_mask
 			to_velocity += corner * input_mask * run_speed
 		else:

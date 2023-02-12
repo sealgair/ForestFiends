@@ -11,6 +11,7 @@ var species = {
 	'Mant': preload("res://characters/Mant.tscn"),
 	'Slug': preload("res://characters/Slug.tscn"),
 	'Spid': preload("res://characters/Spid.tscn"),
+	'Fungus': preload("res://characters/Fungus.tscn"),
 }
 var aminal_names = {
 	"Shrew": "Sherm",
@@ -21,6 +22,7 @@ var aminal_names = {
 	"Mant": "Manti",
 	"Slug": "Slaul",
 	"Spid": "Spid",
+	"Fungus": "Mycel",
 }
 var stats = {}
 var highscores = []
@@ -161,6 +163,9 @@ static func weighted_rand_choice(choices):
 		if spot > choose:
 			return option
 
+func abs2(vec2):
+	return Vector2(abs(vec2.x), abs(vec2.y))
+
 static func floor2(vec2):
 	return Vector2(
 		floor(vec2.x), 
@@ -184,6 +189,9 @@ static func wrap2(val, low, high):
 		wrapf(val.x, low.x, high.x),
 		wrapf(val.y, low.y, high.y)
 	)
+
+static func sign2(point):
+	return Vector2(sign(point.x), sign(point.y))
 
 static func average(values):
 	var sum = 0
