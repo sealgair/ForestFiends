@@ -34,16 +34,19 @@ func handle_input(delta):
 	elif tilemap.get_cellv(new_cursor) != tilemap.INVALID_CELL:
 		bump = axes * tilemap.cell_size / 4
 		
-	if input.is_just_pressed('special'):
-		spread()
+	if input.is_pressed('special'):
+		var dir = input.direction_pressed()
+		if dir.length() == 0:
+			dir = Global.sign2(bump)
+		if dir.length() > 0:
+			spread(dir)
 
-func spread():
+func spread(dir):
 	var myc = mycelium[cursor_cell]
-	for off in [Vector2(1,0), Vector2(-1,0), Vector2(0,1), Vector2(0,-1)]:
-		var cell = cursor_cell + off
-		if  myc.can_spread() and tilemap.get_cellv(cell) != tilemap.INVALID_CELL:
-			add_myc(cell, -off)
-			myc.grow(-0.1)
+	var cell = cursor_cell + dir
+	if  myc.can_spread() and tilemap.get_cellv(cell) != tilemap.INVALID_CELL:
+		add_myc(cell, -dir)
+		myc.grow(-0.2)
 
 func do_physics_process(delta):
 	if computer:
