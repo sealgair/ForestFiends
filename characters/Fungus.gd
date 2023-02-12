@@ -27,18 +27,33 @@ func add_myc(cell, dir, growth=0):
 	mycelium[cell] = myc
 	add_child(myc)
 
-func handle_input(delta):
-	var axes = input.direction_just_pressed()
-	var new_cursor = cursor_cell + axes
-	var wrapped_cursor = Global.wrap2(new_cursor, Vector2(), Vector2(16,16))
-	if valid_cell(wrapped_cursor) and axes.length() > 0:
-		if wrapped_cursor in mycelium:
-			cursor_cell = wrapped_cursor
+func move_cursor(dir):
+	var absolute_cursor = cursor_cell + dir
+	var new_cursor = Global.wrap2(absolute_cursor, Vector2(), Vector2(16,16))
+	if valid_cell(new_cursor) and dir.length() > 0:
+		if new_cursor in mycelium:
+			cursor_cell = new_cursor
 			spread_from = cursor_cell
-		elif (spread_from - new_cursor).length() < 2:
-			cursor_cell = wrapped_cursor
+		elif (spread_from - absolute_cursor).length() < 2:
+			cursor_cell = new_cursor
 		elif $Cursor.animation == "default":
 			$Cursor.play('leave') # blink in place
+		return true
+	return false
+
+func handle_input(delta):
+	var axes = input.direction_just_pressed()
+	if axes.length() > 0:
+		if not move_cursor(axes):
+			# check diagonals
+			if axes.x == 0:
+				for x in [1,-1]:
+					if move_cursor(Vector2(x, axes.y)):
+						break
+			elif axes.y == 0:
+				for y in [1,-1]:
+					if move_cursor(Vector2(axes.x, y)):
+						break
 		
 	if input.is_just_pressed('special') and not cursor_cell in mycelium:
 		spread(spread_from)
