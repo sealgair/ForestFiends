@@ -54,3 +54,17 @@ func direction_just_pressed(flip=false):
 	if flip:
 		dir = Vector2(dir.y, dir.x)
 	return dir
+
+func direction_just_released(flip=false):
+	var dir = Vector2(0,0)
+	if is_just_released('left'):
+		dir.x -= 1
+	if is_just_released('right'):
+		dir.x += 1
+	if is_just_released('up'):
+		dir.y -= 1
+	if is_just_released('down'):
+		dir.y += 1
+	if flip:
+		dir = Vector2(dir.y, dir.x)
+	return dir

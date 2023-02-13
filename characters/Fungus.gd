@@ -43,10 +43,13 @@ func move_cursor(dir):
 		elif $Cursor.animation == "default":
 			$Cursor.play('leave') # blink in place
 		return true
+	elif new_cursor in mushrooms and mushrooms[new_cursor].grown:
+		cursor_cell = new_cursor
+		return true
 	return false
 
 func handle_input(delta):
-	var axes = input.direction_just_pressed()
+	var axes = input.direction_just_released()
 	if axes.length() > 0:
 		if not move_cursor(axes):
 			# check diagonals
@@ -75,6 +78,7 @@ func spread(from):
 	if myc.can_spread() and ground_cell(cell):
 		add_myc(cell, from - cursor_cell)
 		myc.grow(-growth)
+		spread_from = cursor_cell
 
 func sprout():
 	var myc = mycelium[cursor_cell]

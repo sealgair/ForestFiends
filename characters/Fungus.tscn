@@ -66,7 +66,7 @@ animations = [ {
 "frames": [ null, SubResource( 5 ), SubResource( 6 ), SubResource( 7 ), SubResource( 8 ), SubResource( 9 ), SubResource( 10 ) ],
 "loop": false,
 "name": "enter",
-"speed": 24.0
+"speed": 36.0
 }, {
 "frames": [ SubResource( 11 ), SubResource( 12 ), SubResource( 13 ), SubResource( 14 ), SubResource( 15 ), SubResource( 16 ), null ],
 "loop": false,
