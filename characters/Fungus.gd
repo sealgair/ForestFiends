@@ -1,10 +1,14 @@
 extends "Player.gd"
 
 const MyceliumTile = preload("res://characters/MyceliumTile.tscn")
+const Mushroom = preload("res://characters/Mushroom.tscn")
 
 var mycelium = {}
+var mushrooms = {}
 var cursor_cell = Vector2()
 var spread_from = cursor_cell
+var growth = 0.2
+
 
 func get_species():
 	return "Fungus"
@@ -15,7 +19,7 @@ func init(start_pos, the_tilemap):
 	cursor_cell = Global.floor2(start_pos / tilemap.cell_size)
 	spread_from = cursor_cell
 	add_myc(cursor_cell, Vector2(0, -1), 0.75)
-	$Cursor.transform.origin = start_pos
+	$Cursor.position = start_pos
 	var myc_start = MyceliumTile.instance()
 
 func add_myc(cell, dir, growth=0):
@@ -30,7 +34,7 @@ func add_myc(cell, dir, growth=0):
 func move_cursor(dir):
 	var absolute_cursor = cursor_cell + dir
 	var new_cursor = Global.wrap2(absolute_cursor, Vector2(), Vector2(16,16))
-	if valid_cell(new_cursor) and dir.length() > 0:
+	if ground_cell(new_cursor) and dir.length() > 0:
 		if new_cursor in mycelium:
 			cursor_cell = new_cursor
 			spread_from = cursor_cell
@@ -57,17 +61,42 @@ func handle_input(delta):
 		
 	if input.is_just_pressed('special') and not cursor_cell in mycelium:
 		spread(spread_from)
+		
+	if input.is_just_pressed('attack') and cursor_cell in mycelium:
+		sprout()
 
-func valid_cell(cell):
+func ground_cell(cell):
 	return tilemap.get_cellv(cell) != tilemap.INVALID_CELL
 
 func spread(from):
 	var myc = mycelium[from]
 	var cell = cursor_cell
 	cell = Global.wrap2(cell, Vector2(), Vector2(16,16))
-	if myc.can_spread() and valid_cell(cell):
+	if myc.can_spread() and ground_cell(cell):
 		add_myc(cell, from - cursor_cell)
-		myc.grow(-0.2)
+		myc.grow(-growth)
+
+func sprout():
+	var myc = mycelium[cursor_cell]
+	if myc.growth < 0.8:
+		return false
+	var options = []
+	for side in [Vector2(1,0), Vector2(-1,0), Vector2(0,1), Vector2(0,-1)]:
+		var pos = cursor_cell+side
+		if not ground_cell(pos) and not pos in mushrooms:
+			options.append(side)
+	if options.size() > 0:
+		# TODO: choose option based on direction keys
+		var dir = Global.rand_choice(options)
+		var mush = Mushroom.instance()
+		mush.init(dir)
+		var pos = cursor_cell+dir
+		mush.position = pos * tilemap.cell_size
+		mushrooms[pos] = mush
+		add_child(mush)
+		myc.growth = 0.2
+		return true
+	return false
 
 func do_physics_process(delta):
 	if computer:
@@ -76,9 +105,9 @@ func do_physics_process(delta):
 
 func do_process(delta):
 	for myc in mycelium.values():
-		myc.grow(0.2*delta)
+		myc.grow(growth*delta)
 	var cursor_pos = cursor_cell * tilemap.cell_size
-	if cursor_pos != $Cursor.transform.origin and $Cursor.animation == "default":
+	if cursor_pos != $Cursor.position and $Cursor.animation == "default":
 		$Cursor.play('leave')
 
 func think(delta):
@@ -86,7 +115,7 @@ func think(delta):
 
 func _on_Cursor_animation_finished():
 	if $Cursor.animation == "leave": 
-		$Cursor.transform.origin = cursor_cell * tilemap.cell_size
+		$Cursor.position = cursor_cell * tilemap.cell_size
 		$Cursor.play('enter')
 	elif $Cursor.animation == "enter": 
 		$Cursor.play('default')
