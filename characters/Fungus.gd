@@ -81,12 +81,17 @@ func sprout():
 	if myc.growth < 0.8:
 		return false
 	var options = []
+	var hint = input.direction_pressed()
 	for side in [Vector2(1,0), Vector2(-1,0), Vector2(0,1), Vector2(0,-1)]:
 		var pos = cursor_cell+side
 		if not ground_cell(pos) and not pos in mushrooms:
+			# filter based on keys pressed
+			if hint.x != 0 and side.x != 0 and hint.x != side.x:
+				continue
+			if hint.y != 0 and side.y != 0 and hint.y != side.y:
+				continue
 			options.append(side)
 	if options.size() > 0:
-		# TODO: choose option based on direction keys
 		var dir = Global.rand_choice(options)
 		var mush = Mushroom.instance()
 		mush.init(dir)
