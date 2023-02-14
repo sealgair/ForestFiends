@@ -71,7 +71,7 @@ animations = [ {
 "frames": [ SubResource( 11 ), SubResource( 12 ), SubResource( 13 ), SubResource( 14 ), SubResource( 15 ), SubResource( 16 ), null ],
 "loop": false,
 "name": "leave",
-"speed": 24.0
+"speed": 36.0
 } ]
 
 [sub_resource type="AtlasTexture" id=4]

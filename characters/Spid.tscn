@@ -1,10 +1,16 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://characters/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://art/decay.png" type="Texture" id=3]
 [ext_resource path="res://main/PalletSwap.gdshader" type="Shader" id=4]
 [ext_resource path="res://characters/Spid.gd" type="Script" id=5]
 [ext_resource path="res://art/spid.png" type="Texture" id=6]
+
+[sub_resource type="ShaderMaterial" id=43]
+resource_local_to_scene = true
+shader = ExtResource( 4 )
+shader_param/palette = 0
+shader_param/palette_length = 8
 
 [sub_resource type="ShaderMaterial" id=27]
 resource_local_to_scene = true
@@ -103,11 +109,14 @@ extents = Vector2( 8, 8 )
 position = Vector2( 127, 245 )
 script = ExtResource( 5 )
 
-[node name="AnimatedSprite" parent="." index="0"]
+[node name="Fungus" parent="." index="0"]
+material = SubResource( 43 )
+
+[node name="AnimatedSprite" parent="." index="1"]
 material = SubResource( 27 )
 frames = SubResource( 30 )
 
-[node name="Debug" parent="." index="2"]
+[node name="Debug" parent="." index="3"]
 margin_left = -6.0
 margin_top = -20.0
 margin_right = 26.0

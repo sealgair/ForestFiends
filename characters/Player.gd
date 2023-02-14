@@ -48,6 +48,7 @@ var size = Vector2(16, 16) # todo: dynamic
 var attack_node = weakref(null)
 var dead = false
 var poisoned_by = null
+var infected_by = null
 var slimed = 0
 var slime_time = 2
 var webs = []
@@ -260,6 +261,12 @@ func get_animation():
 	else:
 		return "idle"
 
+func do_draw():
+	pass
+
+func _draw():
+	do_draw()
+
 func _process(delta):
 	do_process(delta)
 
@@ -291,6 +298,10 @@ func do_process(delta):
 			an.get_node("AnimatedSprite").flip_h = $AnimatedSprite.flip_h
 			an.transform.origin.x = abs(an.transform.origin.x)
 			an.transform.origin.x *= facing()
+	
+	$Fungus.flip_h = $AnimatedSprite.flip_h
+	$Fungus.flip_v = $AnimatedSprite.flip_v
+	$Fungus.rotation = $AnimatedSprite.rotation
 
 func is_vulnerable():
 	return not self.dead and revive_countdown <= 0
@@ -304,6 +315,12 @@ func make_score(other):
 func hit(other):
 	make_score(other)
 	other.die()
+
+func infect(other):
+	infected_by = other
+	$Fungus.material.set_shader_param("palette", palette)
+	$Fungus.play("grow")
+	$FungusTimer.start()
 
 func poison(other):
 	poisoned_by = other
@@ -345,6 +362,8 @@ func revive(new_pos):
 	position = new_pos
 	dead = false
 	poisoned_by = null
+	$Fungus.stop()
+	$Fungus.frame = 0
 	$AnimatedSprite.flip_v = false
 	# for invincibilty after revive
 	revive_countdown = revive_time
@@ -357,6 +376,12 @@ func _on_PoisonTimer_timeout():
 		poisoned_by.make_score(self)
 		die()
 		poisoned_by = null
+
+func _on_FungusTimer_timeout():
+	if infected_by:
+		infected_by.make_score(self)
+		die()
+		infected_by = null
 
 var brain = init_brain()
 func init_brain():
@@ -522,3 +547,4 @@ func move_toward_point(point):
 	if abs(dir.x) > 6 or (dir.y > 2 and is_on_floor()):
 		# don't spin in place
 		input.press_axis(Vector2(dir.x, 0))
+

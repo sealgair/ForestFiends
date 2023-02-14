@@ -65,8 +65,14 @@ func handle_input(delta):
 	if input.is_just_pressed('special') and not cursor_cell in mycelium:
 		spread(spread_from)
 		
-	if input.is_just_pressed('attack') and cursor_cell in mycelium:
-		sprout()
+	if input.is_just_pressed('attack'):
+		if cursor_cell in mycelium:
+			sprout()
+		elif cursor_cell in mushrooms:
+			var mush = mushrooms[cursor_cell]
+			# TODO: remove when it's done
+			for player in mush.burst():
+				player.infect(self)
 
 func ground_cell(cell):
 	return tilemap.get_cellv(cell) != tilemap.INVALID_CELL
@@ -107,6 +113,9 @@ func sprout():
 		return true
 	return false
 
+func do_draw():
+	pass
+
 func do_physics_process(delta):
 	if computer:
 		think(delta)
@@ -118,6 +127,9 @@ func do_process(delta):
 	var cursor_pos = cursor_cell * tilemap.cell_size
 	if cursor_pos != $Cursor.position and $Cursor.animation == "default":
 		$Cursor.play('leave')
+	for mpos in mushrooms.keys():
+		if mushrooms[mpos].done:
+			mushrooms.erase(mpos)
 
 func think(delta):
 	pass
