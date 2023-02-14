@@ -115,6 +115,7 @@ material = SubResource( 43 )
 [node name="AnimatedSprite" parent="." index="1"]
 material = SubResource( 27 )
 frames = SubResource( 30 )
+frame = 0
 
 [node name="Debug" parent="." index="3"]
 margin_left = -6.0

@@ -31,6 +31,21 @@ func add_myc(cell, dir, growth=0):
 	mycelium[cell] = myc
 	add_child(myc)
 
+func add_mushroom(cell, dir):
+	var mush = Mushroom.instance()
+	mush.init(dir)
+	mush.position = cell * tilemap.cell_size
+	mushrooms[cell] = mush
+	add_child(mush)
+	mush.connect("die", self, "remove_mushroom")
+	mush.connect("fed", self, "die")
+
+func remove_mushroom(mush):
+	for key in mushrooms.keys():
+		if mushrooms[key] == mush:
+			mushrooms.erase(key)
+	mush.queue_free()
+
 func move_cursor(dir):
 	var absolute_cursor = cursor_cell + dir
 	var new_cursor = Global.wrap2(absolute_cursor, Vector2(), Vector2(16,16))
@@ -70,9 +85,9 @@ func handle_input(delta):
 			sprout()
 		elif cursor_cell in mushrooms:
 			var mush = mushrooms[cursor_cell]
-			# TODO: remove when it's done
 			for player in mush.burst():
-				player.infect(self)
+				if player != mush:
+					player.infect(self)
 
 func ground_cell(cell):
 	return tilemap.get_cellv(cell) != tilemap.INVALID_CELL
@@ -103,15 +118,14 @@ func sprout():
 			options.append(side)
 	if options.size() > 0:
 		var dir = Global.rand_choice(options)
-		var mush = Mushroom.instance()
-		mush.init(dir)
 		var pos = cursor_cell+dir
-		mush.position = pos * tilemap.cell_size
-		mushrooms[pos] = mush
-		add_child(mush)
+		add_mushroom(pos, dir)
 		myc.growth = 0.2
 		return true
 	return false
+
+func die():
+	fed += 1
 
 func do_draw():
 	pass
