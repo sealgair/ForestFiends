@@ -49,6 +49,11 @@ func remove_mushroom(mush):
 			mushrooms.erase(key)
 	mush.queue_free()
 
+func can_move(dir):
+	var absolute_cursor = cursor_cell + dir
+	var new_cursor = Global.wrap2(absolute_cursor, Vector2(), Vector2(16,16))
+	return ground_cell(new_cursor) and dir.length() > 0
+
 func move_cursor(dir):
 	var absolute_cursor = cursor_cell + dir
 	var new_cursor = Global.wrap2(absolute_cursor, Vector2(), Vector2(16,16))
@@ -72,18 +77,20 @@ func handle_input(delta):
 		attack_hint = dir
 	
 	# TODO: hold direction to go faster
-	var axes = input.direction_just_pressed()
-	if axes.length() > 0 and not input.is_pressed('attack'):
-		if not move_cursor(axes):
-			# check diagonals
-			if axes.x == 0:
+	if dir.length() > 0 and not input.is_pressed('attack'):
+		if not can_move(dir):
+			# check diagonals (but only if there's nothing in between)
+			if dir.x == 0:
 				for x in [1,-1]:
-					if move_cursor(Vector2(x, axes.y)):
+					if not can_move(Vector2(x, 0)) and can_move(Vector2(x, dir.y)):
+						dir = Vector2(x, dir.y)
 						break
-			elif axes.y == 0:
+			elif dir.y == 0:
 				for y in [1,-1]:
-					if move_cursor(Vector2(axes.x, y)):
+					if not can_move(Vector2(0, y)) and can_move(Vector2(dir.x, y)):
+						dir = Vector2(dir.x, y)
 						break
+		move_cursor(dir)
 		
 	if input.is_just_pressed('special') and not cursor_cell in mycelium:
 		spread(spread_from)
