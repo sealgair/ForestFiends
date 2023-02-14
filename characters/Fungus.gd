@@ -20,20 +20,21 @@ func init(start_pos, the_tilemap):
 	spread_from = cursor_cell
 	add_myc(cursor_cell, Vector2(0, -1), 0.75)
 	$Cursor.position = start_pos
+	$Cursor.material.set_shader_param("palette", palette)
 	var myc_start = MyceliumTile.instance()
 
 func add_myc(cell, dir, growth=0):
 	if cell in mycelium:
 		return # already got one
 	var myc = MyceliumTile.instance()
-	myc.init(dir, growth)
+	myc.init(dir, growth, palette)
 	myc.position = cell * tilemap.cell_size
 	mycelium[cell] = myc
 	add_child(myc)
 
 func add_mushroom(cell, dir):
 	var mush = Mushroom.instance()
-	mush.init(dir)
+	mush.init(dir, palette)
 	mush.position = cell * tilemap.cell_size
 	mushrooms[cell] = mush
 	add_child(mush)
@@ -86,7 +87,7 @@ func handle_input(delta):
 		elif cursor_cell in mushrooms:
 			var mush = mushrooms[cursor_cell]
 			for player in mush.burst():
-				if player != mush:
+				if player.has_method('infect'):
 					player.infect(self)
 
 func ground_cell(cell):
