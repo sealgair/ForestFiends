@@ -8,6 +8,7 @@ var mushrooms = {}
 var cursor_cell = Vector2()
 var spread_from = cursor_cell
 var growth = 0.2
+var attack_hint = Vector2(0,-1)
 
 
 func get_species():
@@ -31,6 +32,7 @@ func add_myc(cell, dir, growth=0):
 	myc.position = cell * tilemap.cell_size
 	mycelium[cell] = myc
 	add_child(myc)
+	move_child(myc, 0)
 
 func add_mushroom(cell, dir):
 	var mush = Mushroom.instance()
@@ -59,14 +61,19 @@ func move_cursor(dir):
 		elif $Cursor.animation == "default":
 			$Cursor.play('leave') # blink in place
 		return true
-	elif new_cursor in mushrooms and mushrooms[new_cursor].grown:
-		cursor_cell = new_cursor
-		return true
 	return false
 
 func handle_input(delta):
-	var axes = input.direction_just_released()
-	if axes.length() > 0:
+	var dir = input.direction_just_pressed()
+	if dir.length() != 0:
+		if dir.length() > 1: # both keys
+			dir.x = 0
+		$Cursor/Hint.rotation = dir.angle() + TAU/4
+		attack_hint = dir
+	
+	# TODO: hold direction to go faster
+	var axes = input.direction_just_pressed()
+	if axes.length() > 0 and not input.is_pressed('attack'):
 		if not move_cursor(axes):
 			# check diagonals
 			if axes.x == 0:
@@ -81,14 +88,9 @@ func handle_input(delta):
 	if input.is_just_pressed('special') and not cursor_cell in mycelium:
 		spread(spread_from)
 		
-	if input.is_just_pressed('attack'):
+	if input.is_just_released('attack'):
 		if cursor_cell in mycelium:
 			sprout()
-		elif cursor_cell in mushrooms:
-			var mush = mushrooms[cursor_cell]
-			for player in mush.burst():
-				if player.has_method('infect'):
-					player.infect(self)
 
 func ground_cell(cell):
 	return tilemap.get_cellv(cell) != tilemap.INVALID_CELL
@@ -107,21 +109,27 @@ func sprout():
 	if myc.growth < 0.8:
 		return false
 	var options = []
-	var hint = input.direction_pressed()
 	for side in [Vector2(1,0), Vector2(-1,0), Vector2(0,1), Vector2(0,-1)]:
 		var pos = cursor_cell+side
-		if not ground_cell(pos) and not pos in mushrooms:
-			# filter based on keys pressed
-			if hint.x != 0 and side.x != 0 and hint.x != side.x:
-				continue
-			if hint.y != 0 and side.y != 0 and hint.y != side.y:
-				continue
-			options.append(side)
+		if ground_cell(pos):
+			continue
+		# filter based on keys pressed
+		if attack_hint.x != 0 and side.x != attack_hint.x:
+			continue
+		if attack_hint.y != 0 and side.y != attack_hint.y:
+			continue
+		options.append(side)
 	if options.size() > 0:
 		var dir = Global.rand_choice(options)
 		var pos = cursor_cell+dir
-		add_mushroom(pos, dir)
-		myc.growth = 0.2
+		if pos in mushrooms:
+			var mush = mushrooms[pos]
+			for player in mush.burst():
+				if player.has_method('infect'):
+					player.infect(self)
+		else:
+			add_mushroom(pos, dir)
+			myc.growth = 0.2
 		return true
 	return false
 

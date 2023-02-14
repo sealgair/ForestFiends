@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://characters/Fungus.gd" type="Script" id=1]
 [ext_resource path="res://art/fungus.png" type="Texture" id=2]
@@ -74,6 +74,18 @@ animations = [ {
 "speed": 36.0
 } ]
 
+[sub_resource type="AtlasTexture" id=17]
+atlas = ExtResource( 2 )
+region = Rect2( 0, 80, 16, 16 )
+
+[sub_resource type="SpriteFrames" id=18]
+animations = [ {
+"frames": [ SubResource( 17 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
 [sub_resource type="AtlasTexture" id=4]
 atlas = ExtResource( 2 )
 region = Rect2( 96, 16, 16, 16 )
@@ -93,6 +105,10 @@ script = ExtResource( 1 )
 material = ExtResource( 3 )
 frames = SubResource( 2 )
 centered = false
+
+[node name="Hint" type="AnimatedSprite" parent="Cursor"]
+position = Vector2( 8, 8 )
+frames = SubResource( 18 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 visible = false
