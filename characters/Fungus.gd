@@ -6,9 +6,8 @@ const Mushroom = preload("res://characters/Mushroom.tscn")
 var mycelium = {}
 var mushrooms = {}
 var cursor_cell = Vector2()
-var spread_from = cursor_cell
 var growth = 0.2
-var attack_hint = Vector2(0,-1)
+var cursor_dir = Vector2(0,-1)
 
 
 func get_species():
@@ -18,7 +17,6 @@ func init(start_pos, the_tilemap):
 	tilemap = the_tilemap
 	start_pos += Vector2(0, tilemap.cell_size.y)
 	cursor_cell = Global.floor2(start_pos / tilemap.cell_size)
-	spread_from = cursor_cell
 	add_myc(cursor_cell, Vector2(0, -1), 0.75)
 	$Cursor.position = start_pos
 	$Cursor.material.set_shader_param("palette", palette)
@@ -60,9 +58,6 @@ func move_cursor(dir):
 	if ground_cell(new_cursor) and dir.length() > 0:
 		if new_cursor in mycelium:
 			cursor_cell = new_cursor
-			spread_from = cursor_cell
-		elif (spread_from - absolute_cursor).length() < 2:
-			cursor_cell = new_cursor
 		elif $Cursor.animation == "default":
 			$Cursor.play('leave') # blink in place
 		return true
@@ -74,7 +69,7 @@ func handle_input(delta):
 		if dir.length() > 1: # both keys
 			dir.x = 0
 		$Cursor/Hint.rotation = dir.angle() + TAU/4
-		attack_hint = dir
+		cursor_dir = dir
 	
 	# TODO: hold direction to go faster
 	if dir.length() > 0 and not input.is_pressed('attack'):
@@ -92,8 +87,8 @@ func handle_input(delta):
 						break
 		move_cursor(dir)
 		
-	if input.is_just_pressed('special') and not cursor_cell in mycelium:
-		spread(spread_from)
+	if input.is_just_pressed('special'):
+		spread()
 		
 	if input.is_just_released('attack'):
 		if cursor_cell in mycelium:
@@ -102,14 +97,13 @@ func handle_input(delta):
 func ground_cell(cell):
 	return tilemap.get_cellv(cell) != tilemap.INVALID_CELL
 
-func spread(from):
-	var myc = mycelium[from]
-	var cell = cursor_cell
+func spread():
+	var myc = mycelium[cursor_cell]
+	var cell = cursor_cell + cursor_dir
 	cell = Global.wrap2(cell, Vector2(), Vector2(16,16))
 	if myc.can_spread() and ground_cell(cell):
-		add_myc(cell, from - cursor_cell)
+		add_myc(cell, -cursor_dir)
 		myc.grow(-growth)
-		spread_from = cursor_cell
 
 func sprout():
 	var myc = mycelium[cursor_cell]
@@ -121,9 +115,9 @@ func sprout():
 		if ground_cell(pos):
 			continue
 		# filter based on keys pressed
-		if attack_hint.x != 0 and side.x != attack_hint.x:
+		if cursor_dir.x != 0 and side.x != cursor_dir.x:
 			continue
-		if attack_hint.y != 0 and side.y != attack_hint.y:
+		if cursor_dir.y != 0 and side.y != cursor_dir.y:
 			continue
 		options.append(side)
 	if options.size() > 0:
