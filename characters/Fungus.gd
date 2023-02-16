@@ -131,9 +131,15 @@ func sprout():
 		var pos = cursor_cell+dir
 		if pos in mushrooms:
 			var mush = mushrooms[pos]
-			for player in mush.burst():
-				if player.has_method('infect'):
-					player.infect(self)
+			if mush.burst():
+				myc.growth = 0.2
+				for player in mush.spore_bodies():
+					if player.has_method('infect'):
+						player.infect(self)
+				# infect new tiles
+				var spread = mush.spore_tile(tilemap)
+				if spread:
+					add_myc(spread, -mush.facing)
 		else:
 			add_mushroom(pos, dir)
 			myc.growth = 0.2
