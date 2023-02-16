@@ -16,18 +16,10 @@ func _ready():
 func init(dir, palette=0):
 	facing = dir
 	$AnimatedSprite.material.set_shader_param("palette", palette)
-	if dir.y != 0:
-		$AnimatedSprite.flip_v = dir.y > 0
-		$AnimatedSprite.flip_h = randf() > 0.5
-		$SporeArea.transform.origin.x = 8
-		$SporeArea.transform.origin.y = 8 + 8 * dir.y
-	elif dir.x != 0:
-		$AnimatedSprite.rotate(TAU / 4)
-		$AnimatedSprite.offset = Vector2(0, -16)
-		$AnimatedSprite.flip_v = dir.x < 0
-		$AnimatedSprite.flip_h = randf() > 0.5
-		$SporeArea.transform.origin.y = 8
-		$SporeArea.transform.origin.x = 8 + 8 * dir.x
+	$AnimatedSprite.rotation = dir.angle() + TAU/4
+	$AnimatedSprite.flip_h = dir.y > 0 or dir.x < 0
+	var size = $CollisionShape2D.shape.extents
+	$SporeArea.transform.origin += dir * size/2
 	$Spores.direction = dir
 	
 	# set particle color from palette

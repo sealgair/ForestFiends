@@ -112,6 +112,7 @@ material = SubResource( 32 )
 [node name="AnimatedSprite" parent="." index="2"]
 material = SubResource( 22 )
 frames = SubResource( 23 )
+frame = 0
 
 [node name="Reticle" type="AnimatedSprite" parent="." index="5"]
 position = Vector2( -16, 0 )
