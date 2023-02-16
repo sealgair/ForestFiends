@@ -20,6 +20,7 @@ func init(start_pos, the_tilemap):
 	add_myc(cursor_cell, Vector2(0, -1), 0.75)
 	$Cursor.position = start_pos
 	$Cursor.material.set_shader_param("palette", palette)
+#	$Cursor/Hint.material.set_shader_param("palette", palette)
 	var myc_start = MyceliumTile.instance()
 
 func add_myc(cell, dir, growth=0):

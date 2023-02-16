@@ -107,6 +107,7 @@ frames = SubResource( 2 )
 centered = false
 
 [node name="Hint" type="AnimatedSprite" parent="Cursor"]
+use_parent_material = true
 position = Vector2( 8, 8 )
 frames = SubResource( 18 )
 
