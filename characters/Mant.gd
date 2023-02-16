@@ -34,13 +34,13 @@ func special_pressed():
 	if revive_countdown <= 0:
 		hidden = not hidden
 
-func move(x, y):
+func move(dir):
 	if poised:
 		to_velocity.x = 0
-		if x != 0:
-			$AnimatedSprite.flip_h = x > 0
+		if dir.x != 0:
+			$AnimatedSprite.flip_h = dir.x > 0
 	else:
-		.move(x, y)
+		.move(dir)
 		if hidden and velocity.x != 0:
 			to_velocity.x *= 0.1
 	

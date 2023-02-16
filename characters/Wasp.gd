@@ -18,9 +18,9 @@ func hit(other):
 	else:
 		other.poison(self)
 
-func move(x, y):
-	.move(x, y)
-	to_velocity.y = y * run_speed
+func move(dir):
+	.move(dir)
+	to_velocity.y = dir.y * run_speed
 
 func can_be_target(enemy, filter_ops={}):
 	return .can_be_target(enemy) and enemy.poisoned_by != self

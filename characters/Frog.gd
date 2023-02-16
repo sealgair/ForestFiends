@@ -23,23 +23,20 @@ func init(start_pos, the_tilemap):
 func get_species():
 	return "Frog"
 
-
 func special_pressed():
 	.special_pressed()
 	if jumping:
 		jump_time = 0.2
-
 
 func make_attack():
 	var instance = .make_attack()
 	instance.get_node("AnimatedSprite").material.set_shader_param("palette", palette)
 	return instance
 
-
-func move(x, y):
+func move(dir):
 	to_velocity = Vector2()
-	if x != 0:
-		$AnimatedSprite.flip_h = x > 0
+	if dir.x != 0:
+		$AnimatedSprite.flip_h = dir.x > 0
 	if jumping:
 		to_velocity = velocity * 1
 		to_velocity.x = run_speed * facing()
@@ -47,7 +44,7 @@ func move(x, y):
 			velocity.y += jump_speed
 			velocity.y = max(max_jump, velocity.y)
 	
-	look_change = -y
+	look_change = -dir.y
 
 
 func moved(delta):

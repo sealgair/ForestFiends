@@ -211,7 +211,7 @@ func special_pressed():
 			jump_vel.y += .5
 		velocity += jump_vel * jump_speed
 
-func move(x,y):
+func move(dir):
 	var side = side_dir()
 	var corner = corner_dir()
 	var edge = edge_point()
@@ -224,7 +224,7 @@ func move(x,y):
 	
 	gravity = base_gravity
 	if jumping:
-		.move(x,y)
+		.move(dir)
 	else:
 		gravity = 0
 	
@@ -233,8 +233,8 @@ func move(x,y):
 				velocity = Vector2()
 			was_edge = true
 			var input_mask = Vector2(
-				1 if x == corner.x else 0,
-				1 if y == corner.y else 0
+				1 if dir.x == corner.x else 0,
+				1 if dir.y == corner.y else 0
 			)
 			var invert_input_mask = Global.abs2(Vector2(1,1) - input_mask)
 			to_velocity = edge * run_speed/2 * invert_input_mask
@@ -243,18 +243,18 @@ func move(x,y):
 			was_edge = false
 			to_velocity = velocity + side * 10
 			if side.x != 0:
-				to_velocity.y = y * run_speed
+				to_velocity.y = dir.y * run_speed
 
 				$AnimatedSprite.flip_v = side.x > 0
-				if y != 0:
-					$AnimatedSprite.flip_h = y > 0
+				if dir.y != 0:
+					$AnimatedSprite.flip_h = dir.y > 0
 			
 			if side.y != 0:
-				to_velocity.x = x * run_speed
+				to_velocity.x = dir.x * run_speed
 				
 				$AnimatedSprite.flip_v = side.y < 0
-				if x != 0:
-					$AnimatedSprite.flip_h = x > 0
+				if dir.x != 0:
+					$AnimatedSprite.flip_h = dir.x > 0
 			
 			if (side.x == 0 or side.y == 0) and corner_count() != 1:
 				from_side = side * 1 # copy

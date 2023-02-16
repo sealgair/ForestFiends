@@ -20,7 +20,6 @@ func init(start_pos, the_tilemap):
 	add_myc(cursor_cell, Vector2(0, -1), 0.75)
 	$Cursor.position = start_pos
 	$Cursor.material.set_shader_param("palette", palette)
-#	$Cursor/Hint.material.set_shader_param("palette", palette)
 	var myc_start = MyceliumTile.instance()
 
 func add_myc(cell, dir, growth=0):
@@ -86,7 +85,9 @@ func handle_input(delta):
 		
 		# TODO: hold direction to go faster
 		if dir.length() > 0 and not input.is_pressed('attack'):
-			cursor_cell = move_cursor(dir)
+			var new = move_cursor(dir)
+			track_distance((new-cursor_cell).length() * 16)
+			cursor_cell = new
 		
 		$Cursor/Hint.rotation = dir.angle() + TAU/4
 		cursor_dir = dir

@@ -175,17 +175,35 @@ func axes_pressed():
 	else:
 		return Vector2(0,0)
 
-# warning-ignore:unused_argument
-func move(x, y):
+func infected_move(dir):
+	if infected_by != null:
+		var target = closest_enemy()
+		var path = pathfinder.path_between(position, target.position)
+		var next = point_on_path(path)
+		if not next:
+			next = target.position
+		var ndir = Global.sign2(next - position)
+		var ir = infect_rate()
+		dir = ndir * ir + dir * (1-ir)
+	return dir
+
+func move(dir):
 	to_velocity = velocity * 1 # copy
-	to_velocity.x = x * run_speed
+	to_velocity.x = dir.x * run_speed
 	
-	if x != 0:
-		$AnimatedSprite.flip_h = x > 0
+	if dir.x != 0:
+		$AnimatedSprite.flip_h = dir.x > 0
 
 # warning-ignore:unused_argument
 func moved(delta):
 	pass
+
+func infect_rate():
+	if infected_by == null:
+		return 0
+	else:
+		var full_infect = $FungusTimer.wait_time * 2/3
+		return max(full_infect - $FungusTimer.time_left, 0)/full_infect
 
 func handle_input(delta):
 	if computer and input.override():
@@ -193,7 +211,8 @@ func handle_input(delta):
 		computer = false
 	
 	var axes = axes_pressed()
-	move(axes.x, axes.y)
+	axes = infected_move(axes)
+	move(axes)
 	moved(delta)
 	
 	# can't attack / special if webbed
@@ -208,7 +227,8 @@ func handle_input(delta):
 		if input.is_just_pressed('attack'):
 			if attack_timeout <= 0:
 				attack_timeout = attack_wait
-				attack_pressed()
+				if randf() > infect_rate():
+					attack_pressed()
 		if input.is_just_released('attack'):
 			attack_released()
 
@@ -535,7 +555,15 @@ func think(delta):
 			input.press_axis(Vector2(brain.direction, 0))
 
 func follow_path(path):
-	var moved = false
+	var next = point_on_path(path)
+	if next:
+		move_toward_point(next)
+		if should_jump(brain.target, path):
+			input.press('special')
+		return true
+	return false
+
+func point_on_path(path):
 	var next = null
 	if path.size() > 1:
 		next = path[0]
@@ -550,11 +578,7 @@ func follow_path(path):
 			$PathVis.clear_points()
 			for point in path:
 				$PathVis.add_point(point - position)
-			move_toward_point(next)
-			moved = true
-	if should_jump(brain.target, path):
-		input.press('special')
-	return moved
+			return next
 
 func move_toward_point(point):
 	var dir = point - position

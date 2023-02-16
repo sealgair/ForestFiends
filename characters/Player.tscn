@@ -32,7 +32,7 @@ animations = [ {
 "frames": [ null, SubResource( 37 ), SubResource( 38 ), SubResource( 39 ), SubResource( 40 ) ],
 "loop": false,
 "name": "grow",
-"speed": 1.0
+"speed": 2.0
 } ]
 
 [sub_resource type="ShaderMaterial" id=17]
