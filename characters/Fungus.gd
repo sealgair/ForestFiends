@@ -47,45 +47,47 @@ func remove_mushroom(mush):
 			mushrooms.erase(key)
 	mush.queue_free()
 
-func can_move(dir):
-	var absolute_cursor = cursor_cell + dir
-	var new_cursor = Global.wrap2(absolute_cursor, Vector2(), Vector2(16,16))
-	return ground_cell(new_cursor) and dir.length() > 0
+func wrap_cell(cell):
+	return Global.wrap2(cell, Vector2(), Vector2(16,16))
 
 func move_cursor(dir):
-	var absolute_cursor = cursor_cell + dir
-	var new_cursor = Global.wrap2(absolute_cursor, Vector2(), Vector2(16,16))
-	if ground_cell(new_cursor) and dir.length() > 0:
-		if new_cursor in mycelium:
-			cursor_cell = new_cursor
-		elif $Cursor.animation == "default":
-			$Cursor.play('leave') # blink in place
-		return true
-	return false
+	if dir.length() > 0:
+		var new_cursor = wrap_cell(cursor_cell + dir)
+		if ground_cell(new_cursor):
+			if new_cursor in mycelium:
+				return new_cursor
+			elif $Cursor.animation == "default":
+				$Cursor.play('leave') # blink in place
+		elif dir == cursor_dir:
+			# check across gaps
+			for i in range(1,8): # check halfway around map
+				var skip_cursor = wrap_cell(cursor_cell + dir*i)
+				if skip_cursor in mycelium:
+					return skip_cursor
+				for j in range(1, i+1):
+					var s = Vector2()
+					if dir.x != 0:
+						s.y = j
+					else:
+						s.x = j
+					for side_cursor in [wrap_cell(skip_cursor + s), wrap_cell(skip_cursor - s)]:
+						# check to the sides too
+						if side_cursor in mycelium:
+							return side_cursor
+	return cursor_cell
 
 func handle_input(delta):
 	var dir = input.direction_just_pressed()
 	if dir.length() != 0:
 		if dir.length() > 1: # both keys
 			dir.x = 0
+		
+		# TODO: hold direction to go faster
+		if dir.length() > 0 and not input.is_pressed('attack'):
+			cursor_cell = move_cursor(dir)
+		
 		$Cursor/Hint.rotation = dir.angle() + TAU/4
 		cursor_dir = dir
-	
-	# TODO: hold direction to go faster
-	if dir.length() > 0 and not input.is_pressed('attack'):
-		if not can_move(dir):
-			# check diagonals (but only if there's nothing in between)
-			if dir.x == 0:
-				for x in [1,-1]:
-					if not can_move(Vector2(x, 0)) and can_move(Vector2(x, dir.y)):
-						dir = Vector2(x, dir.y)
-						break
-			elif dir.y == 0:
-				for y in [1,-1]:
-					if not can_move(Vector2(0, y)) and can_move(Vector2(dir.x, y)):
-						dir = Vector2(dir.x, y)
-						break
-		move_cursor(dir)
 		
 	if input.is_just_pressed('special'):
 		spread()

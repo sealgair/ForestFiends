@@ -53,7 +53,7 @@ func wrap_cell(cell):
 
 func spore_tile(tilemap):
 	var cell = Global.floor2(position / tilemap.cell_size)
-	var d = 5 + facing.y
+	var d = 4 + facing.y
 	for i in range(1,d):
 		var check = wrap_cell(cell + facing * i)
 		if tilemap.get_cellv(check) != tilemap.INVALID_CELL:
