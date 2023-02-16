@@ -75,6 +75,17 @@ func make_enemies(all_players):
 		if player != self:
 			enemies.append(player)
 
+func get_enemies():
+	# includes mushrooms
+	var list = []
+	for enemy in enemies:
+		if "mushrooms" in enemy:
+			for mushroom in enemy.mushrooms.values():
+				list.append(mushroom)
+		else:
+			list.append(enemy)
+	return list
+
 func init(start_pos, the_tilemap):
 	position = start_pos
 	tilemap = the_tilemap
@@ -270,6 +281,8 @@ func _draw():
 	do_draw()
 
 func _process(delta):
+	if not dead:
+		time += delta
 	do_process(delta)
 
 func do_process(delta):
@@ -279,7 +292,6 @@ func do_process(delta):
 	special_timeout = max(0, special_timeout - delta)
 	
 	if not dead:
-		time += delta
 		var poison_opacity = 0
 		if poisoned_by != null:
 			var poison_time = $PoisonTimer.time_left / $PoisonTimer.wait_time
@@ -320,7 +332,7 @@ func hit(other):
 
 func infect(other):
 	infected_by = other
-	$Fungus.material.set_shader_param("palette", palette)
+	$Fungus.material.set_shader_param("palette", other.palette)
 	$Fungus.play("grow")
 	$FungusTimer.start()
 
@@ -436,7 +448,7 @@ func can_be_target(enemy, filter_ops={}):
 func closest_enemy(filter_ops={}):
 	var closest = null
 	var target = null
-	for enemy in enemies:
+	for enemy in get_enemies():
 		if can_be_target(enemy, filter_ops):
 			var dist = pathfinder.distance_to_enemy(enemy)
 			if closest == null or (dist != 0 and closest > dist):
@@ -452,7 +464,7 @@ func path_contains_enemy(path):
 	var prev = null
 	for point in path:
 		if prev != null:
-			for enemy in enemies:
+			for enemy in get_enemies():
 				if Geometry.segment_intersects_circle(prev, point, enemy.position, 16) != -1:
 					return true
 		prev = point
@@ -488,6 +500,8 @@ func target_position():
 	return null
 
 func think(delta):
+	if not is_instance_valid(brain.target):
+		brain.target = null
 	var target = target_position()
 	if target != null:
 		var path

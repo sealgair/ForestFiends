@@ -76,7 +76,7 @@ animations = [ {
 "speed": 15.0
 }, {
 "frames": [ SubResource( 16 ), SubResource( 17 ), SubResource( 18 ), SubResource( 19 ), SubResource( 19 ), SubResource( 19 ), SubResource( 19 ), SubResource( 19 ) ],
-"loop": true,
+"loop": false,
 "name": "die",
 "speed": 5.0
 }, {
@@ -90,7 +90,7 @@ animations = [ {
 extents = Vector2( 8, 8 )
 
 [sub_resource type="CircleShape2D" id=14]
-radius = 16.0
+radius = 24.0
 
 [node name="Mushroom" type="KinematicBody2D"]
 collision_layer = 2
@@ -134,6 +134,9 @@ shape = SubResource( 14 )
 
 [node name="DecayTimer" type="Timer" parent="."]
 wait_time = 4.0
+one_shot = true
+
+[node name="InfectTimer" type="Timer" parent="."]
 one_shot = true
 
 [connection signal="animation_finished" from="AnimatedSprite" to="." method="_on_AnimatedSprite_animation_finished"]

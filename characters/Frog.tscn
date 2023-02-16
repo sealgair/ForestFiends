@@ -117,5 +117,4 @@ frame = 0
 [node name="Reticle" type="AnimatedSprite" parent="." index="5"]
 position = Vector2( -16, 0 )
 frames = SubResource( 30 )
-frame = 1
 playing = true

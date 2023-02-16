@@ -4,6 +4,13 @@ var grown = false
 var burst = false
 var done = false
 var facing = Vector2(0, -1)
+var fungus = null
+
+# mock up player stuff
+var dead = false
+var hidden = false
+var poisoned_by = null
+var webs = []
 
 signal die(mushroom)
 signal fed
@@ -18,8 +25,7 @@ func init(dir, palette=0):
 	$AnimatedSprite.material.set_shader_param("palette", palette)
 	$AnimatedSprite.rotation = dir.angle() + TAU/4
 	$AnimatedSprite.flip_h = dir.y > 0 or dir.x < 0
-	var size = $CollisionShape2D.shape.extents
-	$SporeArea.transform.origin += dir * size/2
+	$SporeArea.transform.origin += dir * $SporeArea/CollisionShape2D.shape.radius/2
 	$Spores.direction = dir
 	
 	# set particle color from palette
@@ -30,10 +36,12 @@ func init(dir, palette=0):
 
 func burst():
 	if grown and not burst:
+		dead = true
 		$AnimatedSprite.play('burst')
 		$Spores.restart()
 		burst = true
 		$DecayTimer.start()
+		$InfectTimer.start()
 		return true
 	return false
 
@@ -65,7 +73,17 @@ func spore_tile(tilemap):
 func is_vulnerable():
 	return $AnimatedSprite.animation == 'grow'
 
+func _process(delta):
+	if burst and $InfectTimer.time_left > 0:
+		for player in spore_bodies():
+			if player.has_method('infect'):
+				player.infect(fungus)
+
+func poison(other):
+	die()
+
 func die():
+	dead = true
 	$AnimatedSprite.play('die')
 	emit_signal("fed")
 	$DecayTimer.start()

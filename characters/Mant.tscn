@@ -1,10 +1,16 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://characters/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://characters/Mant.gd" type="Script" id=2]
 [ext_resource path="res://art/decay.png" type="Texture" id=3]
 [ext_resource path="res://main/PalletSwap.gdshader" type="Shader" id=5]
 [ext_resource path="res://art/mant.png" type="Texture" id=6]
+
+[sub_resource type="ShaderMaterial" id=41]
+resource_local_to_scene = true
+shader = ExtResource( 5 )
+shader_param/palette = 0
+shader_param/palette_length = 8
 
 [sub_resource type="ShaderMaterial" id=31]
 resource_local_to_scene = true
@@ -99,8 +105,10 @@ animations = [ {
 [node name="Mant" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
 
-[node name="AnimatedSprite" parent="." index="0"]
+[node name="Fungus" parent="." index="0"]
+material = SubResource( 41 )
+
+[node name="AnimatedSprite" parent="." index="1"]
 material = SubResource( 31 )
 frames = SubResource( 32 )
 animation = "poised"
-frame = 0

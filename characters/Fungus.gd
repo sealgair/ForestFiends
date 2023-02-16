@@ -37,6 +37,7 @@ func add_mushroom(cell, dir):
 	var mush = Mushroom.instance()
 	mush.init(dir, palette)
 	mush.position = cell * tilemap.cell_size
+	mush.fungus = self
 	mushrooms[cell] = mush
 	add_child(mush)
 	mush.connect("die", self, "remove_mushroom")
@@ -110,8 +111,8 @@ func spread():
 
 func sprout():
 	var myc = mycelium[cursor_cell]
-	if myc.growth < 0.8:
-		return false
+	if myc.growth < 0.2:
+		return
 	var options = []
 	for side in [Vector2(1,0), Vector2(-1,0), Vector2(0,1), Vector2(0,-1)]:
 		var pos = cursor_cell+side
@@ -129,19 +130,14 @@ func sprout():
 		if pos in mushrooms:
 			var mush = mushrooms[pos]
 			if mush.burst():
-				myc.growth = 0.2
-				for player in mush.spore_bodies():
-					if player.has_method('infect'):
-						player.infect(self)
-				# infect new tiles
+				myc.growth -= growth
+				# spread to new tiles
 				var spread = mush.spore_tile(tilemap)
 				if spread:
 					add_myc(spread, -mush.facing)
-		else:
+		elif myc.growth > 0.8:
 			add_mushroom(pos, dir)
 			myc.growth = 0.2
-		return true
-	return false
 
 func die():
 	fed += 1

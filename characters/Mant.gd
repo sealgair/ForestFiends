@@ -91,6 +91,8 @@ func reset_brain():
 	brain.hiding = 0
 
 func think(delta):
+	if not is_instance_valid(brain.target):
+		brain.target = null
 	var hide = false
 	if brain.recon > 0 or revive_countdown > 0:
 		for enemy in enemies:
@@ -125,15 +127,16 @@ func think(delta):
 		else:
 			if brain.target == null or brain.target.dead:
 				brain.target = closest_enemy()
-			var target_dir = brain.target.position - position
-			if poise_timer > 0 and should_attack(brain.target):
-				if randf() <= brain.attack_accuracy:
-					input.release('attack')
-				reset_brain()
-			else:
-				input.hold('attack')
-				if sign(target_dir.x) != facing():
-					input.press_axis(Vector2(sign(target_dir.x), 0))
+			if brain.target:
+				var target_dir = brain.target.position - position
+				if poise_timer > 0 and should_attack(brain.target):
+					if randf() <= brain.attack_accuracy:
+						input.release('attack')
+					reset_brain()
+				else:
+					input.hold('attack')
+					if sign(target_dir.x) != facing():
+						input.press_axis(Vector2(sign(target_dir.x), 0))
 			brain.hiding += delta
 			if brain.hiding >= brain.hide_time:
 				input.release('attack')
