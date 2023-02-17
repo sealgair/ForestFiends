@@ -25,7 +25,6 @@ score_limit = 50
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 position = Vector2( 128, 8 )
-scale = Vector2( 1, 1 )
 z_index = 5
 frames = SubResource( 9 )
 

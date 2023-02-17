@@ -57,3 +57,4 @@ theme = ExtResource( 4 )
 
 [node name="AminalDetail" parent="." index="7" instance=ExtResource( 2 )]
 position = Vector2( 64, 32 )
+max_computers = 1
