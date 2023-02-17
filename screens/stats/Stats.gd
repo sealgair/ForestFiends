@@ -10,7 +10,8 @@ func _ready():
 		$Wasp,
 		$Mant,
 		$Slug,
-		$Spid
+		$Spid,
+		$Fungus,
 	]
 	for aminal in rows:
 		var stats = Global.stats[aminal.name]
