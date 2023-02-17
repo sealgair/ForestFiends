@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=2]
+[gd_scene load_steps=26 format=2]
 
 [ext_resource path="res://main/PalletSwap.gdshader" type="Shader" id=1]
 [ext_resource path="res://characters/Player.gd" type="Script" id=2]
@@ -8,32 +8,6 @@
 [ext_resource path="res://art/spid.png" type="Texture" id=6]
 [ext_resource path="res://main/MenuTheme.tres" type="Theme" id=7]
 [ext_resource path="res://art/aminals.png" type="Texture" id=8]
-[ext_resource path="res://art/fungus.png" type="Texture" id=9]
-[ext_resource path="res://main/PalletSwap.tres" type="Material" id=10]
-
-[sub_resource type="AtlasTexture" id=37]
-atlas = ExtResource( 9 )
-region = Rect2( 0, 32, 16, 16 )
-
-[sub_resource type="AtlasTexture" id=38]
-atlas = ExtResource( 9 )
-region = Rect2( 16, 32, 16, 16 )
-
-[sub_resource type="AtlasTexture" id=39]
-atlas = ExtResource( 9 )
-region = Rect2( 32, 32, 16, 16 )
-
-[sub_resource type="AtlasTexture" id=40]
-atlas = ExtResource( 9 )
-region = Rect2( 48, 32, 16, 16 )
-
-[sub_resource type="SpriteFrames" id=41]
-animations = [ {
-"frames": [ null, SubResource( 37 ), SubResource( 38 ), SubResource( 39 ), SubResource( 40 ) ],
-"loop": false,
-"name": "grow",
-"speed": 2.0
-} ]
 
 [sub_resource type="ShaderMaterial" id=17]
 resource_local_to_scene = true
@@ -144,12 +118,6 @@ __meta__ = {
 "_edit_group_": true
 }
 
-[node name="Fungus" type="AnimatedSprite" parent="."]
-material = ExtResource( 10 )
-position = Vector2( 0, -5 )
-frames = SubResource( 41 )
-animation = "grow"
-
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 material = SubResource( 17 )
 frames = SubResource( 8 )
@@ -176,10 +144,6 @@ offset = Vector2( 0, -16 )
 
 [node name="PoisonTimer" type="Timer" parent="."]
 wait_time = 3.0
-one_shot = true
-
-[node name="FungusTimer" type="Timer" parent="."]
-wait_time = 5.0
 one_shot = true
 
 [node name="PathVis" type="Line2D" parent="."]
@@ -251,4 +215,3 @@ shape = SubResource( 36 )
 [connection signal="animation_finished" from="AnimatedSprite" to="." method="_on_AnimatedSprite_animation_finished"]
 [connection signal="timeout" from="RespawnTimer" to="." method="_on_RespawnTimer_timeout"]
 [connection signal="timeout" from="PoisonTimer" to="." method="_on_PoisonTimer_timeout"]
-[connection signal="timeout" from="FungusTimer" to="." method="_on_FungusTimer_timeout"]

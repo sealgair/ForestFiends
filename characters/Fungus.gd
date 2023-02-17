@@ -65,7 +65,7 @@ func move_cursor(dir):
 				var skip_cursor = wrap_cell(cursor_cell + dir*i)
 				if skip_cursor in mycelium:
 					return skip_cursor
-				for j in range(1, i+1):
+				for j in range(1, 12):
 					var s = Vector2()
 					if dir.x != 0:
 						s.y = j
@@ -94,6 +94,7 @@ func handle_input(delta):
 		
 	if input.is_just_pressed('special'):
 		spread()
+		specials += 1
 		
 	if input.is_just_released('attack'):
 		if cursor_cell in mycelium:
@@ -131,6 +132,7 @@ func sprout():
 		if pos in mushrooms:
 			var mush = mushrooms[pos]
 			if mush.burst():
+				attacks += 1
 				myc.growth -= growth
 				# spread to new tiles
 				var spread = mush.spore_tile(tilemap)

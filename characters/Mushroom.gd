@@ -15,7 +15,7 @@ var webs = []
 signal die(mushroom)
 signal fed
 
-var texture = preload("res://art/fungus.png")
+const texture = preload("res://art/fungus.png")
 
 func _ready():
 	$AnimatedSprite.play('grow')
@@ -35,7 +35,7 @@ func init(dir, palette=0):
 	image.unlock()
 
 func burst():
-	if grown and not burst:
+	if grown and not burst and not dead:
 		dead = true
 		$AnimatedSprite.play('burst')
 		$Spores.restart()

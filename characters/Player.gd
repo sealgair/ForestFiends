@@ -3,6 +3,7 @@ extends KinematicBody2D
 const PlayerInput = preload("res://main/PlayerInput.gd")
 const ComputerInput = preload("res://main/ComputerInput.gd")
 const attack_scene = preload("res://characters/Attack.tscn")
+const Spore = preload("res://characters/Spore.tscn")
 var PlayerPath = preload("res://brain/PlayerPath.gd")
 
 export (int) var order = 1
@@ -48,7 +49,7 @@ var size = Vector2(16, 16) # todo: dynamic
 var attack_node = weakref(null)
 var dead = false
 var poisoned_by = null
-var infected_by = null
+var spore = null
 var slimed = 0
 var slime_time = 2
 var webs = []
@@ -176,15 +177,18 @@ func axes_pressed():
 		return Vector2(0,0)
 
 func infected_move(dir):
-	if infected_by != null:
+	if spore != null:
 		var target = closest_enemy()
-		var path = pathfinder.path_between(position, target.position)
-		var next = point_on_path(path)
-		if not next:
-			next = target.position
-		var ndir = Global.sign2(next - position)
-		var ir = infect_rate()
-		dir = ndir * ir + dir * (1-ir)
+		if target:
+			var path = pathfinder.path_between(position, target.position)
+			var next = point_on_path(path)
+			if not next:
+				next = target.position
+			var ndir = Global.sign2(next - position)
+			if not spore.grown:
+				ndir *= -1
+			var ir = infect_rate()
+			dir = ndir * ir + dir * (1-ir)
 	return dir
 
 func move(dir):
@@ -199,11 +203,10 @@ func moved(delta):
 	pass
 
 func infect_rate():
-	if infected_by == null:
+	if spore == null:
 		return 0
 	else:
-		var full_infect = $FungusTimer.wait_time * 2/3
-		return max(full_infect - $FungusTimer.time_left, 0)/full_infect
+		return spore.infect_rate()
 
 func handle_input(delta):
 	if computer and input.override():
@@ -333,9 +336,8 @@ func do_process(delta):
 			an.transform.origin.x = abs(an.transform.origin.x)
 			an.transform.origin.x *= facing()
 	
-	$Fungus.flip_h = $AnimatedSprite.flip_h
-	$Fungus.flip_v = $AnimatedSprite.flip_v
-	$Fungus.rotation = $AnimatedSprite.rotation
+	if spore:
+		spore.sync_sprite($AnimatedSprite)
 
 func is_vulnerable():
 	return not self.dead and revive_countdown <= 0
@@ -347,14 +349,21 @@ func make_score(other):
 		poisoned_by = null
 
 func hit(other):
-	make_score(other)
+	if 'spore' in other and other.spore and other.spore.grown:
+		other.spore.fungus.make_score(other)
+		other.spore.release()
+	else:
+		make_score(other)
 	other.die()
 
 func infect(other):
-	infected_by = other
-	$Fungus.material.set_shader_param("palette", other.palette)
-	$Fungus.play("grow")
-	$FungusTimer.start()
+	if spore == null:
+		spore = Spore.instance()
+		spore.fungus = other
+		spore.set_palette(other.palette)
+		spore.connect("release", self, "die")
+		add_child(spore)
+		move_child(spore, 0)
 
 func poison(other):
 	poisoned_by = other
@@ -396,8 +405,10 @@ func revive(new_pos):
 	position = new_pos
 	dead = false
 	poisoned_by = null
-	$Fungus.stop()
-	$Fungus.frame = 0
+	if spore:
+		remove_child(spore)
+		spore.queue_free()
+		spore = null
 	$AnimatedSprite.flip_v = false
 	# for invincibilty after revive
 	revive_countdown = revive_time
@@ -410,12 +421,6 @@ func _on_PoisonTimer_timeout():
 		poisoned_by.make_score(self)
 		die()
 		poisoned_by = null
-
-func _on_FungusTimer_timeout():
-	if infected_by:
-		infected_by.make_score(self)
-		die()
-		infected_by = null
 
 var brain = init_brain()
 func init_brain():
