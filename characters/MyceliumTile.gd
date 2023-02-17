@@ -13,7 +13,7 @@ func init(dir, start_growth=0, palette=0):
 	$AnimatedSprite.material.set_shader_param("palette", palette)
 
 func grow(amount):
-	growth = clamp(growth+amount, 0, 1)
+	growth = min(growth+amount, 1)
 
 func can_spread():
 	return growth >= 0.5

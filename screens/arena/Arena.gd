@@ -24,7 +24,7 @@ func _ready():
 	set_map(map_scene.instance())
 	
 	randomize()
-	$Score.text = String(score_limit)
+	$HUD/Score.text = String(score_limit)
 	var spawn_points = $Map.get_spawn_points()
 	var species_choices = {
 		'Shrew': 3,
@@ -114,7 +114,7 @@ func hit():
 	if score >= score_limit:
 		$VictoryTimer.start()
 	else:
-		$Score.text = String(score_limit - score)
+		$HUD/Score.text = String(score_limit - score)
 
 func spawnpoint_distance(spawnpoint):
 	var distances = []
@@ -147,10 +147,12 @@ func spawn(player, spawn_point=null):
 func make_slime(position, palette=0):
 	if $Map != null:
 		var tile_pos = position / $Map.get_cell_size()
+		tile_pos.x = round(tile_pos.x-0.1)
+		tile_pos.y = ceil(tile_pos.y)
 		var tile_id = $Map.get_cellv(tile_pos)
 		if tile_id != TileMap.INVALID_CELL:
 			var instance = slime_scene.instance()
-			instance.transform.origin = position
+			instance.transform.origin = tile_pos * $Map.get_cell_size()
 			instance.set_palette(palette)
 			add_child(instance)
 

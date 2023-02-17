@@ -21,9 +21,23 @@ func init(start_pos, the_tilemap):
 	$Cursor.material.set_shader_param("palette", palette)
 	var myc_start = MyceliumTile.instance()
 
+func damage_myc(cell, amount=0.6):
+	if cursor_cell == cell:
+		return  # cursor protects mycelium
+	var myc = mycelium[cell]
+	myc.grow(-amount)
+	if myc.growth <= 0:
+		remove_child(myc)
+		mycelium.erase(cell)
+		myc.queue_free()
+
 func add_myc(cell, dir, growth=0):
 	if cell in mycelium:
 		return # already got one
+	for enemy in enemies:
+		if 'mycelium' in enemy and cell in enemy.mycelium:
+			enemy.damage_myc(cell)
+			return # occupied
 	var myc = MyceliumTile.instance()
 	myc.init(dir, growth, palette)
 	myc.position = cell * tilemap.cell_size

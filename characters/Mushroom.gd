@@ -53,8 +53,8 @@ func wrap_cell(cell):
 
 func spore_tile(tilemap):
 	var cell = Global.floor2(position / tilemap.cell_size)
-	var d = 4 + facing.y
-	for i in range(1,d):
+	var d = 5 + facing.y
+	for i in range(d):
 		var check = wrap_cell(cell + facing * i)
 		if tilemap.get_cellv(check) != tilemap.INVALID_CELL:
 			return check
@@ -81,6 +81,10 @@ func _process(delta):
 
 func poison(other):
 	die()
+	
+func infect(other):
+	if other != fungus and not dead:
+		other.hit(self)
 
 func die():
 	dead = true
