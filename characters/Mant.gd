@@ -15,6 +15,12 @@ func _ready():
 func get_species():
 	return "Mant"
 
+func get_long_species():
+	return "Mantis"
+
+func pronouns():
+	return ['she', 'her', 'her', 'hers']
+
 func make_attack():
 	if not poised:
 		poised = true

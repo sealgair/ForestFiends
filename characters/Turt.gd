@@ -10,10 +10,14 @@ func _ready():
 	attack_anim = "none"
 	$DefendCooldown.stop()
 
-
 func get_species():
 	return "Turt"
 
+func get_long_species():
+	return "Turtle"
+
+func pronouns():
+	return ['he', 'him', 'his', 'his']
 
 func get_animation():
 	if defending:

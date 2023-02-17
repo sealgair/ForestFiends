@@ -9,7 +9,6 @@ var cursor_cell = Vector2()
 var growth = 0.2
 var cursor_dir = Vector2(0,-1)
 
-
 func get_species():
 	return "Fungus"
 

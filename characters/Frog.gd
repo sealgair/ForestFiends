@@ -23,6 +23,9 @@ func init(start_pos, the_tilemap):
 func get_species():
 	return "Frog"
 
+func pronouns():
+	return ['she', 'her', 'her', 'hers']
+
 func special_pressed():
 	.special_pressed()
 	if jumping:

@@ -12,6 +12,9 @@ func init(start_pos, the_tilemap):
 func get_species():
 	return "Wasp"
 
+func pronouns():
+	return ['she', 'her', 'her', 'hers']
+
 func hit(other):
 	if other.poisoned_by == self:
 		.hit(other)

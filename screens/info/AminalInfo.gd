@@ -32,7 +32,7 @@ var descriptions = {
 		"Special: What, flying's not enough?"
 	],
 	'Slug': [
-		"Slippery, slimy, and spiky. Leaves trails of slick slime.",
+		"Slippery, slimy, and spiky. Leaves trails of slippery slime.",
 		"Attack: Spikes. All over.",
 		"Special: You can slip too!"
 	],
@@ -46,6 +46,12 @@ var descriptions = {
 		"Attack: hold until its charged, release to slash.",
 		"    Good things come to those who wait.",
 		"Special: hide. Until you strike, that is."
+	],
+	'Fungus': [
+		"Mycel lives underground. They are everywhere. ",
+		"Watch out for their mushrooms… who knows what those do?",
+		"Attack: grow a mushroom or release spores.",
+		"Special: expand the mycelium.",
 	]
 }
 var description = ""
@@ -138,6 +144,24 @@ var scripts = {
 		script_step(6, 'special'),
 		script_step(7, 'left', 0.3),
 		script_step(8, 'attack', 0.6),
+	],
+	'Fungus': [
+		script_step(1, 'left'),
+		script_step(1.5, 'special'),
+		script_step(2, 'right'),
+		script_step(2.5, 'special'),
+		script_step(3, 'up'),
+		script_step(3.5, 'attack'),
+		script_step(4, 'right'),
+		script_step(4.25, 'up'),
+		script_step(5, 'special'),
+		script_step(5.5, 'up'),
+		script_step(5.8, 'left'),
+		script_step(6.2, 'attack'),
+		script_step(6.8, 'up'),
+		script_step(7, 'special'),
+		script_step(7.2, 'down'),
+		script_step(7.4, 'down'),
 	]
 }
 
@@ -151,7 +175,6 @@ static func join(lines):
 		result += line + "\n"
 	return result
 
-
 var demo_scene = preload("res://maps/Demo.tscn")
 func _ready():
 	$AminalDetail.set_map(demo_scene.instance())
@@ -160,13 +183,11 @@ func _ready():
 	order.shuffle()
 	set_aminal(order[aminal_index])
 
-
 func _process(delta):
 	var revealed = ($RevealTimer.time_left-1) / ($RevealTimer.wait_time-1)
 	revealed = 1 - revealed
 	revealed = floor(revealed * description.length())
 	$Description.text = description.substr(0, revealed)
-
 
 func set_aminal(aminal_type):
 	$AminalDetail.clean()
@@ -187,8 +208,7 @@ func set_aminal(aminal_type):
 	description = join(descriptions[aminal_type])
 	$RevealTimer.start()
 	$ContinueTimer.start()
-	$Title.text = Global.aminal_names[aminal_type]
-	
+	$Title.text = aminal.get_long_name()
 
 func _on_ContinueTimer_timeout():
 	aminal_index += 1

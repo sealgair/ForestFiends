@@ -26,6 +26,12 @@ func init(start_pos, the_tilemap):
 
 func get_species():
 	return "Spid"
+
+func get_long_species():
+	return "Spider"
+
+func pronouns():
+	return ['she', 'her', 'her', 'hers']
 	
 func get_animation():
 	var pressed = axes_pressed()

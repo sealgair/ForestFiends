@@ -17,6 +17,9 @@ func init(start_pos, the_tilemap):
 func get_species():
 	return "Bird"
 
+func pronouns():
+	return ['he', 'him', 'his', 'his']
+
 func special_pressed():
 	if flaps <= max_flaps and flapped <= 0:
 		flaps += 1

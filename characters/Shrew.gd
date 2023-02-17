@@ -14,6 +14,8 @@ func init(start_pos, the_tilemap):
 func get_species():
 	return "Shrew"
 
+func pronouns():
+	return ['he', 'him', 'his', 'his']
 
 func attack_pressed():
 	if dashing <= 3*dash_time/4:

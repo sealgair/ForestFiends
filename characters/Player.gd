@@ -103,6 +103,18 @@ func init(start_pos, the_tilemap):
 func get_species():
 	return "Player"
 
+func get_long_species():
+	return get_species()
+
+func get_short_name():
+	return Global.aminal_names[get_species()]
+
+func get_long_name():
+	return "%s the %s" % [get_short_name(), get_long_species()]
+
+func pronouns():
+	return ['they', 'them', 'their', 'theirs']
+
 func make_slime(position, palette=0):
 	pass # to implement in slug
 
