@@ -7,7 +7,7 @@ var start_data = [
 	{'order': 4, 'species': "", 'palette': 0, 'computer': true},
 ]
 var players = []
-export (int) var score_limit = 10
+export (int) var score_limit = 30
 export (int) var max_computers = 4
 var score = 0
 
