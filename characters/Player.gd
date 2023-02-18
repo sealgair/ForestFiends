@@ -538,6 +538,9 @@ func target_position():
 		return brain.target.position
 	return null
 
+func think_position():
+	return position
+
 func think(delta):
 	if not is_instance_valid(brain.target):
 		brain.target = null
@@ -545,9 +548,9 @@ func think(delta):
 	if target != null:
 		var path
 		if brain.seek_ground:
-			path = pathfinder.path_between(position, pathfinder.ground_below_pos(target))
+			path = pathfinder.path_between(think_position(), pathfinder.ground_below_pos(target))
 		else:
-			path = pathfinder.path_between(position, target)
+			path = pathfinder.path_between(think_position(), target)
 		if not follow_path(path):
 			# too close for paths
 			move_toward_point(target)
@@ -586,7 +589,7 @@ func point_on_path(path):
 	var next = null
 	if path.size() > 1:
 		next = path[0]
-		while abs(next.y - position.y) < 16 and abs(next.x - position.x) < 8:
+		while abs(next.y - think_position().y) < 16 and abs(next.x - think_position().x) < 8:
 			path.remove(0)
 			if path.size() > 0:
 				next = path[0]
@@ -600,7 +603,7 @@ func point_on_path(path):
 			return next
 
 func move_toward_point(point):
-	var dir = point - position
+	var dir = point - think_position()
 	if abs(dir.x) > 16*8:
 		dir.x *= -1 # wrap around map
 	if abs(dir.x) > 6 or (dir.y > 2 and is_on_floor()):

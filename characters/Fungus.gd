@@ -16,6 +16,8 @@ func get_species():
 
 func init(start_pos, the_tilemap):
 	tilemap = the_tilemap
+	PlayerPath = load("res://brain/FungusPath.gd")
+	pathfinder = PlayerPath.new(self, tilemap)
 	start_pos += Vector2(0, tilemap.cell_size.y)
 	cursor_cell = Global.floor2(start_pos / tilemap.cell_size)
 	add_myc(cursor_cell, Vector2(0, -1), 0.75)
@@ -190,12 +192,28 @@ func do_process(delta):
 		if mushrooms[mpos].done:
 			mushrooms.erase(mpos)
 
-func think(delta):
-	pass
-
 func _on_Cursor_animation_finished():
 	if $Cursor.animation == "leave": 
 		$Cursor.position = cursor_cell * tilemap.cell_size
 		$Cursor.play('enter')
 	elif $Cursor.animation == "enter": 
 		$Cursor.play('default')
+
+func think_position():
+	return cursor_cell * tilemap.cell_size + tilemap.cell_size/2
+
+func should_attack(enemy):
+	return false #TODO: can use mushroom
+
+func should_special(enemy, path=[]):
+	var myc = mycelium[cursor_cell]
+	return myc.can_spread()
+
+func move_toward_point(point):
+	var dir = point - think_position()
+	 # wrap around map
+	if abs(dir.x) > 16*8:
+		dir.x *= -1
+	if abs(dir.y) > 16*8:
+		dir.y *= -1
+	input.press_axis(straighten(dir))

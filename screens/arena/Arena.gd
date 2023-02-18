@@ -35,6 +35,7 @@ func _ready():
 		'Frog': 2,
 		'Mant': 1,
 		'Spid': 1,
+		'Fungus': 0.5,
 	}
 	
 	var existing_palettes = {}
@@ -49,7 +50,7 @@ func _ready():
 		if player_data.computer and computers < max_computers:
 			computers += 1
 			var overrides = {
-#				1: 'Spid',
+#				1: 'Fungus',
 #				2: 'Wasp',
 #				3: 'Frog',
 #				4: 'Bird',

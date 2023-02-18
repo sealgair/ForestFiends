@@ -29,14 +29,17 @@ func _init(the_player, tilemap: TileMap):
 	for point in get_points():
 		connect_node(point)
 
+func can_be_node(cell):
+	# invalid cells are the air we can move through
+	return cell == TileMap.INVALID_CELL
+
 func build_nodes(tilemap):
 	var offset = cell_size / 2  # so coords are at center of tile
 	for y in range(tilemap.cell_quadrant_size):
 		for x in range(tilemap.cell_quadrant_size):
 			var point = Vector2(x, y)
 			var cell = tilemap.get_cellv(point)
-			if cell == tilemap.INVALID_CELL:  
-				# invalid cells are the air we can move through
+			if can_be_node(cell):
 				var id = get_available_point_id()
 				add_point(id, point * cell_size + offset)
 
@@ -142,8 +145,11 @@ func ground_below_pos(pos, breadth=1, step=1):
 	# nothing found at this level, check the next level
 	return ground_below_pos(pos_below, breadth+step, step)
 
+func player_position():
+	return player.think_position()
+
 func path_to_enemy(enemy):
-	var point_a = get_closest_point(player.position)
+	var point_a = get_closest_point(player_position())
 	var point_b = get_closest_point(enemy.position)
 	point_b = ground_below(point_b)
 	return get_point_path(point_a, point_b)
