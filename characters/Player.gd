@@ -21,7 +21,7 @@ var specials = 0
 var input
 var run_speed = 100
 var jump_speed = -450
-var gravity = 1200
+var gravity = Vector2(0, 1200)
 var accelerate = 10
 var decelerate = 20
 
@@ -255,6 +255,9 @@ func track_distance(amount):
 func _physics_process(delta):
 	do_physics_process(delta)
 
+func up_dir():
+	return Vector2(0, -1)
+
 func do_physics_process(delta):
 	# so it can be overridden
 	if jumping and is_on_floor():
@@ -282,9 +285,9 @@ func do_physics_process(delta):
 		var webbed = Global.center(points)
 		velocity = (webbed - position) * run_speed
 	else:
-		velocity.y += gravity * delta
+		velocity += gravity * delta
 	var before = position
-	velocity = move_and_slide(velocity, Vector2(0, -1))
+	velocity = move_and_slide(velocity, up_dir())
 	track_distance((position - before).length())
 	
 	# use transform not position so as not to break physics

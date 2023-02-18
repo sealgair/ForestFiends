@@ -2,7 +2,7 @@ extends "Player.gd"
 
 
 func init(start_pos, the_tilemap):
-	gravity = 0
+	gravity = Vector2()
 	run_speed = 80
 	attack_offset = Vector2(16,8)
 	attack_wait = 1.5

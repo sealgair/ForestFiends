@@ -81,8 +81,8 @@ animations = [ {
 "speed": 5.0
 } ]
 
-[sub_resource type="RectangleShape2D" id=9]
-extents = Vector2( 8, 8 )
+[sub_resource type="CircleShape2D" id=37]
+radius = 8.0
 
 [sub_resource type="AtlasTexture" id=31]
 atlas = ExtResource( 5 )
@@ -121,11 +121,10 @@ __meta__ = {
 material = SubResource( 17 )
 frames = SubResource( 8 )
 animation = "idle"
-frame = 1
 playing = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource( 9 )
+shape = SubResource( 37 )
 
 [node name="Debug" type="Label" parent="."]
 margin_top = -16.0
