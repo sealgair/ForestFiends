@@ -105,11 +105,10 @@ func handle_input(delta):
 		$Cursor/Hint.rotation = dir.angle() + TAU/4
 		cursor_dir = dir
 		
-	if input.is_just_pressed('special'):
-		spread()
-		specials += 1
+	if input.is_just_pressed('special') or input.is_just_released('attack'):
+		if spread():
+			specials += 1
 		
-	if input.is_just_released('attack'):
 		if cursor_cell in mycelium:
 			sprout()
 
@@ -123,6 +122,8 @@ func spread():
 	if myc.can_spread() and ground_cell(cell):
 		add_myc(cell, -cursor_dir)
 		myc.grow(-growth)
+		return true
+	return false
 
 func sprout():
 	var myc = mycelium[cursor_cell]
