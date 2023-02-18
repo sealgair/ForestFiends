@@ -81,8 +81,7 @@ func get_enemies():
 	var list = []
 	for enemy in enemies:
 		if "mushrooms" in enemy:
-			for mushroom in enemy.mushrooms.values():
-				list.append(mushroom)
+			list.append_array(enemy.mushrooms.values())
 		else:
 			list.append(enemy)
 	return list
@@ -188,14 +187,19 @@ func axes_pressed():
 	else:
 		return Vector2(0,0)
 
+var infected_target = null
+var infected_target_reset = 3
 func infected_move(dir):
+	infected_target_reset = max(infected_target_reset-1, 0)
 	if spore != null:
-		var target = closest_enemy()
-		if target:
-			var path = pathfinder.path_between(position, target.position)
+		if infected_target == null or infected_target_reset <= 0:
+			infected_target = closest_enemy({'fungus': false}) # not mushrooms
+			infected_target_reset = 3
+		if infected_target:
+			var path = pathfinder.path_between(position, infected_target.position)
 			var next = point_on_path(path)
 			if not next:
-				next = target.position
+				next = infected_target.position
 			var ndir = Global.sign2(next - position)
 			if not spore.grown:
 				ndir *= -1
@@ -480,6 +484,9 @@ func should_jump(enemy, path=[]):
 	return false
 
 func can_be_target(enemy, filter_ops={}):
+	for k in filter_ops.keys():
+		if (k in enemy) != filter_ops[k]:
+			return false
 	return enemy != null and not enemy.dead and not enemy.hidden
 
 func closest_enemy(filter_ops={}):
@@ -496,16 +503,6 @@ func closest_enemy(filter_ops={}):
 func can_stand(x, y):
 	return tilemap.get_cell(x, y) == tilemap.INVALID_CELL \
 			and tilemap.get_cell(x, y+1) != tilemap.INVALID_CELL
-
-func path_contains_enemy(path):
-	var prev = null
-	for point in path:
-		if prev != null:
-			for enemy in get_enemies():
-				if Geometry.segment_intersects_circle(prev, point, enemy.position, 16) != -1:
-					return true
-		prev = point
-	return false
 
 func safe_spot():
 	if brain.safe_spot == null:

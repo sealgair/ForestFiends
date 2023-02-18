@@ -19,6 +19,8 @@ const texture = preload("res://art/fungus.png")
 
 func _ready():
 	$AnimatedSprite.play('grow')
+	$LifeTimer.wait_time = randf() * 10 + 10
+	$LifeTimer.start()
 
 func init(dir, palette=0):
 	facing = dir
@@ -82,6 +84,9 @@ func _process(delta):
 func poison(other):
 	die()
 	
+func slime():
+	pass
+	
 func infect(other):
 	if other != fungus and not dead:
 		other.hit(self)
@@ -98,3 +103,7 @@ func _on_AnimatedSprite_animation_finished():
 
 func _on_DecayTimer_timeout():
 	emit_signal("die", self)
+
+
+func _on_LifeTimer_timeout():
+	burst()

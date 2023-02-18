@@ -177,6 +177,7 @@ static func join(lines):
 
 var demo_scene = preload("res://maps/Demo.tscn")
 func _ready():
+	$AminalDetail.max_computers = 0
 	$AminalDetail.set_map(demo_scene.instance())
 	order = descriptions.keys()
 	randomize()

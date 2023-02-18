@@ -139,5 +139,10 @@ one_shot = true
 [node name="InfectTimer" type="Timer" parent="."]
 one_shot = true
 
+[node name="LifeTimer" type="Timer" parent="."]
+wait_time = 10.0
+one_shot = true
+
 [connection signal="animation_finished" from="AnimatedSprite" to="." method="_on_AnimatedSprite_animation_finished"]
 [connection signal="timeout" from="DecayTimer" to="." method="_on_DecayTimer_timeout"]
+[connection signal="timeout" from="LifeTimer" to="." method="_on_LifeTimer_timeout"]

@@ -24,7 +24,7 @@ func _ready():
 	set_map(map_scene.instance())
 	
 	randomize()
-	$HUD/Score.text = String(score_limit)
+	$Map/HUD/Score.text = String(score_limit)
 	var spawn_points = $Map.get_spawn_points()
 	var species_choices = {
 		'Shrew': 3,
@@ -114,7 +114,7 @@ func hit():
 	if score >= score_limit:
 		$VictoryTimer.start()
 	else:
-		$HUD/Score.text = String(score_limit - score)
+		$Map/HUD/Score.text = String(score_limit - score)
 
 func spawnpoint_distance(spawnpoint):
 	var distances = []
