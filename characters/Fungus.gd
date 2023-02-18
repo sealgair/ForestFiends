@@ -8,6 +8,8 @@ var mushrooms = {}
 var cursor_cell = Vector2()
 var growth = 0.2
 var cursor_dir = Vector2(0,-1)
+var held_dir = Vector2()
+var held_dir_time = 0
 
 func get_species():
 	return "Fungus"
@@ -91,12 +93,21 @@ func move_cursor(dir):
 	return cursor_cell
 
 func handle_input(delta):
+	# holding the same direct
+	var hdir = input.direction_pressed()
+	if hdir != held_dir:
+		held_dir = hdir
+		held_dir_time = 0
+	elif hdir.length() > 0:
+		held_dir_time += delta
+	
 	var dir = input.direction_just_pressed()
+	if held_dir_time > 0.3:
+		dir = held_dir
 	if dir.length() != 0:
 		if dir.length() > 1: # both keys
 			dir.x = 0
 		
-		# TODO: hold direction to go faster
 		if dir.length() > 0 and not input.is_pressed('attack'):
 			var new = move_cursor(dir)
 			track_distance((new-cursor_cell).length() * 16)
@@ -104,6 +115,7 @@ func handle_input(delta):
 		
 		$Cursor/Hint.rotation = dir.angle() + TAU/4
 		cursor_dir = dir
+		held_dir_time = 0
 		
 	if input.is_just_pressed('special') or input.is_just_released('attack'):
 		if spread():
