@@ -2,7 +2,6 @@ extends "Player.gd"
 
 var sides
 var corners
-var base_gravity
 var from_side = Vector2(0, 1)
 var edge_grab = 3
 var web_parts = {}
@@ -18,7 +17,6 @@ func _ready():
 func init(start_pos, the_tilemap):
 	jump_height = 2
 	jump_dist = 3
-	base_gravity = gravity
 	jumping = true
 	PlayerPath = load("res://brain/WaspPath.gd")
 	.init(start_pos, the_tilemap)

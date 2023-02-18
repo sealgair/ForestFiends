@@ -21,7 +21,8 @@ var specials = 0
 var input
 var run_speed = 100
 var jump_speed = -450
-var gravity = Vector2(0, 1200)
+var base_gravity = Vector2(0, 1200)
+var gravity = base_gravity
 var accelerate = 10
 var decelerate = 20
 
@@ -285,7 +286,10 @@ func do_physics_process(delta):
 		var webbed = Global.center(points)
 		velocity = (webbed - position) * run_speed
 	else:
-		velocity += gravity * delta
+		if dead:
+			velocity = base_gravity * delta
+		else:
+			velocity += gravity * delta
 	var before = position
 	velocity = move_and_slide(velocity, up_dir())
 	track_distance((position - before).length())
