@@ -23,6 +23,7 @@ func set_aminal(instance):
 		$AnimatedSprite.frames.add_frame("idle", frame)
 	if instance.palette != palette and instance.palette != null:
 		set_palette(instance.palette)
+	$AnimatedSprite.play("idle")
 
 func set_palette(new_palette):
 	palette = new_palette
