@@ -63,8 +63,6 @@ var tilemap
 var pathfinder
 
 func _ready():
-	if $CollisionShape2D:
-		size = $CollisionShape2D.shape.extents
 	screen_size = get_viewport_rect().size
 	set_computer(computer)
 	if palette == null:
