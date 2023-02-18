@@ -132,6 +132,12 @@ func spread():
 		return true
 	return false
 
+static func straighten(vec2):
+	if abs(vec2.x) > abs(vec2.y):
+		return Vector2(sign(vec2.x), 0)
+	else:
+		return Vector2(0, sign(vec2.y))
+
 func sprout():
 	var myc = mycelium[cursor_cell]
 	if myc.growth < 0.2:
@@ -158,7 +164,7 @@ func sprout():
 				# spread to new tiles
 				var spread = mush.spore_tile(tilemap)
 				if spread:
-					add_myc(spread, -mush.facing)
+					add_myc(spread, straighten(pos - spread))
 		elif myc.growth > 0.8:
 			add_mushroom(pos, dir)
 			myc.growth = 0.2

@@ -60,12 +60,8 @@ func spore_tile(tilemap):
 		var check = wrap_cell(cell + facing * i)
 		if tilemap.get_cellv(check) != tilemap.INVALID_CELL:
 			return check
-		for j in range(1, i+1):
-			var s = Vector2()
-			if facing.x != 0:
-				s.y = j
-			else:
-				s.x = j
+		for j in range(1, i+2):
+			var s = Global.perpendicular(facing) * j
 			if (facing * i + s).length() <= d:
 				for check_s in [wrap_cell(check + s), wrap_cell(check - s)]:
 					if tilemap.get_cellv(check_s) != tilemap.INVALID_CELL:
