@@ -75,21 +75,16 @@ func move_cursor(dir):
 			elif $Cursor.animation == "default":
 				$Cursor.play('leave') # blink in place
 		elif dir == cursor_dir:
-			# check across gaps
-			for i in range(1,8): # check halfway around map
-				var skip_cursor = wrap_cell(cursor_cell + dir*i)
-				if skip_cursor in mycelium:
-					return skip_cursor
-				for j in range(1, 12):
-					var s = Vector2()
-					if dir.x != 0:
-						s.y = j
-					else:
-						s.x = j
-					for side_cursor in [wrap_cell(skip_cursor + s), wrap_cell(skip_cursor - s)]:
-						# check to the sides too
-						if side_cursor in mycelium:
-							return side_cursor
+			# check across gaps (halfway around map)
+			for j in range(0,8):
+				for s in [j, -j]:
+					for i in range(1,8):
+						# go straight first, then try the sides
+						var skip_cursor = wrap_cell(
+							cursor_cell + dir * i + Global.perpendicular(dir) * s
+						)
+						if skip_cursor in mycelium:
+							return skip_cursor
 	return cursor_cell
 
 func handle_input(delta):

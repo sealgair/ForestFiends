@@ -163,6 +163,9 @@ static func weighted_rand_choice(choices):
 		if spot > choose:
 			return option
 
+func perpendicular(vec2):
+	return Vector2(vec2.y, vec2.x)
+
 func abs2(vec2):
 	return Vector2(abs(vec2.x), abs(vec2.y))
 
