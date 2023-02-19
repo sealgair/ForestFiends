@@ -12,6 +12,7 @@ func init(start_pos, the_tilemap):
 	special_wait = 0.1
 	jump_height = 3
 	jump_dist = 4
+	attack_anim = "p"
 	.init(start_pos, the_tilemap)
 
 func get_species():
