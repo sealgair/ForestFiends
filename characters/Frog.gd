@@ -4,7 +4,7 @@ var jump_time = 0
 var max_jump = -300
 var look_angle = 0
 var look_change = 0
-var texture = preload("res://art/forg.png")
+var texture = preload("res://art/frog16.png")
 
 func init(start_pos, the_tilemap):
 	run_speed = 150
@@ -16,9 +16,8 @@ func init(start_pos, the_tilemap):
 	attack_anim = "tongue"
 	var image = texture.get_data()
 	image.lock()
-	$Tongue.default_color = image.get_pixel(palette, 3)
+	$Tongue.default_color = image.get_pixel(palette, 5)
 	image.unlock()
-
 
 func get_species():
 	return "Frog"

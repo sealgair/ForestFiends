@@ -312,7 +312,13 @@ func get_animation():
 	if is_attacking():
 		return "attack"
 	elif not is_on_floor():
-		return "jump"
+		if $AnimatedSprite.frames.has_animation("jump_up"):
+			if velocity.y < 0:
+				return "jump_up"
+			else:
+				return "jump_down"
+		else:
+			return "jump"
 	elif axes_pressed().x != 0:
 		return "walk"
 	else:
