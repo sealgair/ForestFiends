@@ -37,13 +37,11 @@ func moved(delta):
 			if not $AnimatedSprite.flip_h:
 				to_velocity.x *= -1
 
-
 func make_attack():
 	var instance = .make_attack()
 	if instance and not is_on_floor():
 		instance.transform.origin.y += 8
 		velocity.y = dive_speed
-
 
 func get_animation():
 	var anim_name = .get_animation()
@@ -52,7 +50,6 @@ func get_animation():
 	elif anim_name == "jump" and flapped > 0:
 		return "flap"
 	return anim_name
-
 
 func _process(delta):
 	if is_on_floor():
