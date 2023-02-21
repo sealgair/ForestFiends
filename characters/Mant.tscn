@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://characters/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://characters/Mant.gd" type="Script" id=2]
@@ -96,6 +96,10 @@ animations = [ {
 "speed": 5.0
 } ]
 
+[sub_resource type="CircleShape2D" id=41]
+resource_local_to_scene = true
+radius = 8.0
+
 [node name="Mant" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
 
@@ -103,3 +107,10 @@ script = ExtResource( 2 )
 material = SubResource( 31 )
 frames = SubResource( 32 )
 animation = "poised"
+frame = 0
+
+[node name="CollisionShape2D" parent="." index="1"]
+shape = SubResource( 41 )
+
+[node name="Poison" parent="." index="4"]
+frame = 2

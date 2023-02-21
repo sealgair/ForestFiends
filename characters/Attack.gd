@@ -14,7 +14,9 @@ func _process(delta):
 		queue_free()
 
 func configure(anim="idle", size=6):
-	$AnimatedSprite.animation = anim
+	var frames = $AnimatedSprite.frames.get_frame_count(anim)
+	$AnimatedSprite.frames.set_animation_speed(anim, frames/live)
+	$AnimatedSprite.play(anim)
 
 
 func extend():

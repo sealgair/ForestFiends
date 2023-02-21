@@ -57,7 +57,7 @@ var webs = []
 var web_points = {}
 var hidden = false
 
-var attack_anim = "default"
+var attack_anim = "bite"
 var enemies = []
 
 var tilemap

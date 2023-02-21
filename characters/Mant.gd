@@ -9,8 +9,8 @@ var fade_time = 0.3
 var died = false
 
 func _ready():
-	attack_anim = "none"
 	special_wait = 1.5
+	attack_anim = "slash"
 
 func get_species():
 	return "Mant"
@@ -31,8 +31,8 @@ func attack_released():
 	if poised:
 		poised = false
 		if poise_timer <= 0:
-			.make_attack()
 			hidden = false
+			.make_attack()
 			special_timeout = special_wait
 		poise_timer = 0
 
