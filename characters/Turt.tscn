@@ -1,36 +1,9 @@
-[gd_scene load_steps=42 format=2]
+[gd_scene load_steps=44 format=2]
 
 [ext_resource path="res://main/PalletSwap.gdshader" type="Shader" id=3]
-[ext_resource path="res://main/PalletSwap.tres" type="Material" id=4]
 [ext_resource path="res://characters/Player.tscn" type="PackedScene" id=5]
 [ext_resource path="res://characters/Turt.gd" type="Script" id=6]
 [ext_resource path="res://art/turtle16.png" type="Texture" id=7]
-
-[sub_resource type="AtlasTexture" id=63]
-atlas = ExtResource( 7 )
-region = Rect2( 16, 16, 16, 16 )
-
-[sub_resource type="AtlasTexture" id=65]
-atlas = ExtResource( 7 )
-region = Rect2( 32, 16, 16, 16 )
-
-[sub_resource type="AtlasTexture" id=64]
-atlas = ExtResource( 7 )
-region = Rect2( 0, 16, 16, 16 )
-
-[sub_resource type="SpriteFrames" id=1]
-resource_local_to_scene = true
-animations = [ {
-"frames": [ SubResource( 63 ), SubResource( 65 ) ],
-"loop": true,
-"name": "attack",
-"speed": 5.0
-}, {
-"frames": [ SubResource( 64 ) ],
-"loop": true,
-"name": "idle",
-"speed": 5.0
-} ]
 
 [sub_resource type="ShaderMaterial" id=22]
 resource_local_to_scene = true
@@ -106,25 +79,13 @@ region = Rect2( 32, 32, 16, 16 )
 atlas = ExtResource( 7 )
 region = Rect2( 48, 32, 16, 16 )
 
-[sub_resource type="AtlasTexture" id=66]
+[sub_resource type="AtlasTexture" id=76]
 atlas = ExtResource( 7 )
-region = Rect2( 48, 16, 16, 16 )
+region = Rect2( 16, 0, 16, 16 )
 
-[sub_resource type="AtlasTexture" id=67]
+[sub_resource type="AtlasTexture" id=78]
 atlas = ExtResource( 7 )
-region = Rect2( 64, 16, 16, 16 )
-
-[sub_resource type="AtlasTexture" id=68]
-atlas = ExtResource( 7 )
-region = Rect2( 80, 16, 16, 16 )
-
-[sub_resource type="AtlasTexture" id=69]
-atlas = ExtResource( 7 )
-region = Rect2( 96, 16, 16, 16 )
-
-[sub_resource type="AtlasTexture" id=58]
-atlas = ExtResource( 7 )
-region = Rect2( 96, 16, 16, 16 )
+region = Rect2( 112, 16, 16, 16 )
 
 [sub_resource type="AtlasTexture" id=39]
 atlas = ExtResource( 7 )
@@ -175,14 +136,14 @@ animations = [ {
 "frames": [ SubResource( 59 ), SubResource( 60 ), SubResource( 61 ), SubResource( 62 ) ],
 "loop": false,
 "name": "defend",
-"speed": 5.0
+"speed": 15.0
 }, {
-"frames": [ SubResource( 66 ), SubResource( 67 ), SubResource( 66 ), SubResource( 66 ), SubResource( 66 ), SubResource( 66 ), SubResource( 66 ), SubResource( 68 ), SubResource( 69 ), SubResource( 68 ), SubResource( 66 ), SubResource( 66 ) ],
+"frames": [ SubResource( 76 ) ],
 "loop": true,
 "name": "idle",
 "speed": 5.0
 }, {
-"frames": [ SubResource( 58 ) ],
+"frames": [ SubResource( 78 ) ],
 "loop": true,
 "name": "jump",
 "speed": 5.0
@@ -193,6 +154,61 @@ animations = [ {
 "speed": 10.0
 } ]
 
+[sub_resource type="AtlasTexture" id=63]
+atlas = ExtResource( 7 )
+region = Rect2( 16, 16, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=65]
+atlas = ExtResource( 7 )
+region = Rect2( 32, 16, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=64]
+atlas = ExtResource( 7 )
+region = Rect2( 0, 16, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=72]
+atlas = ExtResource( 7 )
+region = Rect2( 64, 16, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=71]
+atlas = ExtResource( 7 )
+region = Rect2( 0, 16, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=73]
+atlas = ExtResource( 7 )
+region = Rect2( 48, 16, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=74]
+atlas = ExtResource( 7 )
+region = Rect2( 80, 16, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=75]
+atlas = ExtResource( 7 )
+region = Rect2( 96, 16, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=77]
+atlas = ExtResource( 7 )
+region = Rect2( 0, 16, 16, 16 )
+
+[sub_resource type="SpriteFrames" id=1]
+resource_local_to_scene = true
+animations = [ {
+"frames": [ SubResource( 63 ), SubResource( 65 ) ],
+"loop": true,
+"name": "attack",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 64 ), SubResource( 72 ), SubResource( 71 ), SubResource( 73 ), SubResource( 74 ), SubResource( 75 ), SubResource( 74 ), SubResource( 71 ), SubResource( 71 ), SubResource( 64 ), SubResource( 64 ), SubResource( 64 ) ],
+"loop": true,
+"name": "idle",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 77 ) ],
+"loop": true,
+"name": "walk",
+"speed": 5.0
+} ]
+
 [sub_resource type="CapsuleShape2D" id=70]
 radius = 5.0
 height = 7.0
@@ -200,27 +216,29 @@ height = 7.0
 [node name="Trut" instance=ExtResource( 5 )]
 script = ExtResource( 6 )
 
-[node name="Head" type="AnimatedSprite" parent="." index="0"]
-material = ExtResource( 4 )
-frames = SubResource( 1 )
-animation = "idle"
-
-[node name="AnimatedSprite" parent="." index="1"]
+[node name="AnimatedSprite" parent="." index="0"]
 material = SubResource( 22 )
 frames = SubResource( 29 )
 animation = "defend"
 frame = 3
 
-[node name="CollisionShape2D" parent="." index="2"]
+[node name="Head" type="AnimatedSprite" parent="AnimatedSprite" index="0"]
+show_behind_parent = true
+use_parent_material = true
+frames = SubResource( 1 )
+animation = "walk"
+playing = true
+
+[node name="CollisionShape2D" parent="." index="1"]
 position = Vector2( 0, 3 )
 rotation = 1.5708
 shape = SubResource( 70 )
 
-[node name="DefendTimer" type="Timer" parent="." index="7"]
+[node name="DefendTimer" type="Timer" parent="." index="6"]
 wait_time = 3.0
 one_shot = true
 
-[node name="DefendCooldown" type="Timer" parent="." index="8"]
+[node name="DefendCooldown" type="Timer" parent="." index="7"]
 wait_time = 10.0
 one_shot = true
 

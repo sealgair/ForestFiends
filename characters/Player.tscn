@@ -1,10 +1,10 @@
-[gd_scene load_steps=26 format=2]
+[gd_scene load_steps=29 format=2]
 
 [ext_resource path="res://main/PalletSwap.gdshader" type="Shader" id=1]
 [ext_resource path="res://characters/Player.gd" type="Script" id=2]
 [ext_resource path="res://art/wasp.png" type="Texture" id=3]
 [ext_resource path="res://art/decay.png" type="Texture" id=4]
-[ext_resource path="res://art/poison.png" type="Texture" id=5]
+[ext_resource path="res://art/poison16.png" type="Texture" id=5]
 [ext_resource path="res://art/spid.png" type="Texture" id=6]
 [ext_resource path="res://main/MenuTheme.tres" type="Theme" id=7]
 [ext_resource path="res://art/aminals.png" type="Texture" id=8]
@@ -82,18 +82,31 @@ animations = [ {
 } ]
 
 [sub_resource type="CircleShape2D" id=37]
+resource_local_to_scene = true
 radius = 8.0
 
-[sub_resource type="AtlasTexture" id=31]
+[sub_resource type="AtlasTexture" id=38]
 atlas = ExtResource( 5 )
 region = Rect2( 0, 0, 16, 16 )
 
+[sub_resource type="AtlasTexture" id=39]
+atlas = ExtResource( 5 )
+region = Rect2( 16, 0, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=40]
+atlas = ExtResource( 5 )
+region = Rect2( 32, 0, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=41]
+atlas = ExtResource( 5 )
+region = Rect2( 48, 0, 16, 16 )
+
 [sub_resource type="SpriteFrames" id=32]
 animations = [ {
-"frames": [ SubResource( 31 ) ],
+"frames": [ SubResource( 38 ), SubResource( 39 ), SubResource( 40 ), SubResource( 41 ) ],
 "loop": true,
 "name": "default",
-"speed": 5.0
+"speed": 10.0
 } ]
 
 [sub_resource type="RectangleShape2D" id=33]
@@ -121,7 +134,6 @@ __meta__ = {
 material = SubResource( 17 )
 frames = SubResource( 8 )
 animation = "idle"
-frame = 1
 playing = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -139,6 +151,7 @@ one_shot = true
 
 [node name="Poison" type="AnimatedSprite" parent="."]
 frames = SubResource( 32 )
+playing = true
 offset = Vector2( 0, -16 )
 
 [node name="PoisonTimer" type="Timer" parent="."]

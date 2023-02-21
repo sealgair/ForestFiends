@@ -6,6 +6,7 @@ func init(start_pos, the_tilemap):
 	run_speed = 80
 	attack_offset = Vector2(16,8)
 	attack_wait = 1.5
+	attack_anim = "peck"
 	PlayerPath = load("res://brain/WaspPath.gd")
 	.init(start_pos, the_tilemap)
 
@@ -36,3 +37,8 @@ func move_toward_point(point):
 	if abs(dir.y) > 16*8:
 		dir.y *= -1
 	input.press_axis(dir)
+
+func do_process(delta):
+	.do_process(delta)
+	$AnimatedSprite/Wings.visible = not dead
+	$AnimatedSprite/Wings.flip_h = $AnimatedSprite.flip_h
