@@ -246,4 +246,4 @@ frame = 4
 shape = SubResource( 69 )
 
 [node name="Poison" parent="." index="4"]
-frame = 2
+frame = 1
