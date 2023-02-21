@@ -10,6 +10,7 @@ func _ready():
 
 func refresh():
 	$Timer.start()
+	$AnimatedSprite.frame = 0
 	
 func set_palette(palette):
 	$AnimatedSprite.material.set_shader_param("palette", palette)

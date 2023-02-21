@@ -191,7 +191,7 @@ animations = [ {
 "frames": [ SubResource( 31 ), SubResource( 32 ), SubResource( 33 ), SubResource( 34 ) ],
 "loop": false,
 "name": "attack",
-"speed": 10.0
+"speed": 15.0
 }, {
 "frames": [ SubResource( 35 ), SubResource( 36 ), SubResource( 37 ), SubResource( 38 ) ],
 "loop": false,
@@ -206,7 +206,7 @@ animations = [ {
 "frames": [ SubResource( 43 ), SubResource( 44 ), SubResource( 45 ), SubResource( 46 ) ],
 "loop": false,
 "name": "dive",
-"speed": 15.0
+"speed": 25.0
 }, {
 "frames": [ SubResource( 47 ), SubResource( 48 ), SubResource( 49 ), SubResource( 48 ), SubResource( 47 ) ],
 "loop": false,
@@ -239,11 +239,12 @@ script = ExtResource( 2 )
 [node name="AnimatedSprite" parent="." index="0"]
 material = SubResource( 2 )
 frames = SubResource( 22 )
-animation = "flap"
-frame = 4
+animation = "dive"
+frame = 3
+playing = false
 
 [node name="CollisionShape2D" parent="." index="1"]
 shape = SubResource( 69 )
 
 [node name="Poison" parent="." index="4"]
-frame = 1
+frame = 2

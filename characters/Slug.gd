@@ -3,10 +3,12 @@ extends "Player.gd"
 signal make_slime(position, palette)
 
 var spikes
+var max_hold = 1.5
+var holding = 0
 
 func _ready():
 	attack_anim = "none"
-	attack_offset = Vector2(0,0)
+	attack_offset = Vector2(0,4)
 	spikes = [$Spike1, $Spike2, $Spike3]
 	for spike in spikes:
 		spike.material.set_shader_param("palette", palette)
@@ -46,10 +48,10 @@ func _process(delta):
 				area.refresh()
 				if area.transform.origin == slime_pos:
 					found = true
+					break
 		if not found:
 			# make one
 			emit_signal("make_slime", slime_pos, palette)
-	
 	
 	# extend spikes
 	var an = attack_node.get_ref()
@@ -64,8 +66,12 @@ func _process(delta):
 		spikes[2].transform.origin.x = l
 		
 		# hold attack to keep spikes out
-		if is_attack_pressed():
-			an.extend()
+		if not dead and is_attack_pressed():
+			if holding <= max_hold:
+				holding += delta 
+				an.extend()
+	if dead or not is_attack_pressed():
+		holding = 0
 
 
 func should_special(enemy, next=null):

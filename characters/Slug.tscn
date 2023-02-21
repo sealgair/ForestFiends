@@ -148,13 +148,13 @@ flip_h = true
 [node name="AnimatedSprite" parent="." index="3"]
 material = SubResource( 31 )
 frames = SubResource( 32 )
-frame = 3
+frame = 0
 
 [node name="CollisionShape2D" parent="." index="4"]
 shape = SubResource( 49 )
 
 [node name="Poison" parent="." index="7"]
-frame = 1
+frame = 2
 
 [node name="SlimeFinder" type="Area2D" parent="." index="9"]
 collision_layer = 2

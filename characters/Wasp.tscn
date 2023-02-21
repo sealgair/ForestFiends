@@ -142,3 +142,6 @@ playing = true
 
 [node name="CollisionShape2D" parent="." index="1"]
 shape = SubResource( 33 )
+
+[node name="Poison" parent="." index="4"]
+frame = 2
