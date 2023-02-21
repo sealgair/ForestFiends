@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=2]
+[gd_scene load_steps=42 format=2]
 
 [ext_resource path="res://main/PalletSwap.gdshader" type="Shader" id=3]
 [ext_resource path="res://main/PalletSwap.tres" type="Material" id=4]
@@ -193,6 +193,10 @@ animations = [ {
 "speed": 10.0
 } ]
 
+[sub_resource type="CapsuleShape2D" id=70]
+radius = 5.0
+height = 7.0
+
 [node name="Trut" instance=ExtResource( 5 )]
 script = ExtResource( 6 )
 
@@ -206,6 +210,11 @@ material = SubResource( 22 )
 frames = SubResource( 29 )
 animation = "defend"
 frame = 3
+
+[node name="CollisionShape2D" parent="." index="2"]
+position = Vector2( 0, 3 )
+rotation = 1.5708
+shape = SubResource( 70 )
 
 [node name="DefendTimer" type="Timer" parent="." index="7"]
 wait_time = 3.0
