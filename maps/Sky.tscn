@@ -1,144 +1,7 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://maps/Basic.tscn" type="PackedScene" id=1]
 [ext_resource path="res://art/aminals.png" type="Texture" id=2]
-
-[sub_resource type="ConvexPolygonShape2D" id=10]
-points = PoolVector2Array( 16, 16, 0, 16, 0, 0, 16, 0 )
-
-[sub_resource type="ConvexPolygonShape2D" id=11]
-points = PoolVector2Array( 16, 16, 0, 16, 0, 0, 16, 0 )
-
-[sub_resource type="ConvexPolygonShape2D" id=12]
-points = PoolVector2Array( 16, 16, 0, 15.9047, 0, 0, 16, 0 )
-
-[sub_resource type="ConvexPolygonShape2D" id=13]
-points = PoolVector2Array( 16, 16, 0, 16, 0, 0, 16, 0 )
-
-[sub_resource type="ConvexPolygonShape2D" id=14]
-points = PoolVector2Array( 16, 16, 0, 16, 0, 0, 16, 0 )
-
-[sub_resource type="TileSet" id=15]
-resource_local_to_scene = true
-0/name = "grass"
-0/texture = ExtResource( 2 )
-0/tex_offset = Vector2( 0, 0 )
-0/modulate = Color( 1, 1, 1, 1 )
-0/region = Rect2( 0, 64, 16, 16 )
-0/tile_mode = 0
-0/occluder_offset = Vector2( 0, 0 )
-0/navigation_offset = Vector2( 0, 0 )
-0/shape_offset = Vector2( 0, 0 )
-0/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
-0/shape = SubResource( 10 )
-0/shape_one_way = false
-0/shape_one_way_margin = 1.0
-0/shapes = [ {
-"autotile_coord": Vector2( 0, 0 ),
-"one_way": false,
-"one_way_margin": 1.0,
-"shape": SubResource( 10 ),
-"shape_transform": Transform2D( 1, 0, 0, 1, 0, 0 )
-} ]
-0/z_index = 0
-1/name = "dirt"
-1/texture = ExtResource( 2 )
-1/tex_offset = Vector2( 0, 0 )
-1/modulate = Color( 1, 1, 1, 1 )
-1/region = Rect2( 16, 64, 16, 16 )
-1/tile_mode = 0
-1/occluder_offset = Vector2( 0, 0 )
-1/navigation_offset = Vector2( 0, 0 )
-1/shape_offset = Vector2( 0, 0 )
-1/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
-1/shape = SubResource( 11 )
-1/shape_one_way = false
-1/shape_one_way_margin = 1.0
-1/shapes = [ {
-"autotile_coord": Vector2( 0, 0 ),
-"one_way": false,
-"one_way_margin": 1.0,
-"shape": SubResource( 11 ),
-"shape_transform": Transform2D( 1, 0, 0, 1, 0, 0 )
-} ]
-1/z_index = 0
-2/name = "sand"
-2/texture = ExtResource( 2 )
-2/tex_offset = Vector2( 0, 0 )
-2/modulate = Color( 1, 1, 1, 1 )
-2/region = Rect2( 32, 64, 16, 16 )
-2/tile_mode = 0
-2/occluder_offset = Vector2( 0, 0 )
-2/navigation_offset = Vector2( 0, 0 )
-2/shape_offset = Vector2( 0, 0 )
-2/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
-2/shape = SubResource( 12 )
-2/shape_one_way = false
-2/shape_one_way_margin = 1.0
-2/shapes = [ {
-"autotile_coord": Vector2( 0, 0 ),
-"one_way": false,
-"one_way_margin": 1.0,
-"shape": SubResource( 12 ),
-"shape_transform": Transform2D( 1, 0, 0, 1, 0, 0 )
-} ]
-2/z_index = 0
-3/name = "cave"
-3/texture = ExtResource( 2 )
-3/tex_offset = Vector2( 0, 0 )
-3/modulate = Color( 1, 1, 1, 1 )
-3/region = Rect2( 0, 80, 16, 16 )
-3/tile_mode = 0
-3/occluder_offset = Vector2( 0, 0 )
-3/navigation_offset = Vector2( 0, 0 )
-3/shape_offset = Vector2( 0, 0 )
-3/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
-3/shape = SubResource( 13 )
-3/shape_one_way = false
-3/shape_one_way_margin = 1.0
-3/shapes = [ {
-"autotile_coord": Vector2( 0, 0 ),
-"one_way": false,
-"one_way_margin": 1.0,
-"shape": SubResource( 13 ),
-"shape_transform": Transform2D( 1, 0, 0, 1, 0, 0 )
-} ]
-3/z_index = 0
-4/name = "rock"
-4/texture = ExtResource( 2 )
-4/tex_offset = Vector2( 0, 0 )
-4/modulate = Color( 1, 1, 1, 1 )
-4/region = Rect2( 16, 80, 16, 16 )
-4/tile_mode = 0
-4/occluder_offset = Vector2( 0, 0 )
-4/navigation_offset = Vector2( 0, 0 )
-4/shape_offset = Vector2( 0, 0 )
-4/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
-4/shape = SubResource( 14 )
-4/shape_one_way = false
-4/shape_one_way_margin = 1.0
-4/shapes = [ {
-"autotile_coord": Vector2( 0, 0 ),
-"one_way": false,
-"one_way_margin": 1.0,
-"shape": SubResource( 14 ),
-"shape_transform": Transform2D( 1, 0, 0, 1, 0, 0 )
-} ]
-4/z_index = 0
-5/name = "spawn"
-5/texture = ExtResource( 2 )
-5/tex_offset = Vector2( 0, 0 )
-5/modulate = Color( 1, 1, 1, 1 )
-5/region = Rect2( 0, 15, 16, 16 )
-5/tile_mode = 0
-5/occluder_offset = Vector2( 0, 0 )
-5/navigation_offset = Vector2( 0, 0 )
-5/shape_offset = Vector2( 0, 0 )
-5/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
-5/shape_one_way = false
-5/shape_one_way_margin = 0.0
-5/shapes = [  ]
-5/z_index = 0
 
 [sub_resource type="TileSet" id=16]
 resource_local_to_scene = true
@@ -164,10 +27,12 @@ title = "Sky"
 rect_clip_content = false
 
 [node name="TileMap" parent="Background" index="0"]
-tile_set = SubResource( 15 )
-tile_data = PoolIntArray( -65530, 536870916, 0, -65529, 536870916, 0, -65528, 536870916, 0, -65527, 536870916, 0, -65526, 536870916, 0, 6, 536870916, 0, 7, 536870916, 0, 8, 536870916, 0, 9, 536870916, 0, 10, 536870916, 0, 65546, 536870916, 0, 131073, 536870913, 0, 131074, 536870913, 0, 131075, 536870913, 0, 131082, 536870916, 0, 196616, 536870916, 0, 196617, 536870916, 0, 196618, 536870916, 0, 196619, 536870916, 0, 393215, 536870913, 0, 327680, 536870913, 0, 327681, 536870913, 0, 327694, 536870913, 0, 327695, 536870913, 0, 327696, 536870913, 0, 458751, 536870913, 0, 393216, 536870913, 0, 393220, 536870916, 0, 393221, 536870916, 0, 393222, 536870913, 0, 393223, 536870913, 0, 393224, 536870913, 0, 393225, 536870916, 0, 393226, 536870916, 0, 393231, 536870913, 0, 393232, 536870913, 0, 524287, 536870913, 0, 458752, 536870913, 0, 458767, 536870913, 0, 458768, 536870913, 0, 589823, 536870913, 0, 524288, 536870913, 0, 524303, 536870913, 0, 524304, 536870913, 0, 589834, 536870913, 0, 589835, 536870913, 0, 589836, 536870913, 0, 655363, 536870913, 0, 655364, 536870913, 0, 655365, 536870913, 0, 655366, 536870913, 0, 851967, 536870916, 0, 786432, 536870916, 0, 786445, 536870916, 0, 786446, 536870916, 0, 786447, 536870916, 0, 786448, 536870916, 0, 851969, 536870915, 0, 851970, 536870915, 0, 851971, 536870915, 0, 851972, 3, 0, 983046, 536870915, 0, 983047, 536870915, 0, 983048, 536870915, 0, 983049, 536870915, 0, 983050, 536870915, 0, 1048582, 536870915, 0, 1048583, 536870915, 0, 1048584, 536870915, 0, 1048585, 536870915, 0, 1048586, 536870915, 0 )
+tile_data = PoolIntArray( -65529, 10, 0, -65528, 10, 0, -65527, 10, 0, -65526, 10, 0, 7, 10, 0, 8, 10, 0, 9, 10, 0, 10, 10, 0, 65546, 10, 0, 131073, 7, 0, 131074, 7, 0, 131075, 7, 0, 131082, 10, 0, 196616, 10, 0, 196617, 10, 0, 196618, 10, 0, 196619, 10, 0, 393215, 7, 0, 327680, 7, 0, 327681, 7, 0, 327694, 7, 0, 327695, 7, 0, 327696, 7, 0, 458751, 7, 0, 393216, 7, 0, 393220, 10, 0, 393221, 10, 0, 393222, 7, 0, 393223, 7, 0, 393224, 7, 0, 393225, 10, 0, 393226, 10, 0, 393231, 7, 0, 393232, 7, 0, 524287, 7, 0, 458752, 7, 0, 458767, 7, 0, 458768, 7, 0, 589834, 7, 0, 589835, 7, 0, 589836, 7, 0, 655363, 7, 0, 655364, 7, 0, 655365, 7, 0, 655366, 7, 0, 851967, 8, 0, 786432, 8, 0, 786444, 8, 0, 786445, 8, 0, 786446, 8, 0, 786447, 8, 0, 786448, 8, 0, 851969, 14, 0, 851970, 14, 0, 851971, 14, 0, 851972, 14, 0, 851973, 14, 0, 983047, 14, 0, 983048, 14, 0, 983049, 14, 0, 983050, 14, 0, 1048583, 14, 0, 1048584, 14, 0, 1048585, 14, 0, 1048586, 14, 0 )
 
 [node name="RespawnTiles" parent="Background" index="1"]
 visible = true
 tile_set = SubResource( 16 )
 tile_data = PoolIntArray( 65539, 536870912, 0, 131080, 536870912, 0, 131083, 536870912, 0, 262145, 536870912, 0, 262158, 536870912, 0, 327685, 536870912, 0, 327689, 536870912, 0, 524299, 536870912, 0, 589829, 536870912, 0, 720910, 536870912, 0, 786435, 536870912, 0, 917513, 536870912, 0 )
+
+[node name="HUD" parent="." index="1"]
+position = Vector2( 144, 8 )

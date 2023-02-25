@@ -1,6 +1,7 @@
 extends Area2D
 
 export (float) var live = 0.5
+export (float) var hurt = 0.1
 var life = 0
 
 var attacker
@@ -23,6 +24,7 @@ func extend():
 	life = max(life, live/2)
 
 func _on_Attack_body_entered(body):
-	if body != attacker and body.is_vulnerable():
-		$CollisionShape2D.set_deferred("disabled", true)
-		attacker.hit(body)
+	if life > (live-hurt):
+		if body != attacker and body.is_vulnerable():
+			$CollisionShape2D.set_deferred("disabled", true)
+			attacker.hit(body)
