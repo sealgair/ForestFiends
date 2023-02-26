@@ -134,6 +134,7 @@ __meta__ = {
 material = SubResource( 17 )
 frames = SubResource( 8 )
 animation = "idle"
+frame = 1
 playing = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -151,7 +152,6 @@ one_shot = true
 
 [node name="Poison" type="AnimatedSprite" parent="."]
 frames = SubResource( 32 )
-frame = 1
 playing = true
 offset = Vector2( 0, -16 )
 
@@ -161,7 +161,8 @@ one_shot = true
 
 [node name="PathVis" type="Line2D" parent="."]
 visible = false
-width = 3.0
+modulate = Color( 1, 1, 1, 0.501961 )
+width = 2.0
 default_color = Color( 0.4, 0.501961, 1, 1 )
 
 [node name="TopTouch" type="Area2D" parent="."]

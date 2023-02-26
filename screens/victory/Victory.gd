@@ -117,7 +117,7 @@ func _process(delta):
 	if enter_node.get_ref() == null:
 		for input in inputs:
 			if input.is_just_pressed('replay'):
-				ScreenManager.load_screen('play', {'start_data': player_data})
+				SceneSwitcher.change_scene('play', {'start_data': player_data})
 			if input.is_just_pressed('change'):
-				ScreenManager.load_screen('select')
+				SceneSwitcher.change_scene('select')
 

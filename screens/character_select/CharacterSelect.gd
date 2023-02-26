@@ -112,7 +112,7 @@ func start_game():
 		existing_palettes[player_data['species']] = palettes
 		start_players.append(player_data)
 	
-	ScreenManager.load_screen("choose_map", {
+	SceneSwitcher.change_scene("choose_map", {
 		"start_players": start_players
 	})
 

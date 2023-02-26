@@ -34,4 +34,4 @@ func set_quip(quip):
 
 func _on_ContinueTimer_timeout():
 	# TODO: some of this could be abstracted into a base screen scene
-	ScreenManager.load_screen("stats")
+	SceneSwitcher.change_scene("stats")

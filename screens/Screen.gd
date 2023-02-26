@@ -7,7 +7,6 @@ export (bool) var is_idle_screen = true
 var rows = []
 var inputs = []
 
-
 func _ready():
 	for i in range(4):
 		var input = PlayerInput.new(i+1)
@@ -17,7 +16,6 @@ func _ready():
 		})
 		inputs.append(input)
 	$StartPrompt.visible = is_idle_screen
-
 
 func _process(delta):
 	if rows:
@@ -30,8 +28,7 @@ func _process(delta):
 	if is_idle_screen:
 		for input in inputs:
 			if input.is_any_just_pressed(["select", "cancel"]):
-				ScreenManager.load_screen("select")
-
+				SceneSwitcher.change_scene("select")
 
 func _on_ContinueTimer_timeout():
-	ScreenManager.load_screen(next_screen)
+	SceneSwitcher.change_scene(next_screen)

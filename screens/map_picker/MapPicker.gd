@@ -51,7 +51,7 @@ func _process(delta):
 
 func start_game():
 	var chosen = map_choices[cursor.x][cursor.y]
-	ScreenManager.load_screen("play", {
+	SceneSwitcher.change_scene("play", {
 		"start_data": start_players,
 		"map_scene": chosen.map_scene
 	})

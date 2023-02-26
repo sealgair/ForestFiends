@@ -190,7 +190,7 @@ func make_score(player):
 func end():
 	for player in players:
 		player.score = make_score(player)
-	ScreenManager.load_screen("victory", {'players': players})
+	SceneSwitcher.change_scene("victory", {'players': players})
 
 func _on_VictoryTimer_timeout():
 	end()

@@ -16,11 +16,11 @@ func _ready():
 func _process(delta):
 	for input in inputs:
 		if input.is_any_just_pressed(["select", "cancel"]):
-			ScreenManager.load_screen("select")
+			SceneSwitcher.change_scene("select")
 
 func hit():
 	# don't track hits in demo mode
 	pass
 
 func _on_ContinueTimer_timeout():
-	ScreenManager.load_screen(next_screen)
+	SceneSwitcher.change_scene(next_screen)
