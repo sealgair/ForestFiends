@@ -11,7 +11,7 @@ var screens = {
 	'demo': preload("res://screens/demo/Demo.tscn"),
 }
 
-func change_scene(screen_name, parameters={}, transition='slide'):
+func change_scene(screen_name, parameters={}, transition='shade'):
 	# copy existing screen
 	var screenshot = get_tree().get_root().get_texture().get_data()
 	var screentext = ImageTexture.new()
@@ -19,6 +19,8 @@ func change_scene(screen_name, parameters={}, transition='slide'):
 	$Interstitial.position = Vector2()
 	$Interstitial.texture = screentext
 	$Interstitial.modulate = Color("ffffffff")
+	$Interstitial.material.set_shader_param("time", 0)
+	$Interstitial.visible = true
 	
 	var screen = screens[screen_name].instance()
 	for prop in parameters:
@@ -31,3 +33,4 @@ func change_scene(screen_name, parameters={}, transition='slide'):
 	
 	$AnimationPlayer.play(transition)
 	yield($AnimationPlayer,'animation_finished')
+	$Interstitial.visible = false

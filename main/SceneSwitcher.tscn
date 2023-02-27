@@ -1,6 +1,22 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://main/SceneSwitcher.gd" type="Script" id=1]
+[ext_resource path="res://main/SceneSwitcher.gdshader" type="Shader" id=2]
+
+[sub_resource type="Animation" id=6]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("Interstitial:material:shader_param/time")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 1.0 ]
+}
 
 [sub_resource type="Animation" id=1]
 resource_name = "fade"
@@ -16,6 +32,21 @@ tracks/0/keys = {
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
 "values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+
+[sub_resource type="Animation" id=5]
+resource_name = "shade"
+tracks/0/type = "value"
+tracks/0/path = NodePath("Interstitial:material:shader_param/time")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 2, 1 ),
+"update": 0,
+"values": [ 0.0, 1.0 ]
 }
 
 [sub_resource type="Animation" id=2]
@@ -34,6 +65,10 @@ tracks/0/keys = {
 "values": [ Vector2( 0, 0 ), Vector2( -264, 0 ) ]
 }
 
+[sub_resource type="ShaderMaterial" id=4]
+shader = ExtResource( 2 )
+shader_param/time = 1.0
+
 [node name="SceneSwitcher" type="CanvasLayer"]
 script = ExtResource( 1 )
 
@@ -45,18 +80,13 @@ margin_bottom = 256.0
 color = Color( 0, 0, 0, 1 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/RESET = SubResource( 6 )
 anims/fade = SubResource( 1 )
+anims/shade = SubResource( 5 )
 anims/slide = SubResource( 2 )
 
 [node name="Interstitial" type="Sprite" parent="."]
-modulate = Color( 1, 1, 1, 0.217111 )
+modulate = Color( 1, 1, 1, 0.79941 )
+material = SubResource( 4 )
 centered = false
 flip_v = true
-
-[node name="ColorRect" type="ColorRect" parent="Interstitial"]
-show_behind_parent = true
-margin_left = -4.0
-margin_top = -4.0
-margin_right = 260.0
-margin_bottom = 260.0
-color = Color( 0, 0, 0, 1 )
