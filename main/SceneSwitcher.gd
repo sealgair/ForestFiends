@@ -11,23 +11,23 @@ var screens = {
 	'demo': preload("res://screens/demo/Demo.tscn"),
 }
 
-func change_scene(screen_name, parameters={}, transition='fade'):
+func change_scene(screen_name, parameters={}, transition='slide'):
 	# copy existing screen
 	var screenshot = get_tree().get_root().get_texture().get_data()
 	var screentext = ImageTexture.new()
 	screentext.create_from_image(screenshot)
+	$Interstitial.position = Vector2()
 	$Interstitial.texture = screentext
+	$Interstitial.modulate = Color("ffffffff")
 	
 	var screen = screens[screen_name].instance()
 	for prop in parameters:
 		screen.set(prop, parameters[prop])
-
-	$Interstitial.modulate = Color("ffffffff")
 	
 	var root = get_tree().get_root()
 	var current_scene = root.get_child(root.get_child_count() - 1)
 	root.add_child(screen)
 	current_scene.queue_free()
 	
-	$AnimationPlayer.play_backwards('fade')
+	$AnimationPlayer.play(transition)
 	yield($AnimationPlayer,'animation_finished')
