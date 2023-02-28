@@ -16,7 +16,7 @@ const animations = {
 	'quad': 2,
 }
 
-func change_scene(screen_name, parameters={}, animation='random'):
+func change_scene(screen_name, parameters={}, animation='quad'):
 	# copy existing screen
 	var screenshot = get_tree().get_root().get_texture().get_data()
 	var screentext = ImageTexture.new()
