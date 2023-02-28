@@ -13,6 +13,7 @@ const screens = {
 const animations = {
 	'diagonal': 0,
 	'circle': 1,
+	'quad': 2,
 }
 
 func change_scene(screen_name, parameters={}, animation='random'):

@@ -6,12 +6,16 @@ uniform float border_pixels = 4;
 uniform vec4 border_color = vec4(0,0,0,1);
 const vec4 transparent = vec4(0,0,0,0);
 
-float diagonal_swipe(vec4 original_color, float border_size, vec2 uv) {
+float diagonal_swipe(float border_size, vec2 uv) {
 	return ((1.0-uv.x) + uv.y)/2.0;
 }
 
-float circle_swipe(vec4 original_color, float border_size, vec2 uv) {
+float circle_swipe(float border_size, vec2 uv) {
 	return distance(uv, vec2(0.5, 0.5));
+}
+
+float quad_swipe(float border_size, vec2 uv) {
+	return min(abs(uv.x-0.5)*2.0, abs(uv.y-0.5)*2.0);
 }
 
 float cond(float v) {
@@ -21,9 +25,10 @@ float cond(float v) {
 void fragment() {
 	vec4 original_color = texture(TEXTURE, UV);
 	float border_size = TEXTURE_PIXEL_SIZE.x*border_pixels;
-	float anims[2] = float[](
-		diagonal_swipe(original_color, border_size, UV),
-		circle_swipe(original_color, border_size, UV)
+	float anims[3] = float[](
+		diagonal_swipe(border_size, UV),
+		circle_swipe(border_size, UV),
+		quad_swipe(border_size, UV)
 	);
 	float d = anims[animation];
 	vec4 on_color = mix(border_color, original_color, cond(d - time));
