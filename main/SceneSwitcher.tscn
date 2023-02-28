@@ -69,6 +69,7 @@ tracks/0/keys = {
 shader = ExtResource( 2 )
 shader_param/time = 1.0
 shader_param/animation = 1
+shader_param/direction = Vector2( 1, 1 )
 shader_param/border_pixels = 4.0
 shader_param/border_color = Plane( 0, 0, 0, 1 )
 

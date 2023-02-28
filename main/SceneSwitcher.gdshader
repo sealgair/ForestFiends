@@ -2,20 +2,28 @@ shader_type canvas_item;
 
 uniform float time = 0;
 uniform int animation = 1;
+uniform vec2 direction = vec2(1,1);
 uniform float border_pixels = 4;
 uniform vec4 border_color = vec4(0,0,0,1);
 const vec4 transparent = vec4(0,0,0,0);
 const int anim_count = 3;
 	
-float diagonal_swipe(float border_size, vec2 uv) {
-	return ((1.0-uv.x) + uv.y)/2.0;
+float dir_flip(float v, float s) {
+	return mix(1.0-v, v, ceil(s*.75));
 }
 
-float circle_swipe(float border_size, vec2 uv) {
-	return distance(uv, vec2(0.5, 0.5));
+float diagonal_display(vec2 uv) {
+	// TODO: flash of white in opposite corner at very start
+	float x = dir_flip(uv.x, direction.x);
+	float y = dir_flip(uv.y, -direction.y);
+	return (x+y)*.5;
 }
 
-float quad_swipe(float border_size, vec2 uv) {
+float circle_display(vec2 uv) {
+	return dir_flip(distance(uv, vec2(0.5, 0.5)), -direction.y);
+}
+
+float quad_display(vec2 uv) {
 	return min(abs(uv.x-0.5)*2.0, abs(uv.y-0.5)*2.0);
 }
 
@@ -40,9 +48,9 @@ void fragment() {
 	vec4 original_color = texture(TEXTURE, UV+offsets[animation]);
 	float border_size = TEXTURE_PIXEL_SIZE.x*border_pixels;
 	float anims[3] = float[](
-		diagonal_swipe(border_size, UV),
-		circle_swipe(border_size, UV),
-		quad_swipe(border_size, UV)
+		diagonal_display(UV),
+		circle_display(UV),
+		quad_display(UV)
 	);
 	float d = anims[animation];
 	vec4 on_color = mix(border_color, original_color, cond(d - time));

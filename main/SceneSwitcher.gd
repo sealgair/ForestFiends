@@ -16,7 +16,11 @@ const animations = {
 	'quad': 2,
 }
 
-func change_scene(screen_name, parameters={}, animation='quad'):
+static func asign(v):
+	if v >= 0: return 1
+	else: return -1
+
+func change_scene(screen_name, parameters={}, animation='random', direction=null):
 	# copy existing screen
 	var screenshot = get_tree().get_root().get_texture().get_data()
 	var screentext = ImageTexture.new()
@@ -24,10 +28,13 @@ func change_scene(screen_name, parameters={}, animation='quad'):
 	
 	if animation == 'random':
 		animation = Global.rand_choice(animations.keys())
+	if direction == null:
+		direction = Vector2(asign(randf()-.5), asign(randf()-.5))
 	
 	$Interstitial.texture = screentext
 	$Interstitial.material.set_shader_param("time", 0)
 	$Interstitial.material.set_shader_param("animation", animations[animation])
+	$Interstitial.material.set_shader_param("direction", direction)
 	$Interstitial.visible = true
 	
 	var screen = screens[screen_name].instance()
