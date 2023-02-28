@@ -43,7 +43,7 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.5 ),
+"times": PoolRealArray( 0, 1 ),
 "transitions": PoolRealArray( 2, 1 ),
 "update": 0,
 "values": [ 0.0, 1.0 ]
@@ -68,6 +68,8 @@ tracks/0/keys = {
 [sub_resource type="ShaderMaterial" id=4]
 shader = ExtResource( 2 )
 shader_param/time = 1.0
+shader_param/border_size = 4.0
+shader_param/border_color = Plane( 0, 0, 0, 1 )
 
 [node name="SceneSwitcher" type="CanvasLayer"]
 script = ExtResource( 1 )
