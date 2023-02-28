@@ -68,7 +68,8 @@ tracks/0/keys = {
 [sub_resource type="ShaderMaterial" id=4]
 shader = ExtResource( 2 )
 shader_param/time = 1.0
-shader_param/border_size = 4.0
+shader_param/animation = 1
+shader_param/border_pixels = 4.0
 shader_param/border_color = Plane( 0, 0, 0, 1 )
 
 [node name="SceneSwitcher" type="CanvasLayer"]
@@ -88,7 +89,6 @@ anims/shade = SubResource( 5 )
 anims/slide = SubResource( 2 )
 
 [node name="Interstitial" type="Sprite" parent="."]
-modulate = Color( 1, 1, 1, 0.79941 )
 material = SubResource( 4 )
 centered = false
 flip_v = true

@@ -1,6 +1,6 @@
 extends CanvasLayer
 
-var screens = {
+const screens = {
 	'select': preload("res://screens/character_select/CharacterSelect.tscn"),
 	'choose_map': preload("res://screens/map_picker/MapPicker.tscn"),
 	'play': preload("res://screens/arena/Arena.tscn"),
@@ -10,16 +10,23 @@ var screens = {
 	'info': preload("res://screens/info/AminalInfo.tscn"),
 	'demo': preload("res://screens/demo/Demo.tscn"),
 }
+const animations = {
+	'diagonal': 0,
+	'circle': 1,
+}
 
-func change_scene(screen_name, parameters={}, transition='shade'):
+func change_scene(screen_name, parameters={}, animation='random'):
 	# copy existing screen
 	var screenshot = get_tree().get_root().get_texture().get_data()
 	var screentext = ImageTexture.new()
 	screentext.create_from_image(screenshot)
-	$Interstitial.position = Vector2()
+	
+	if animation == 'random':
+		animation = Global.rand_choice(animations.keys())
+	
 	$Interstitial.texture = screentext
-	$Interstitial.modulate = Color("ffffffff")
 	$Interstitial.material.set_shader_param("time", 0)
+	$Interstitial.material.set_shader_param("animation", animations[animation])
 	$Interstitial.visible = true
 	
 	var screen = screens[screen_name].instance()
@@ -31,6 +38,6 @@ func change_scene(screen_name, parameters={}, transition='shade'):
 	root.add_child(screen)
 	current_scene.queue_free()
 	
-	$AnimationPlayer.play(transition)
+	$AnimationPlayer.play("shade")
 	yield($AnimationPlayer,'animation_finished')
 	$Interstitial.visible = false
