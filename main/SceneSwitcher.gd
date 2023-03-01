@@ -20,16 +20,20 @@ static func asign(v):
 	if v >= 0: return 1
 	else: return -1
 
-func change_scene(screen_name, parameters={}, animation='random', direction=null):
+func change_scene(screen_name, parameters={}, animation='random', direction=Vector2()):
 	# copy existing screen
 	var screenshot = get_tree().get_root().get_texture().get_data()
 	var screentext = ImageTexture.new()
 	screentext.create_from_image(screenshot)
 	
 	if animation == 'random':
-		animation = Global.rand_choice(animations.keys())
-	if direction == null:
-		direction = Vector2(asign(randf()-.5), asign(randf()-.5))
+		animation = animations.keys()
+	if animation is Array:
+		animation = Global.rand_choice(animation)
+	if direction.x == 0:
+		direction.x = asign(randf()-.5)
+	if direction.y == 0:
+		direction.y = asign(randf()-.5)
 	
 	$Interstitial.texture = screentext
 	$Interstitial.material.set_shader_param("time", 0)

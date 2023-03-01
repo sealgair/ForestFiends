@@ -8,6 +8,8 @@
 [node name="MapPicker" instance=ExtResource( 1 )]
 script = ExtResource( 3 )
 is_idle_screen = false
+transition = "circle"
+transition_direction = Vector2( 0, -1 )
 
 [node name="ColorRect" type="ColorRect" parent="." index="0"]
 margin_right = 256.0

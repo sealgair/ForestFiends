@@ -54,7 +54,7 @@ func start_game():
 	SceneSwitcher.change_scene("play", {
 		"start_data": start_players,
 		"map_scene": chosen.map_scene
-	})
+	}, transition, transition_direction)
 
 func _on_ContinueTimer_timeout():
 	start_game()

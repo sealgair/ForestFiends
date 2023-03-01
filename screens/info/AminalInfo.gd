@@ -216,4 +216,4 @@ func _on_ContinueTimer_timeout():
 	if aminal_index < order.size():
 		set_aminal(order[aminal_index])
 	else:
-		SceneSwitcher.change_scene(next_screen)
+		SceneSwitcher.change_scene(next_screen, {}, transition, transition_direction)
