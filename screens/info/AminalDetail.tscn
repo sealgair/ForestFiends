@@ -4,9 +4,3 @@
 
 [node name="AminalDetail" instance=ExtResource( 1 )]
 scale = Vector2( 2, 2 )
-
-[node name="AnimatedSprite" parent="." index="1"]
-visible = false
-
-[node name="Score" parent="HUD" index="0"]
-visible = false

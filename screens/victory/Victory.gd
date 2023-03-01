@@ -125,6 +125,6 @@ func _process(delta):
 				)
 			if input.is_just_pressed('change'):
 				SceneSwitcher.change_scene(
-					'select', {}, "diagonal"
+					'select', {}, ["diagonal"]
 				)
 

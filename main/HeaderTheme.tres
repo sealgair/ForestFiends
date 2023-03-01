@@ -3,8 +3,10 @@
 [ext_resource path="res://fonts/GravityBold8.ttf" type="DynamicFontData" id=1]
 
 [sub_resource type="DynamicFont" id=1]
+outline_size = 2
 font_data = ExtResource( 1 )
 
 [resource]
 default_font = SubResource( 1 )
 Label/colors/font_color = Color( 1, 0.945098, 0.909804, 1 )
+Label/colors/font_outline_modulate = Color( 1, 1, 1, 0 )

@@ -150,8 +150,8 @@ custom_colors/font_color = Color( 1, 0.945098, 0.909804, 1 )
 one_shot = true
 
 [node name="Poison" type="AnimatedSprite" parent="."]
+modulate = Color( 1, 1, 1, 0 )
 frames = SubResource( 32 )
-frame = 2
 playing = true
 offset = Vector2( 0, -16 )
 

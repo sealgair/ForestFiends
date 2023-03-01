@@ -9,6 +9,7 @@ var start_data = [
 var players = []
 export (int) var score_limit = 30
 export (int) var max_computers = 4
+export (bool) var countdown = true
 var score = 0
 
 var slime_scene = preload("res://characters/Slime.tscn")
@@ -18,6 +19,10 @@ var map_scene = null
 const MapChoice = preload("res://screens/map_picker/MapChoice.tscn")
 
 func _ready():
+	if countdown:
+		get_tree().paused = true
+	else:
+		$Countdown.visible = false
 	if map_scene == null:
 		var map_name = Global.rand_choice(MapChoice.instance().map_choices)
 		map_scene = load("res://maps/{name}.tscn".format({'name': map_name}))
@@ -78,12 +83,22 @@ func _ready():
 	for player in players:
 		player.make_enemies(players)
 		
+
+func _process(delta):
+	var count = floor($CountdownTimer.time_left)
+	
+	if count > 0:
+		$Countdown.text = "%d..." % count
+	else:
+		$Countdown.text = "START!"
+	
 func set_map(new_map):
 	var old_map = $Map
 	var pos = old_map.get_position_in_parent()
 	remove_child(old_map)
 	old_map.queue_free()
 	new_map.set_name("Map")
+	new_map.pause_mode = Node.PAUSE_MODE_STOP
 	add_child(new_map)
 	move_child(new_map, pos)
 
@@ -93,7 +108,7 @@ func add_player(player_data):
 	player.palette = player_data['palette']
 	player.computer = player_data['computer']
 	player.init(player_data['spawn_point'] * player.size, $Map/Background/TileMap)
-	add_child(player)
+	$Map.add_child(player)
 	player.connect("respawn", self, "spawn")
 	player.connect("made_hit", self, "hit")
 	player.connect("make_slime", self, "make_slime")
@@ -155,7 +170,7 @@ func make_slime(position, palette=0):
 			var instance = slime_scene.instance()
 			instance.transform.origin = tile_pos * $Map.get_cell_size()
 			instance.set_palette(palette)
-			add_child(instance)
+			$Map.add_child(instance)
 
 func get_webs():
 	var webs = []
@@ -167,7 +182,7 @@ func get_webs():
 func make_web(start, end, player, decay=null):
 	var web = web_scene.instance()
 	web.spinner = player
-	add_child(web)
+	$Map.add_child(web)
 	web.set_start(start)
 	web.set_end(end)
 	web.start_decay(decay)
@@ -194,3 +209,7 @@ func end():
 
 func _on_VictoryTimer_timeout():
 	end()
+
+func _on_CountdownTimer_timeout():
+	$Countdown.visible = false
+	get_tree().paused = false

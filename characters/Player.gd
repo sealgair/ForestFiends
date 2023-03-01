@@ -69,6 +69,8 @@ func _ready():
 	if palette == null:
 		palette = order - 1
 	$AnimatedSprite.material.set_shader_param("palette", palette)
+	$AnimatedSprite.play("idle")
+	
 
 func make_enemies(all_players):
 	for player in all_players:
@@ -86,7 +88,7 @@ func get_enemies():
 	return list
 
 func init(start_pos, the_tilemap):
-	position = start_pos
+	position = start_pos + size /2
 	tilemap = the_tilemap
 	pathfinder = PlayerPath.new(self, tilemap)
 	ate = 0
