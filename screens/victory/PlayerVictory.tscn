@@ -103,9 +103,6 @@ clip_text = true
 [node name="AminalSprite" parent="." instance=ExtResource( 4 )]
 position = Vector2( -8, -8 )
 
-[node name="ContinueTimer" type="Timer" parent="."]
-wait_time = 25.0
-
 [node name="Quip" type="Label" parent="."]
 margin_left = 76.0
 margin_top = -21.0
@@ -116,5 +113,3 @@ custom_colors/font_color = Color( 1, 0.945098, 0.909804, 1 )
 text = "And I guess a quip goes here or something"
 valign = 1
 autowrap = true
-
-[connection signal="timeout" from="ContinueTimer" to="." method="_on_ContinueTimer_timeout"]

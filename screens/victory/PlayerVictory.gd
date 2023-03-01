@@ -31,7 +31,3 @@ func set_player(new_player, new_place):
 
 func set_quip(quip):
 	$Quip.text = quip
-
-func _on_ContinueTimer_timeout():
-	# TODO: some of this could be abstracted into a base screen scene
-	SceneSwitcher.change_scene("stats")

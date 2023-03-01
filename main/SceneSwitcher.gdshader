@@ -35,22 +35,42 @@ vec2 quad_offset(vec2 uv) {
 	return off;
 }
 
+float fall_display(vec2 uv) {
+	return dir_flip(uv.y, -direction.y);
+}
+
+vec2 fall_offset(vec2 uv) {
+	return vec2(0, dir_flip(time, direction.y));
+}
+
+float swipe_display(vec2 uv) {
+	return dir_flip(uv.x, direction.x);
+}
+
+vec2 swipe_offset(vec2 uv) {
+	return vec2(dir_flip(time, -direction.x), 0);
+}
+
 float cond(float v) {
 	return ceil(v);
 }
 
 void fragment() {
-	vec2 offsets[3] = vec2[](
+	vec2 offsets[5] = vec2[](
 		vec2(0,0),
 		vec2(0,0),
-		quad_offset(UV)
+		quad_offset(UV),
+		fall_offset(UV),
+		swipe_offset(UV)
 	);
 	vec4 original_color = texture(TEXTURE, UV+offsets[animation]);
 	float border_size = TEXTURE_PIXEL_SIZE.x*border_pixels;
-	float anims[3] = float[](
+	float anims[5] = float[](
 		diagonal_display(UV),
 		circle_display(UV),
-		quad_display(UV)
+		quad_display(UV),
+		fall_display(UV),
+		swipe_display(UV)
 	);
 	float d = anims[animation];
 	vec4 on_color = mix(border_color, original_color, cond(d - time));

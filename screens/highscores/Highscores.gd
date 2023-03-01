@@ -1,3 +1,4 @@
+
 extends "res://screens/Screen.gd"
 
 const ScoreRow = preload("res://screens/highscores/ScoreRow.tscn")

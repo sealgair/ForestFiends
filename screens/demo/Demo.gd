@@ -16,7 +16,7 @@ func _ready():
 func _process(delta):
 	for input in inputs:
 		if input.is_any_just_pressed(["select", "cancel"]):
-			SceneSwitcher.change_scene("select")
+			SceneSwitcher.change_scene("select", {}, ["fall"])
 
 func hit():
 	# don't track hits in demo mode

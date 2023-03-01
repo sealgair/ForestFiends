@@ -214,6 +214,8 @@ func set_aminal(aminal_type):
 func _on_ContinueTimer_timeout():
 	aminal_index += 1
 	if aminal_index < order.size():
+		var player = SceneSwitcher.play_transition(transitions, transition_direction)
 		set_aminal(order[aminal_index])
+		player.resume()
 	else:
-		SceneSwitcher.change_scene(next_screen, {}, transition, transition_direction)
+		change_scene()

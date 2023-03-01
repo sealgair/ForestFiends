@@ -4,8 +4,8 @@ const PlayerInput = preload("res://main/PlayerInput.gd")
 
 export (String, "highscores", "stats", "info", "demo") var next_screen = "highscores"
 export (bool) var is_idle_screen = true
-export (String, "diagonal", "circle", "quad") var transition = "diagonal"
-export (Vector2) var transition_direction = Vector2()
+export (Array) var transitions = ["fall", "diagonal", "swipe"]
+export (Vector2) var transition_direction = Vector2(0,0)
 var rows = []
 var inputs = []
 
@@ -30,7 +30,12 @@ func _process(delta):
 	if is_idle_screen:
 		for input in inputs:
 			if input.is_any_just_pressed(["select", "cancel"]):
-				SceneSwitcher.change_scene("select", {}, transition, transition_direction)
+				change_scene("select")
 
 func _on_ContinueTimer_timeout():
-	SceneSwitcher.change_scene(next_screen, {}, transition, transition_direction)
+	change_scene()
+
+func change_scene(next=null, params={}):
+	if next == null:
+		next = next_screen
+	SceneSwitcher.change_scene(next, params, transitions, transition_direction)

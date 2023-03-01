@@ -114,7 +114,7 @@ func start_game():
 	
 	SceneSwitcher.change_scene("choose_map", {
 		"start_players": start_players
-	}, "quad")
+	}, ["quad"])
 
 
 func _on_ForceStartTimer_timeout():

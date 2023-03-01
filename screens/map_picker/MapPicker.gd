@@ -51,10 +51,10 @@ func _process(delta):
 
 func start_game():
 	var chosen = map_choices[cursor.x][cursor.y]
-	SceneSwitcher.change_scene("play", {
+	change_scene("play", {
 		"start_data": start_players,
 		"map_scene": chosen.map_scene
-	}, transition, transition_direction)
+	})
 
 func _on_ContinueTimer_timeout():
 	start_game()
