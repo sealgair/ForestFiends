@@ -1,159 +1,189 @@
-[gd_scene load_steps=29 format=2]
+[gd_scene load_steps=29 format=3 uid="uid://cywp5wyqn6mj4"]
 
-[ext_resource path="res://main/PalletSwap.gdshader" type="Shader" id=1]
-[ext_resource path="res://characters/Player.gd" type="Script" id=2]
-[ext_resource path="res://art/wasp.png" type="Texture" id=3]
-[ext_resource path="res://art/decay.png" type="Texture" id=4]
-[ext_resource path="res://art/poison16.png" type="Texture" id=5]
-[ext_resource path="res://art/spid.png" type="Texture" id=6]
-[ext_resource path="res://main/MenuTheme.tres" type="Theme" id=7]
-[ext_resource path="res://art/aminals.png" type="Texture" id=8]
+[ext_resource type="Shader" path="res://main/PalletSwap.gdshader" id="1"]
+[ext_resource type="Script" path="res://characters/Player.gd" id="2"]
+[ext_resource type="Texture2D" uid="uid://fupjnnq6gw1j" path="res://art/wasp.png" id="3"]
+[ext_resource type="Texture2D" uid="uid://ctqrv0xpxbohv" path="res://art/decay.png" id="4"]
+[ext_resource type="Texture2D" uid="uid://bhkthe3oemxml" path="res://art/poison16.png" id="5"]
+[ext_resource type="Texture2D" uid="uid://dvvs0bke5ka3f" path="res://art/spid.png" id="6"]
+[ext_resource type="Theme" uid="uid://c5qd48flt1q3i" path="res://main/MenuTheme.tres" id="7"]
+[ext_resource type="Texture2D" uid="uid://clbedq80w5p7q" path="res://art/aminals.png" id="8"]
 
-[sub_resource type="ShaderMaterial" id=17]
+[sub_resource type="ShaderMaterial" id="17"]
 resource_local_to_scene = true
-shader = ExtResource( 1 )
-shader_param/palette = 0
-shader_param/palette_length = 16
+shader = ExtResource("1")
+shader_parameter/palette = 0
+shader_parameter/palette_length = 16
 
-[sub_resource type="AtlasTexture" id=23]
-atlas = ExtResource( 3 )
-region = Rect2( 32, 16, 16, 16 )
+[sub_resource type="AtlasTexture" id="23"]
+atlas = ExtResource("3")
+region = Rect2(32, 16, 16, 16)
 
-[sub_resource type="AtlasTexture" id=24]
-atlas = ExtResource( 3 )
-region = Rect2( 48, 16, 16, 16 )
+[sub_resource type="AtlasTexture" id="24"]
+atlas = ExtResource("3")
+region = Rect2(48, 16, 16, 16)
 
-[sub_resource type="AtlasTexture" id=20]
-atlas = ExtResource( 4 )
-region = Rect2( 0, 0, 16, 16 )
+[sub_resource type="AtlasTexture" id="20"]
+atlas = ExtResource("4")
+region = Rect2(0, 0, 16, 16)
 
-[sub_resource type="AtlasTexture" id=21]
-atlas = ExtResource( 4 )
-region = Rect2( 16, 0, 16, 16 )
+[sub_resource type="AtlasTexture" id="21"]
+atlas = ExtResource("4")
+region = Rect2(16, 0, 16, 16)
 
-[sub_resource type="AtlasTexture" id=25]
-atlas = ExtResource( 3 )
-region = Rect2( 0, 16, 16, 16 )
+[sub_resource type="AtlasTexture" id="25"]
+atlas = ExtResource("3")
+region = Rect2(0, 16, 16, 16)
 
-[sub_resource type="AtlasTexture" id=26]
-atlas = ExtResource( 3 )
-region = Rect2( 16, 16, 16, 16 )
+[sub_resource type="AtlasTexture" id="26"]
+atlas = ExtResource("3")
+region = Rect2(16, 16, 16, 16)
 
-[sub_resource type="AtlasTexture" id=28]
-atlas = ExtResource( 6 )
-region = Rect2( 16, 0, 16, 16 )
+[sub_resource type="AtlasTexture" id="28"]
+atlas = ExtResource("6")
+region = Rect2(16, 0, 16, 16)
 
-[sub_resource type="AtlasTexture" id=29]
-atlas = ExtResource( 6 )
-region = Rect2( 32, 0, 16, 16 )
+[sub_resource type="AtlasTexture" id="29"]
+atlas = ExtResource("6")
+region = Rect2(32, 0, 16, 16)
 
-[sub_resource type="SpriteFrames" id=8]
+[sub_resource type="SpriteFrames" id="8"]
 resource_local_to_scene = true
-animations = [ {
-"frames": [ SubResource( 23 ) ],
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("23")
+}],
 "loop": false,
-"name": "attack",
+"name": &"attack",
 "speed": 10.0
 }, {
-"frames": [ SubResource( 24 ) ],
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("24")
+}],
 "loop": true,
-"name": "dead",
+"name": &"dead",
 "speed": 5.0
 }, {
-"frames": [ SubResource( 20 ), SubResource( 21 ) ],
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("20")
+}, {
+"duration": 1.0,
+"texture": SubResource("21")
+}],
 "loop": false,
-"name": "decay",
+"name": &"decay",
 "speed": 10.0
 }, {
-"frames": [ SubResource( 25 ), SubResource( 26 ) ],
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("25")
+}, {
+"duration": 1.0,
+"texture": SubResource("26")
+}],
 "loop": true,
-"name": "idle",
+"name": &"idle",
 "speed": 30.0
 }, {
-"frames": [  ],
+"frames": [],
 "loop": true,
-"name": "jump",
+"name": &"jump",
 "speed": 5.0
 }, {
-"frames": [ SubResource( 28 ), SubResource( 29 ) ],
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("28")
+}, {
+"duration": 1.0,
+"texture": SubResource("29")
+}],
 "loop": true,
-"name": "walk",
+"name": &"walk",
 "speed": 5.0
-} ]
+}]
 
-[sub_resource type="CircleShape2D" id=37]
+[sub_resource type="CircleShape2D" id="37"]
 resource_local_to_scene = true
 radius = 8.0
 
-[sub_resource type="AtlasTexture" id=38]
-atlas = ExtResource( 5 )
-region = Rect2( 0, 0, 16, 16 )
+[sub_resource type="AtlasTexture" id="38"]
+atlas = ExtResource("5")
+region = Rect2(0, 0, 16, 16)
 
-[sub_resource type="AtlasTexture" id=39]
-atlas = ExtResource( 5 )
-region = Rect2( 16, 0, 16, 16 )
+[sub_resource type="AtlasTexture" id="39"]
+atlas = ExtResource("5")
+region = Rect2(16, 0, 16, 16)
 
-[sub_resource type="AtlasTexture" id=40]
-atlas = ExtResource( 5 )
-region = Rect2( 32, 0, 16, 16 )
+[sub_resource type="AtlasTexture" id="40"]
+atlas = ExtResource("5")
+region = Rect2(32, 0, 16, 16)
 
-[sub_resource type="AtlasTexture" id=41]
-atlas = ExtResource( 5 )
-region = Rect2( 48, 0, 16, 16 )
+[sub_resource type="AtlasTexture" id="41"]
+atlas = ExtResource("5")
+region = Rect2(48, 0, 16, 16)
 
-[sub_resource type="SpriteFrames" id=32]
-animations = [ {
-"frames": [ SubResource( 38 ), SubResource( 39 ), SubResource( 40 ), SubResource( 41 ) ],
+[sub_resource type="SpriteFrames" id="32"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("38")
+}, {
+"duration": 1.0,
+"texture": SubResource("39")
+}, {
+"duration": 1.0,
+"texture": SubResource("40")
+}, {
+"duration": 1.0,
+"texture": SubResource("41")
+}],
 "loop": true,
-"name": "default",
+"name": &"default",
 "speed": 10.0
-} ]
+}]
 
-[sub_resource type="RectangleShape2D" id=33]
-extents = Vector2( 8, 2 )
+[sub_resource type="RectangleShape2D" id="33"]
+size = Vector2(8, 2)
 
-[sub_resource type="RectangleShape2D" id=34]
-extents = Vector2( 2, 8 )
+[sub_resource type="RectangleShape2D" id="34"]
+size = Vector2(2, 8)
 
-[sub_resource type="AtlasTexture" id=35]
-atlas = ExtResource( 8 )
-region = Rect2( 48, 80, 5, 5 )
+[sub_resource type="AtlasTexture" id="35"]
+atlas = ExtResource("8")
+region = Rect2(48, 80, 5, 5)
 
-[sub_resource type="RectangleShape2D" id=36]
-extents = Vector2( 5, 5 )
+[sub_resource type="RectangleShape2D" id="36"]
+size = Vector2(5, 5)
 
-[node name="Player" type="KinematicBody2D" groups=["players"]]
+[node name="Player" type="CharacterBody2D" groups=["players"]]
 collision_layer = 2
 collision_mask = 13
-script = ExtResource( 2 )
-__meta__ = {
-"_edit_group_": true
-}
+script = ExtResource("2")
 
-[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
-material = SubResource( 17 )
-frames = SubResource( 8 )
-animation = "idle"
-playing = true
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+material = SubResource("17")
+sprite_frames = SubResource("8")
+animation = &"idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource( 37 )
+shape = SubResource("37")
 
 [node name="Debug" type="Label" parent="."]
-margin_top = -16.0
-margin_right = 40.0
-margin_bottom = -2.0
-theme = ExtResource( 7 )
-custom_colors/font_color = Color( 1, 0.945098, 0.909804, 1 )
+offset_top = -16.0
+offset_right = 40.0
+offset_bottom = -2.0
+theme = ExtResource("7")
 
 [node name="RespawnTimer" type="Timer" parent="."]
 one_shot = true
 
-[node name="Poison" type="AnimatedSprite" parent="."]
-modulate = Color( 1, 1, 1, 0 )
-frames = SubResource( 32 )
-playing = true
-offset = Vector2( 0, -16 )
+[node name="Poison" type="AnimatedSprite2D" parent="."]
+modulate = Color(1, 1, 1, 0)
+sprite_frames = SubResource("32")
+offset = Vector2(0, -16)
 
 [node name="PoisonTimer" type="Timer" parent="."]
 wait_time = 3.0
@@ -161,71 +191,71 @@ one_shot = true
 
 [node name="PathVis" type="Line2D" parent="."]
 visible = false
-modulate = Color( 1, 1, 1, 0.501961 )
+modulate = Color(1, 1, 1, 0.501961)
 width = 2.0
-default_color = Color( 0.4, 0.501961, 1, 1 )
+default_color = Color(0.4, 0.501961, 1, 1)
 
 [node name="TopTouch" type="Area2D" parent="."]
 collision_layer = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TopTouch"]
-position = Vector2( 0, -8 )
-shape = SubResource( 33 )
+position = Vector2(0, -8)
+shape = SubResource("33")
 
 [node name="BottomTouch" type="Area2D" parent="."]
 collision_layer = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BottomTouch"]
-position = Vector2( 0, 8 )
-shape = SubResource( 33 )
+position = Vector2(0, 8)
+shape = SubResource("33")
 
 [node name="RightTouch" type="Area2D" parent="."]
 collision_layer = 2
 input_pickable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="RightTouch"]
-position = Vector2( 8, 0 )
-shape = SubResource( 34 )
+position = Vector2(8, 0)
+shape = SubResource("34")
 
 [node name="LeftTouch" type="Area2D" parent="."]
 collision_layer = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="LeftTouch"]
-position = Vector2( -8, 0 )
-shape = SubResource( 34 )
+position = Vector2(-8, 0)
+shape = SubResource("34")
 
-[node name="DebugPoint" type="Sprite" parent="."]
+[node name="DebugPoint" type="Sprite2D" parent="."]
 visible = false
-texture = SubResource( 35 )
+texture = SubResource("35")
 
 [node name="ULCorner" type="Area2D" parent="."]
 collision_layer = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ULCorner"]
-position = Vector2( -8, -8 )
-shape = SubResource( 36 )
+position = Vector2(-8, -8)
+shape = SubResource("36")
 
 [node name="URCorner" type="Area2D" parent="."]
 collision_layer = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="URCorner"]
-position = Vector2( 8, -8 )
-shape = SubResource( 36 )
+position = Vector2(8, -8)
+shape = SubResource("36")
 
 [node name="BLCorner" type="Area2D" parent="."]
 collision_layer = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BLCorner"]
-position = Vector2( -8, 8 )
-shape = SubResource( 36 )
+position = Vector2(-8, 8)
+shape = SubResource("36")
 
 [node name="BRCorner" type="Area2D" parent="."]
 collision_layer = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BRCorner"]
-position = Vector2( 8, 8 )
-shape = SubResource( 36 )
+position = Vector2(8, 8)
+shape = SubResource("36")
 
-[connection signal="animation_finished" from="AnimatedSprite" to="." method="_on_AnimatedSprite_animation_finished"]
+[connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_AnimatedSprite_animation_finished"]
 [connection signal="timeout" from="RespawnTimer" to="." method="_on_RespawnTimer_timeout"]
 [connection signal="timeout" from="PoisonTimer" to="." method="_on_PoisonTimer_timeout"]

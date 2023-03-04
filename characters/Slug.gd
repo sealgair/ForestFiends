@@ -7,11 +7,12 @@ var max_hold = 1.5
 var holding = 0
 
 func _ready():
+	super()
 	attack_anim = "none"
 	attack_offset = Vector2(0,4)
 	spikes = [$Spike1, $Spike2, $Spike3]
 	for spike in spikes:
-		spike.material.set_shader_param("palette", palette)
+		spike.material.set_shader_parameter("palette", palette)
 
 
 func get_species():
@@ -29,12 +30,12 @@ func is_mobile():
 func special_pressed():
 	slimed = slime_time
 	velocity.x = run_speed * 2
-	if not $AnimatedSprite.flip_h:
+	if not $AnimatedSprite2D.flip_h:
 		velocity.x *= -1
 
 
 func _process(delta):
-	._process(delta)
+	super(delta)
 	
 	# drop slimes
 	if is_on_floor():

@@ -1,19 +1,19 @@
 extends Node2D
 
-export (String) var title = "Map"
+@export var title: String = "Map"
 
 func _ready():
-	$Background.rect_clip_content = true
+	$Background.clip_contents = true
 	$Background/RespawnTiles.visible = false
 
 
 func get_spawn_points():
-	return $Background.get_node("RespawnTiles").get_used_cells()
+	return $Background/RespawnTiles.get_used_cells(0)
 
 
 func get_cell_size():
-	return $Background.get_node("TileMap").cell_size
+	return $Background/TileMap.tile_set.tile_size
 
 
-func get_cellv(pos):
-	return $Background.get_node("TileMap").get_cellv(pos)
+func get_cell(pos):
+	return $Background/TileMap.get_cell_source_id(0, pos)

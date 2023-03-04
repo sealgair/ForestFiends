@@ -2,7 +2,7 @@ extends AStar2D
 
 var player
 var cell_size
-var map_dimensions = Vector2(16, 16)
+var map_dimensions = Vector2i(16, 16)
 
 static func absmin(vals):
 	var found = null
@@ -12,33 +12,33 @@ static func absmin(vals):
 	return found
 
 func wrapp(pos):
-	return Vector2(
+	return Vector2i(
 		wrapi(pos.x, 0, map_dimensions.x),
 		wrapi(pos.y, 0, map_dimensions.y)
 	)
 
-func _init(the_player, tilemap: TileMap):
+func _init(the_player,tilemap: TileMap):
 	player = the_player
-	cell_size = tilemap.cell_size
-	map_dimensions = Vector2(tilemap.cell_quadrant_size, tilemap.cell_quadrant_size) * cell_size
+	cell_size = tilemap.tile_set.tile_size
+	map_dimensions = Vector2i(tilemap.cell_quadrant_size, tilemap.cell_quadrant_size) * cell_size
 	
 	# make points
 	build_nodes(tilemap)
 	
 	# make connections
-	for point in get_points():
+	for point in get_point_ids():
 		connect_node(point)
 
 func can_be_node(cell):
 	# invalid cells are the air we can move through
-	return cell == TileMap.INVALID_CELL
+	return cell == Global.INVALID_CELL
 
 func build_nodes(tilemap):
 	var offset = cell_size / 2  # so coords are at center of tile
 	for y in range(tilemap.cell_quadrant_size):
 		for x in range(tilemap.cell_quadrant_size):
-			var point = Vector2(x, y)
-			var cell = tilemap.get_cellv(point)
+			var point = Vector2i(x, y)
+			var cell = tilemap.get_cell_source_id(0, point)
 			if can_be_node(cell):
 				var id = get_available_point_id()
 				add_point(id, point * cell_size + offset)
@@ -76,7 +76,6 @@ func connect_node(point):
 						break
 						
 		# jumping
-		var above = get_point_exact(pos - Vector2(0, cell_size.y))
 		for i in range(1, player.jump_height):
 			var jump_pos = pos - Vector2(0, i*cell_size.y)
 			var jump_point = get_point_exact(jump_pos)
@@ -123,7 +122,7 @@ func path_between(a, b):
 	var point_b = get_closest_point(b)
 	return get_point_path(point_a, point_b)
 
-func ground_below(point, breadth=1, step=1):
+func ground_below(point, _breadth=1, _step=1):
 	var pos = get_point_position(point)
 	var below = ground_below_pos(pos)
 	return get_point_exact(below)

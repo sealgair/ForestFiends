@@ -4,7 +4,8 @@ var pressed = {}
 var was_pressed = {}
 var overrides = {}
 
-func _init(player).(player):
+func _init(_player):
+	super._init(_player)
 	for action in actions.keys():
 		pressed[action] = 0
 		was_pressed[action] = false
@@ -19,7 +20,7 @@ func _ready():
 	process_priority = 10
 
 func set_mappings(mappings):
-	.set_mappings(mappings)
+	super.set_mappings(mappings)
 	for action in mappings.keys():
 		# TODO: map to other action so they keep the same value
 		pressed[action] = 0
@@ -70,16 +71,12 @@ func direction_pressed():
 		dir.y += 1
 	return dir
 
-# to be overridden
-func do_process(delta):
+func _process(_delta):
+	#  Setting process_priority to 10 should ensure this gets handled
+	#  after any relevant processing
 	for action in actions.keys():
 		# was_pressed should only state true for one tick
 		was_pressed[action] = false
 		if pressed[action] == 1:
 			pressed[action] = 0
 		# otherwise it's being held, so keep it
-
-func _process(delta):
-	#  Setting process_priority to 10 should ensure this gets handled
-	#  after any relevant processing
-	do_process(delta)

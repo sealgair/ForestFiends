@@ -1,7 +1,7 @@
 [gd_scene load_steps=29 format=2]
 
 [ext_resource path="res://characters/Player.tscn" type="PackedScene" id=1]
-[ext_resource path="res://art/spider16.png" type="Texture" id=2]
+[ext_resource path="res://art/spider16.png" type="Texture2D" id=2]
 [ext_resource path="res://main/PalletSwap.gdshader" type="Shader" id=4]
 [ext_resource path="res://characters/Spid.gd" type="Script" id=5]
 
@@ -140,12 +140,12 @@ resource_local_to_scene = true
 radius = 8.0
 
 [sub_resource type="RectangleShape2D" id=42]
-extents = Vector2( 8, 8 )
+size = Vector2( 8, 8 )
 
 [node name="Spid" instance=ExtResource( 1 )]
 script = ExtResource( 5 )
 
-[node name="AnimatedSprite" parent="." index="0"]
+[node name="AnimatedSprite2D" parent="." index="0"]
 material = SubResource( 27 )
 frames = SubResource( 30 )
 
@@ -153,10 +153,10 @@ frames = SubResource( 30 )
 shape = SubResource( 43 )
 
 [node name="Debug" parent="." index="2"]
-margin_left = -6.0
-margin_top = -20.0
-margin_right = 26.0
-margin_bottom = -6.0
+offset_left = -6.0
+offset_top = -20.0
+offset_right = 26.0
+offset_bottom = -6.0
 
 [node name="Hit" type="Area2D" parent="." index="6"]
 collision_layer = 4

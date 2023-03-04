@@ -11,6 +11,7 @@ var alphabet = " ABCDEFGHIJLKMNOPQRSTUVWXYZ0123456789"
 var input
 
 func _ready():
+	super()
 	set_player(1, "Shrew", 0)
 
 
@@ -22,6 +23,7 @@ func set_player(p, new_aminal, new_score):
 	
 
 func _process(delta):
+	super(delta)
 	time += delta
 		
 	if input.is_just_pressed('select'):

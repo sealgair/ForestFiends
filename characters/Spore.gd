@@ -9,18 +9,18 @@ const texture = preload("res://art/fungus.png")
 
 func _ready():
 	$Fungus.play("grow")
-	var frames = $Fungus.frames.get_frame_count("grow")
+	var frames = $Fungus.sprite_frames.get_frame_count("grow")
 	var seconds = $GrowTimer.wait_time
-	$Fungus.frames.set_animation_speed("grow", frames/seconds)
+	$Fungus.sprite_frames.set_animation_speed("grow", frames/seconds)
 
 func set_palette(palette):
-	$Fungus.material.set_shader_param("palette", palette)
+	$Fungus.material.set_shader_parameter("palette", palette)
 	
 	# set particle color from palette
-	var image = texture.get_data()
-	image.lock()
+	var image = texture.get_image()
+	false # image.lock() # TODOConverter40, Image no longer requires locking, `false` helps to not break one line if/else, so it can freely be removed
 	$Fungus/CPUParticles2D.color = image.get_pixel(palette, 0)
-	image.unlock()
+	false # image.unlock() # TODOConverter40, Image no longer requires locking, `false` helps to not break one line if/else, so it can freely be removed
 
 func infect_rate():
 	var full_infect = $GrowTimer.wait_time

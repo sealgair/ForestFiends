@@ -8,9 +8,9 @@ var web_scene = preload("res://characters/Web.tscn")
 var web
 
 
-func _init(position, parent):
+func _init(position,parent):
 	start = position
-	web = web_scene.instance()
+	web = web_scene.instantiate()
 	web.spinner = parent
 	web.set_palette(parent.palette)
 	parent.add_child(web)

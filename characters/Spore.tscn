@@ -2,7 +2,7 @@
 
 [ext_resource path="res://characters/Spore.gd" type="Script" id=1]
 [ext_resource path="res://main/PalletSwap.tres" type="Material" id=2]
-[ext_resource path="res://art/fungus.png" type="Texture" id=3]
+[ext_resource path="res://art/fungus.png" type="Texture2D" id=3]
 
 [sub_resource type="AtlasTexture" id=37]
 atlas = ExtResource( 3 )
@@ -73,7 +73,7 @@ script = ExtResource( 1 )
 wait_time = 2.0
 autostart = true
 
-[node name="Fungus" type="AnimatedSprite" parent="."]
+[node name="Fungus" type="AnimatedSprite2D" parent="."]
 material = ExtResource( 2 )
 position = Vector2( 0, -5 )
 frames = SubResource( 41 )

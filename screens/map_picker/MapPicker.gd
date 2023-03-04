@@ -7,6 +7,7 @@ var start_players = []
 var chosing_player = null
 
 func _ready():
+	super()
 	map_choices = [
 		[$MapChoice1, $MapChoice2, $MapChoice3],
 		[$MapChoice4, $MapChoice5, $MapChoice6],
@@ -25,6 +26,7 @@ func _ready():
 
 
 func _process(delta):
+	super(delta)
 	var dir = input.direction_just_pressed(true)
 	
 	for x in range(3):
@@ -51,7 +53,7 @@ func _process(delta):
 
 func start_game():
 	var chosen = map_choices[cursor.x][cursor.y]
-	change_scene("play", {
+	change_scene_to_file("play", {
 		"start_data": start_players,
 		"map_scene": chosen.map_scene
 	})

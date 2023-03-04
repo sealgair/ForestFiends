@@ -1,4 +1,4 @@
-extends KinematicBody2D
+extends CharacterBody2D
 
 const PlayerInput = preload("res://main/PlayerInput.gd")
 const ComputerInput = preload("res://main/ComputerInput.gd")
@@ -6,9 +6,9 @@ const attack_scene = preload("res://characters/Attack.tscn")
 const Spore = preload("res://characters/Spore.tscn")
 var PlayerPath = preload("res://brain/PlayerPath.gd")
 
-export (int) var order = 1
-export (int) var palette = null
-export (bool) var computer = false
+@export var order: int = 1
+@export var palette: int
+@export var computer: bool = false
 
 var ate = 0
 var fed = 0
@@ -39,11 +39,11 @@ var revive_time = 2
 var special_wait = 1
 var special_timeout = 0
 
-var screen_size
+var screen_size: Vector2
+var cell_size: Vector2
 signal made_hit
 signal respawn(player)
 
-var velocity = Vector2()
 var to_velocity = Vector2()
 var jumping = false
 var size = Vector2(16, 16) # todo: dynamic
@@ -55,7 +55,7 @@ var slimed = 0
 var slime_time = 2
 var webs = []
 var web_points = {}
-var hidden = false
+var hiding = false
 
 var attack_anim = "bite"
 var enemies = []
@@ -65,11 +65,12 @@ var pathfinder
 
 func _ready():
 	screen_size = get_viewport_rect().size
+	cell_size = Vector2(tilemap.tile_set.tile_size)
 	set_computer(computer)
 	if palette == null:
 		palette = order - 1
-	$AnimatedSprite.material.set_shader_param("palette", palette)
-	$AnimatedSprite.play("idle")
+	$AnimatedSprite2D.material.set_shader_parameter("palette", palette)
+	$AnimatedSprite2D.play("idle")
 	
 
 func make_enemies(all_players):
@@ -115,7 +116,7 @@ func get_long_name():
 func pronouns():
 	return ['they', 'them', 'their', 'theirs']
 
-func make_slime(position, palette=0):
+func do_make_slime(position, palette=0):
 	pass # to implement in slug
 
 func set_computer(is_computer):
@@ -152,14 +153,14 @@ func attack_pressed():
 
 func make_attack():
 	attacks += 1
-	var instance = attack_scene.instance()
+	var instance = attack_scene.instantiate()
 	instance.attacker = self
 	instance.transform.origin += attack_offset
 	instance.set_name("attack")
 	instance.configure(attack_anim)
 	add_child(instance)
 	attack_node = weakref(instance)
-	$AnimatedSprite.play("attack")
+	$AnimatedSprite2D.play("attack")
 	return instance
 
 func attack_released():
@@ -176,9 +177,9 @@ func facing():
 
 func facing2():
 	var result = Vector2(-1, 1)
-	if $AnimatedSprite.flip_h:
+	if $AnimatedSprite2D.flip_h:
 		result.x = 1
-	if $AnimatedSprite.flip_v:
+	if $AnimatedSprite2D.flip_v:
 		result.y = -1
 	return result
 
@@ -213,7 +214,7 @@ func move(dir):
 	to_velocity.x = dir.x * run_speed
 	
 	if dir.x != 0:
-		$AnimatedSprite.flip_h = dir.x > 0
+		$AnimatedSprite2D.flip_h = dir.x > 0
 
 # warning-ignore:unused_argument
 func moved(delta):
@@ -255,17 +256,12 @@ func handle_input(delta):
 func track_distance(amount):
 	distance += amount
 
-func _physics_process(delta):
-	do_physics_process(delta)
-
 func up_dir():
 	return Vector2(0, -1)
 
-func do_physics_process(delta):
-	# so it can be overridden
+func _physics_process(delta):
 	if jumping and is_on_floor():
 		jumping = false
-	
 	if dead:
 		to_velocity = Vector2()
 	else:
@@ -293,7 +289,10 @@ func do_physics_process(delta):
 		else:
 			velocity += gravity * delta
 	var before = position
-	velocity = move_and_slide(velocity, up_dir())
+	set_velocity(velocity)
+	set_up_direction(up_dir())
+	move_and_slide()
+	velocity = velocity
 	track_distance((position - before).length())
 	
 	# use transform not position so as not to break physics
@@ -314,7 +313,7 @@ func get_animation():
 	if is_attacking():
 		return "attack"
 	elif not is_on_floor():
-		if $AnimatedSprite.frames.has_animation("jump_up"):
+		if $AnimatedSprite2D.sprite_frames.has_animation("jump_up"):
 			if velocity.y < 0:
 				return "jump_up"
 			else:
@@ -335,10 +334,6 @@ func _draw():
 func _process(delta):
 	if not dead:
 		time += delta
-	do_process(delta)
-
-func do_process(delta):
-	# so it can be overridden
 	if not is_attacking():
 		attack_timeout = max(0, attack_timeout - delta)
 	special_timeout = max(0, special_timeout - delta)
@@ -358,15 +353,15 @@ func do_process(delta):
 		
 		slimed = max(0, slimed - delta)
 		
-		$AnimatedSprite.animation = get_animation()
+		$AnimatedSprite2D.animation = get_animation()
 		var an = attack_node.get_ref()
 		if an:
-			an.get_node("AnimatedSprite").flip_h = $AnimatedSprite.flip_h
+			an.get_node("AnimatedSprite2D").flip_h = $AnimatedSprite2D.flip_h
 			an.transform.origin.x = abs(an.transform.origin.x)
 			an.transform.origin.x *= facing()
 	
 	if spore:
-		spore.sync_sprite($AnimatedSprite)
+		spore.sync_sprite($AnimatedSprite2D)
 
 func is_vulnerable():
 	return not self.dead and revive_countdown <= 0
@@ -387,10 +382,10 @@ func hit(other):
 
 func infect(other):
 	if spore == null:
-		spore = Spore.instance()
+		spore = Spore.instantiate()
 		spore.fungus = other
 		spore.set_palette(other.palette)
-		spore.connect("release", self, "die")
+		spore.connect("release",Callable(self,"die"))
 		add_child(spore)
 		move_child(spore, 0)
 
@@ -417,15 +412,15 @@ func die():
 	fed += 1
 	if not dead:
 		dead = true
-		$AnimatedSprite.play('dead')
+		$AnimatedSprite2D.play('dead')
 		$RespawnTimer.start()
 	reset_brain()
 
 func _on_RespawnTimer_timeout():
-	$AnimatedSprite.play('decay')
+	$AnimatedSprite2D.play('decay')
 
 func _on_AnimatedSprite_animation_finished():
-	if $AnimatedSprite.animation == "decay":
+	if $AnimatedSprite2D.animation == "decay":
 		emit_signal("respawn", self)
 
 func revive(new_pos):
@@ -438,7 +433,7 @@ func revive(new_pos):
 		remove_child(spore)
 		spore.queue_free()
 		spore = null
-	$AnimatedSprite.flip_v = false
+	$AnimatedSprite2D.flip_v = false
 	# for invincibilty after revive
 	revive_countdown = revive_time
 
@@ -500,7 +495,7 @@ func can_be_target(enemy, filter_ops={}):
 	for k in filter_ops.keys():
 		if (k in enemy) != filter_ops[k]:
 			return false
-	return enemy != null and not enemy.dead and not enemy.hidden
+	return enemy != null and not enemy.dead and not enemy.hiding
 
 func closest_enemy(filter_ops={}):
 	var closest = null
@@ -514,8 +509,8 @@ func closest_enemy(filter_ops={}):
 	return target
 
 func can_stand(x, y):
-	return tilemap.get_cell(x, y) == tilemap.INVALID_CELL \
-			and tilemap.get_cell(x, y+1) != tilemap.INVALID_CELL
+	return tilemap.get_cell(x, y) == Global.INVALID_CELL \
+			and tilemap.get_cell(x, y+1) != Global.INVALID_CELL
 
 func safe_spot():
 	if brain.safe_spot == null:
@@ -524,15 +519,15 @@ func safe_spot():
 			return null
 		# go to the first air tile under the first ground tile under the closest
 		# enemy
-		var spot = target.position + Vector2(0, tilemap.cell_size.y)
+		var spot = target.position + Vector2(0, cell_size.y)
 		spot.y = wrapf(spot.y, 0, screen_size.y)
 		# find first ground
-		while tilemap.get_cellv(Global.round2(spot / tilemap.cell_size)) == tilemap.INVALID_CELL:
-			spot += Vector2(0, tilemap.cell_size.y)
+		while tilemap.get_cell_source_id(0, Global.round2(spot / cell_size)) == Global.INVALID_CELL:
+			spot += Vector2(0, cell_size.y)
 			spot.y = wrapf(spot.y, 0, screen_size.y)
 		# find first air
-		while tilemap.get_cellv(Global.round2(spot / tilemap.cell_size)) != tilemap.INVALID_CELL:
-			spot += Vector2(0, tilemap.cell_size.y)
+		while tilemap.get_cell_source_id(0, Global.round2(spot / cell_size)) != Global.INVALID_CELL:
+			spot += Vector2(0, cell_size.y)
 			spot.y = wrapf(spot.y, 0, screen_size.y)
 		brain.safe_spot = pathfinder.ground_below_pos(spot) 
 	return brain.safe_spot
@@ -598,7 +593,7 @@ func point_on_path(path):
 	if path.size() > 1:
 		next = path[0]
 		while abs(next.y - think_position().y) < 16 and abs(next.x - think_position().x) < 8:
-			path.remove(0)
+			path.remove_at(0)
 			if path.size() > 0:
 				next = path[0]
 			else:

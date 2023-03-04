@@ -1,12 +1,12 @@
 extends Node2D
 
-export (int) var player_order = 1
+@export var player_order: int = 1
 var palette = 0
 var species = ""
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	$Label.text = String(player_order)
+	$Label.text = str(player_order)
 	$Background.color = Global.player_colors[player_order-1]
 	$AminalSprite.visible = false
 	$Sky.visible = false
@@ -20,7 +20,7 @@ func set_species(new_species):
 	if new_species == null:
 		set_aminal(null)
 	else:
-		var instance = Global.species[new_species].instance()
+		var instance = Global.species[new_species].instantiate()
 		set_aminal(instance)
 
 func set_aminal(instance):
@@ -36,7 +36,7 @@ func set_aminal(instance):
 		$Sky.visible = false
 		$Label.visible = true
 
-func make_player(existing_palettes):
+func make_player(_existing_palettes):
 	return {
 		'order': player_order,
 		'species': species,

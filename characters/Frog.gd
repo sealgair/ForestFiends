@@ -12,12 +12,12 @@ func init(start_pos, the_tilemap):
 	attack_range = 16
 	jump_height = 3
 	jump_dist = 3
-	.init(start_pos, the_tilemap)
+	super.init(start_pos, the_tilemap)
 	attack_anim = "tongue"
-	var image = texture.get_data()
-	image.lock()
+	var image = texture.get_image()
+	false # image.lock() # TODOConverter40, Image no longer requires locking, `false` helps to not break one line if/else, so it can freely be removed
 	$Tongue.default_color = image.get_pixel(palette, 5)
-	image.unlock()
+	false # image.unlock() # TODOConverter40, Image no longer requires locking, `false` helps to not break one line if/else, so it can freely be removed
 
 func get_species():
 	return "Frog"
@@ -26,19 +26,19 @@ func pronouns():
 	return ['she', 'her', 'her', 'hers']
 
 func special_pressed():
-	.special_pressed()
+	super.special_pressed()
 	if jumping:
 		jump_time = 0.2
 
 func make_attack():
-	var instance = .make_attack()
-	instance.get_node("AnimatedSprite").material.set_shader_param("palette", palette)
+	var instance = super.make_attack()
+	instance.get_node("AnimatedSprite2D").material.set_shader_parameter("palette", palette)
 	return instance
 
 func move(dir):
 	to_velocity = Vector2()
 	if dir.x != 0:
-		$AnimatedSprite.flip_h = dir.x > 0
+		$AnimatedSprite2D.flip_h = dir.x > 0
 	if jumping:
 		to_velocity = velocity * 1
 		to_velocity.x = run_speed * facing()
@@ -50,12 +50,12 @@ func move(dir):
 
 
 func moved(delta):
-	.moved(delta)
+	super.moved(delta)
 	look_angle = clamp(look_angle + TAU/4 * delta * look_change, 0, TAU/4)
 
 
 func _process(delta):
-	._process(delta)
+	super(delta)
 	if is_on_floor():
 		jump_time = 0
 	else:
@@ -63,7 +63,7 @@ func _process(delta):
 	
 	var ret = Vector2(-attack_range, 0)
 	ret = ret.rotated(look_angle)
-	if $AnimatedSprite.flip_h:
+	if $AnimatedSprite2D.flip_h:
 		ret *= Vector2(-1, 1)
 	$Reticle.transform.origin = ret
 		
@@ -83,7 +83,7 @@ func should_attack(enemy):
 		return dist.length() < attack_range
 
 func move_toward_point(point):
-	.move_toward_point(point)
+	super.move_toward_point(point)
 	if position.y - point.y > 0 or is_on_ceiling():
 		# let go of jump if we need to go down, or our head touched the roof
 		input.release('special')

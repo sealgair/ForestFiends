@@ -1,8 +1,5 @@
 extends "res://brain/PlayerPath.gd"
 
-func _init(the_player, tilemap: TileMap).(the_player, tilemap):
-	pass # just here to preserve the args, apparently
-
 func connect_node(point):
 	var pos = get_point_position(point)
 	for x in [-cell_size.x, 0, cell_size.x]:

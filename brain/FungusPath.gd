@@ -1,10 +1,7 @@
 extends "res://brain/PlayerPath.gd"
 
-func _init(the_player, tilemap: TileMap).(the_player, tilemap):
-	pass # just here to preserve the args, apparently
-
 func can_be_node(cell):
-	return cell != TileMap.INVALID_CELL
+	return cell != Global.INVALID_CELL
 
 func try_connect_points(from, to):
 	if to:
@@ -12,7 +9,7 @@ func try_connect_points(from, to):
 	return to != null
 
 func _compute_cost(u, v):
-	var cost = ._compute_cost(u, v)
+	var cost = super._compute_cost(u, v)
 	if cost > 1:
 		cost *= 3
 	return cost

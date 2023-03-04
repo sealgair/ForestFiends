@@ -2,6 +2,7 @@ extends "res://screens/Screen.gd"
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	super()
 	rows = [
 		$Shrew,
 		$Bird,
@@ -15,13 +16,13 @@ func _ready():
 	]
 	for aminal in rows:
 		var stats = Global.stats[aminal.name]
-		aminal.get_node("Ate").text = String(stats['ate'])
-		aminal.get_node("Fed").text = String(stats['fed'])
-		aminal.get_node("Won").text = String(stats['wins'])
-		aminal.get_node("Lost").text = String(stats['losses'])
+		aminal.get_node("Ate").text = str(stats['ate'])
+		aminal.get_node("Fed").text = str(stats['fed'])
+		aminal.get_node("Won").text = str(stats['wins'])
+		aminal.get_node("Lost").text = str(stats['losses'])
 		var time = int(stats['time'])
-		var hours = floor(time / 3600)
-		var minutes = floor((time % 3600) / 60)
+		var hours = floor(time / 3600.0)
+		var minutes = floor((time % 3600) / 60.0)
 		var seconds = time % 60
 		var timestring = ""
 		if hours > 0:

@@ -165,7 +165,7 @@ var scripts = {
 	]
 }
 
-var order
+var orders
 var aminal_index = 0
 var input
 
@@ -177,14 +177,16 @@ static func join(lines):
 
 var demo_scene = preload("res://maps/Demo.tscn")
 func _ready():
+	super()
 	$AminalDetail.max_computers = 0
-	$AminalDetail.set_map(demo_scene.instance())
-	order = descriptions.keys()
+	$AminalDetail.set_map(demo_scene.instantiate())
+	orders = descriptions.keys()
 	randomize()
-	order.shuffle()
-	set_aminal(order[aminal_index])
+	orders.shuffle()
+	set_aminal(orders[aminal_index])
 
 func _process(delta):
+	super(delta)
 	var revealed = ($RevealTimer.time_left-1) / ($RevealTimer.wait_time-1)
 	revealed = 1 - revealed
 	revealed = floor(revealed * description.length())
@@ -193,12 +195,12 @@ func _process(delta):
 func set_aminal(aminal_type):
 	$AminalDetail.clean()
 	if aminal != null:
-		$AminalDetail.players.empty()
+		$AminalDetail.players.is_empty()
 		aminal.queue_free()
 	
 	aminal = $AminalDetail.add_player({
 		'species': aminal_type,
-		'order': 0,
+		'order': 1,
 		'palette': floor(randf() * 4),
 		'spawn_point': Vector2(1.5,2),
 		'computer': false
@@ -213,9 +215,9 @@ func set_aminal(aminal_type):
 
 func _on_ContinueTimer_timeout():
 	aminal_index += 1
-	if aminal_index < order.size():
-		var player = SceneSwitcher.play_transition(transitions, transition_direction)
-		set_aminal(order[aminal_index])
+	if aminal_index < orders.size():
+		var player = await SceneSwitcher.play_transition(transitions, transition_direction)
+		set_aminal(orders[aminal_index])
 		player.resume()
 	else:
-		change_scene()
+		change_scene_to_file()

@@ -7,6 +7,7 @@ var selectors
 var player_selectors
 
 func _ready():
+	super()
 	selectors = [
 		[$Selector1, $Selector2, $Selector3,],
 		[$Selector4, $Selector5, $Selector6,],
@@ -28,6 +29,7 @@ func duplicate_palette(player_selector):
 	return false
 
 func _process(delta):
+	super(delta)
 	for row in selectors:
 		for cell in row:
 			if cell != null:
@@ -46,7 +48,7 @@ func _process(delta):
 			cursor = cursors[p]
 		if cursor == null:
 			if dir.length() > 0:
-				cursor = Cursor.instance()
+				cursor = Cursor.instantiate()
 				add_child(cursor)
 				cursor.set_player(p)
 				cursors[p] = cursor
@@ -112,7 +114,7 @@ func start_game():
 		existing_palettes[player_data['species']] = palettes
 		start_players.append(player_data)
 	
-	SceneSwitcher.change_scene("choose_map", {
+	SceneSwitcher.change_scene_to_file("choose_map", {
 		"start_players": start_players
 	}, ["quad"])
 

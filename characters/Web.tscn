@@ -16,7 +16,7 @@ script = ExtResource( 1 )
 shape = SubResource( 1 )
 
 [node name="Line2D" type="Line2D" parent="."]
-points = PoolVector2Array( 0, 0, 8, 0 )
+points = PackedVector2Array( 0, 0, 8, 0 )
 width = 0.5
 default_color = Color( 1, 1, 1, 1 )
 round_precision = 2
@@ -24,8 +24,8 @@ antialiased = true
 
 [node name="Debug" type="Label" parent="."]
 visible = false
-margin_right = 40.0
-margin_bottom = 14.0
+offset_right = 40.0
+offset_bottom = 14.0
 theme = ExtResource( 2 )
 
 [connection signal="body_entered" from="." to="." method="_on_Web_body_entered"]

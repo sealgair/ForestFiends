@@ -9,13 +9,13 @@ script = ExtResource( 3 )
 next_screen = "info"
 
 [node name="Background" type="ColorRect" parent="."]
-margin_right = 256.0
-margin_bottom = 256.0
+offset_right = 256.0
+offset_bottom = 256.0
 color = Color( 0.113725, 0.168627, 0.32549, 1 )
 
 [node name="Title" type="Label" parent="."]
-margin_right = 256.0
-margin_bottom = 16.0
+offset_right = 256.0
+offset_bottom = 16.0
 theme = ExtResource( 1 )
 custom_colors/font_color = Color( 1, 0.945098, 0.909804, 1 )
 text = "Aminal Stats"
@@ -23,10 +23,10 @@ align = 1
 valign = 1
 
 [node name="Ate" type="Label" parent="."]
-margin_left = 40.0
-margin_top = 16.0
-margin_right = 72.0
-margin_bottom = 32.0
+offset_left = 40.0
+offset_top = 16.0
+offset_right = 72.0
+offset_bottom = 32.0
 theme = ExtResource( 1 )
 custom_colors/font_color = Color( 0.160784, 0.678431, 1, 1 )
 text = "Ate"
@@ -34,10 +34,10 @@ align = 1
 valign = 1
 
 [node name="Fed" type="Label" parent="."]
-margin_left = 80.0
-margin_top = 16.0
-margin_right = 112.0
-margin_bottom = 32.0
+offset_left = 80.0
+offset_top = 16.0
+offset_right = 112.0
+offset_bottom = 32.0
 theme = ExtResource( 1 )
 custom_colors/font_color = Color( 0.160784, 0.678431, 1, 1 )
 text = "Fed"
@@ -45,10 +45,10 @@ align = 1
 valign = 1
 
 [node name="Won" type="Label" parent="."]
-margin_left = 120.0
-margin_top = 16.0
-margin_right = 152.0
-margin_bottom = 32.0
+offset_left = 120.0
+offset_top = 16.0
+offset_right = 152.0
+offset_bottom = 32.0
 theme = ExtResource( 1 )
 custom_colors/font_color = Color( 0.160784, 0.678431, 1, 1 )
 text = "Won"
@@ -56,10 +56,10 @@ align = 1
 valign = 1
 
 [node name="Lost" type="Label" parent="."]
-margin_left = 160.0
-margin_top = 16.0
-margin_right = 192.0
-margin_bottom = 32.0
+offset_left = 160.0
+offset_top = 16.0
+offset_right = 192.0
+offset_bottom = 32.0
 theme = ExtResource( 1 )
 custom_colors/font_color = Color( 0.160784, 0.678431, 1, 1 )
 text = "Lost"
@@ -67,10 +67,10 @@ align = 1
 valign = 1
 
 [node name="Time" type="Label" parent="."]
-margin_left = 208.0
-margin_top = 16.0
-margin_right = 240.0
-margin_bottom = 32.0
+offset_left = 208.0
+offset_top = 16.0
+offset_right = 240.0
+offset_bottom = 32.0
 theme = ExtResource( 1 )
 custom_colors/font_color = Color( 0.160784, 0.678431, 1, 1 )
 text = "Time"
@@ -78,14 +78,14 @@ align = 1
 valign = 1
 
 [node name="Sky" type="ColorRect" parent="."]
-margin_top = 32.0
-margin_right = 32.0
-margin_bottom = 256.0
+offset_top = 32.0
+offset_right = 32.0
+offset_bottom = 256.0
 color = Color( 0.160784, 0.678431, 1, 1 )
 
 [node name="Line2D" type="Line2D" parent="."]
 position = Vector2( 0, -8 )
-points = PoolVector2Array( 256, 40, 0, 40 )
+points = PackedVector2Array( 256, 40, 0, 40 )
 width = 2.0
 default_color = Color( 1, 0.945098, 0.909804, 1 )
 
@@ -93,9 +93,9 @@ default_color = Color( 1, 0.945098, 0.909804, 1 )
 position = Vector2( 8, 40 )
 
 [node name="Ate" type="Label" parent="Shrew"]
-margin_left = 32.0
-margin_right = 64.0
-margin_bottom = 16.0
+offset_left = 32.0
+offset_right = 64.0
+offset_bottom = 16.0
 theme = ExtResource( 1 )
 custom_colors/font_color = Color( 0.513726, 0.462745, 0.611765, 1 )
 text = "0"
@@ -103,9 +103,9 @@ align = 1
 valign = 1
 
 [node name="Fed" type="Label" parent="Shrew"]
-margin_left = 72.0
-margin_right = 104.0
-margin_bottom = 16.0
+offset_left = 72.0
+offset_right = 104.0
+offset_bottom = 16.0
 theme = ExtResource( 1 )
 custom_colors/font_color = Color( 0.513726, 0.462745, 0.611765, 1 )
 text = "0"
@@ -113,9 +113,9 @@ align = 1
 valign = 1
 
 [node name="Won" type="Label" parent="Shrew"]
-margin_left = 112.0
-margin_right = 144.0
-margin_bottom = 16.0
+offset_left = 112.0
+offset_right = 144.0
+offset_bottom = 16.0
 theme = ExtResource( 1 )
 custom_colors/font_color = Color( 0.513726, 0.462745, 0.611765, 1 )
 text = "0"
@@ -123,9 +123,9 @@ align = 1
 valign = 1
 
 [node name="Lost" type="Label" parent="Shrew"]
-margin_left = 152.0
-margin_right = 184.0
-margin_bottom = 16.0
+offset_left = 152.0
+offset_right = 184.0
+offset_bottom = 16.0
 theme = ExtResource( 1 )
 custom_colors/font_color = Color( 0.513726, 0.462745, 0.611765, 1 )
 text = "0"
@@ -133,9 +133,9 @@ align = 1
 valign = 1
 
 [node name="Time" type="Label" parent="Shrew"]
-margin_left = 192.0
-margin_right = 240.0
-margin_bottom = 16.0
+offset_left = 192.0
+offset_right = 240.0
+offset_bottom = 16.0
 theme = ExtResource( 1 )
 custom_colors/font_color = Color( 0.513726, 0.462745, 0.611765, 1 )
 text = "0:00"
@@ -147,9 +147,9 @@ position = Vector2( 8, 64 )
 species = "Bird"
 
 [node name="Ate" type="Label" parent="Bird"]
-margin_left = 32.0
-margin_right = 64.0
-margin_bottom = 16.0
+offset_left = 32.0
+offset_right = 64.0
+offset_bottom = 16.0
 theme = ExtResource( 1 )
 custom_colors/font_color = Color( 0.160784, 0.678431, 1, 1 )
 text = "0"
@@ -157,9 +157,9 @@ align = 1
 valign = 1
 
 [node name="Fed" type="Label" parent="Bird"]
-margin_left = 72.0
-margin_right = 104.0
-margin_bottom = 16.0
+offset_left = 72.0
+offset_right = 104.0
+offset_bottom = 16.0
 theme = ExtResource( 1 )
 custom_colors/font_color = Color( 0.160784, 0.678431, 1, 1 )
 text = "0"
@@ -167,9 +167,9 @@ align = 1
 valign = 1
 
 [node name="Won" type="Label" parent="Bird"]
-margin_left = 112.0
-margin_right = 144.0
-margin_bottom = 16.0
+offset_left = 112.0
+offset_right = 144.0
+offset_bottom = 16.0
 theme = ExtResource( 1 )
 custom_colors/font_color = Color( 0.160784, 0.678431, 1, 1 )
 text = "0"
@@ -177,9 +177,9 @@ align = 1
 valign = 1
 
 [node name="Lost" type="Label" parent="Bird"]
-margin_left = 152.0
-margin_right = 184.0
-margin_bottom = 16.0
+offset_left = 152.0
+offset_right = 184.0
+offset_bottom = 16.0
 theme = ExtResource( 1 )
 custom_colors/font_color = Color( 0.160784, 0.678431, 1, 1 )
 text = "0"
@@ -187,9 +187,9 @@ align = 1
 valign = 1
 
 [node name="Time" type="Label" parent="Bird"]
-margin_left = 192.0
-margin_right = 240.0
-margin_bottom = 16.0
+offset_left = 192.0
+offset_right = 240.0
+offset_bottom = 16.0
 theme = ExtResource( 1 )
 custom_colors/font_color = Color( 0.160784, 0.678431, 1, 1 )
 text = "0:00"
@@ -201,9 +201,9 @@ position = Vector2( 8, 88 )
 species = "Frog"
 
 [node name="Ate" type="Label" parent="Frog"]
-margin_left = 32.0
-margin_right = 64.0
-margin_bottom = 16.0
+offset_left = 32.0
+offset_right = 64.0
+offset_bottom = 16.0
 theme = ExtResource( 1 )
 custom_colors/font_color = Color( 0.513726, 0.462745, 0.611765, 1 )
 text = "0"
@@ -211,9 +211,9 @@ align = 1
 valign = 1
 
 [node name="Fed" type="Label" parent="Frog"]
-margin_left = 72.0
-margin_right = 104.0
-margin_bottom = 16.0
+offset_left = 72.0
+offset_right = 104.0
+offset_bottom = 16.0
 theme = ExtResource( 1 )
 custom_colors/font_color = Color( 0.513726, 0.462745, 0.611765, 1 )
 text = "0"
@@ -221,9 +221,9 @@ align = 1
 valign = 1
 
 [node name="Won" type="Label" parent="Frog"]
-margin_left = 112.0
-margin_right = 144.0
-margin_bottom = 16.0
+offset_left = 112.0
+offset_right = 144.0
+offset_bottom = 16.0
 theme = ExtResource( 1 )
 custom_colors/font_color = Color( 0.513726, 0.462745, 0.611765, 1 )
 text = "0"
@@ -231,9 +231,9 @@ align = 1
 valign = 1
 
 [node name="Lost" type="Label" parent="Frog"]
-margin_left = 152.0
-margin_right = 184.0
-margin_bottom = 16.0
+offset_left = 152.0
+offset_right = 184.0
+offset_bottom = 16.0
 theme = ExtResource( 1 )
 custom_colors/font_color = Color( 0.513726, 0.462745, 0.611765, 1 )
 text = "0"
@@ -241,9 +241,9 @@ align = 1
 valign = 1
 
 [node name="Time" type="Label" parent="Frog"]
-margin_left = 192.0
-margin_right = 240.0
-margin_bottom = 16.0
+offset_left = 192.0
+offset_right = 240.0
+offset_bottom = 16.0
 theme = ExtResource( 1 )
 custom_colors/font_color = Color( 0.513726, 0.462745, 0.611765, 1 )
 text = "0:00"
@@ -255,9 +255,9 @@ position = Vector2( 8, 112 )
 species = "Turt"
 
 [node name="Ate" type="Label" parent="Turt"]
-margin_left = 32.0
-margin_right = 64.0
-margin_bottom = 16.0
+offset_left = 32.0
+offset_right = 64.0
+offset_bottom = 16.0
 theme = ExtResource( 1 )
 custom_colors/font_color = Color( 0.160784, 0.678431, 1, 1 )
 text = "0"
@@ -265,9 +265,9 @@ align = 1
 valign = 1
 
 [node name="Fed" type="Label" parent="Turt"]
-margin_left = 72.0
-margin_right = 104.0
-margin_bottom = 16.0
+offset_left = 72.0
+offset_right = 104.0
+offset_bottom = 16.0
 theme = ExtResource( 1 )
 custom_colors/font_color = Color( 0.160784, 0.678431, 1, 1 )
 text = "0"
@@ -275,9 +275,9 @@ align = 1
 valign = 1
 
 [node name="Won" type="Label" parent="Turt"]
-margin_left = 112.0
-margin_right = 144.0
-margin_bottom = 16.0
+offset_left = 112.0
+offset_right = 144.0
+offset_bottom = 16.0
 theme = ExtResource( 1 )
 custom_colors/font_color = Color( 0.160784, 0.678431, 1, 1 )
 text = "0"
@@ -285,9 +285,9 @@ align = 1
 valign = 1
 
 [node name="Lost" type="Label" parent="Turt"]
-margin_left = 152.0
-margin_right = 184.0
-margin_bottom = 16.0
+offset_left = 152.0
+offset_right = 184.0
+offset_bottom = 16.0
 theme = ExtResource( 1 )
 custom_colors/font_color = Color( 0.160784, 0.678431, 1, 1 )
 text = "0"
@@ -295,9 +295,9 @@ align = 1
 valign = 1
 
 [node name="Time" type="Label" parent="Turt"]
-margin_left = 192.0
-margin_right = 240.0
-margin_bottom = 16.0
+offset_left = 192.0
+offset_right = 240.0
+offset_bottom = 16.0
 theme = ExtResource( 1 )
 custom_colors/font_color = Color( 0.160784, 0.678431, 1, 1 )
 text = "0:00"
@@ -309,9 +309,9 @@ position = Vector2( 8, 136 )
 species = "Wasp"
 
 [node name="Ate" type="Label" parent="Wasp"]
-margin_left = 32.0
-margin_right = 64.0
-margin_bottom = 16.0
+offset_left = 32.0
+offset_right = 64.0
+offset_bottom = 16.0
 theme = ExtResource( 1 )
 custom_colors/font_color = Color( 0.513726, 0.462745, 0.611765, 1 )
 text = "0"
@@ -319,9 +319,9 @@ align = 1
 valign = 1
 
 [node name="Fed" type="Label" parent="Wasp"]
-margin_left = 72.0
-margin_right = 104.0
-margin_bottom = 16.0
+offset_left = 72.0
+offset_right = 104.0
+offset_bottom = 16.0
 theme = ExtResource( 1 )
 custom_colors/font_color = Color( 0.513726, 0.462745, 0.611765, 1 )
 text = "0"
@@ -329,9 +329,9 @@ align = 1
 valign = 1
 
 [node name="Won" type="Label" parent="Wasp"]
-margin_left = 112.0
-margin_right = 144.0
-margin_bottom = 16.0
+offset_left = 112.0
+offset_right = 144.0
+offset_bottom = 16.0
 theme = ExtResource( 1 )
 custom_colors/font_color = Color( 0.513726, 0.462745, 0.611765, 1 )
 text = "0"
@@ -339,9 +339,9 @@ align = 1
 valign = 1
 
 [node name="Lost" type="Label" parent="Wasp"]
-margin_left = 152.0
-margin_right = 184.0
-margin_bottom = 16.0
+offset_left = 152.0
+offset_right = 184.0
+offset_bottom = 16.0
 theme = ExtResource( 1 )
 custom_colors/font_color = Color( 0.513726, 0.462745, 0.611765, 1 )
 text = "0"
@@ -349,9 +349,9 @@ align = 1
 valign = 1
 
 [node name="Time" type="Label" parent="Wasp"]
-margin_left = 192.0
-margin_right = 240.0
-margin_bottom = 16.0
+offset_left = 192.0
+offset_right = 240.0
+offset_bottom = 16.0
 theme = ExtResource( 1 )
 custom_colors/font_color = Color( 0.513726, 0.462745, 0.611765, 1 )
 text = "0:00"
@@ -363,9 +363,9 @@ position = Vector2( 8, 160 )
 species = "Mant"
 
 [node name="Ate" type="Label" parent="Mant"]
-margin_left = 32.0
-margin_right = 64.0
-margin_bottom = 16.0
+offset_left = 32.0
+offset_right = 64.0
+offset_bottom = 16.0
 theme = ExtResource( 1 )
 custom_colors/font_color = Color( 0.160784, 0.678431, 1, 1 )
 text = "0"
@@ -373,9 +373,9 @@ align = 1
 valign = 1
 
 [node name="Fed" type="Label" parent="Mant"]
-margin_left = 72.0
-margin_right = 104.0
-margin_bottom = 16.0
+offset_left = 72.0
+offset_right = 104.0
+offset_bottom = 16.0
 theme = ExtResource( 1 )
 custom_colors/font_color = Color( 0.160784, 0.678431, 1, 1 )
 text = "0"
@@ -383,9 +383,9 @@ align = 1
 valign = 1
 
 [node name="Won" type="Label" parent="Mant"]
-margin_left = 112.0
-margin_right = 144.0
-margin_bottom = 16.0
+offset_left = 112.0
+offset_right = 144.0
+offset_bottom = 16.0
 theme = ExtResource( 1 )
 custom_colors/font_color = Color( 0.160784, 0.678431, 1, 1 )
 text = "0"
@@ -393,9 +393,9 @@ align = 1
 valign = 1
 
 [node name="Lost" type="Label" parent="Mant"]
-margin_left = 152.0
-margin_right = 184.0
-margin_bottom = 16.0
+offset_left = 152.0
+offset_right = 184.0
+offset_bottom = 16.0
 theme = ExtResource( 1 )
 custom_colors/font_color = Color( 0.160784, 0.678431, 1, 1 )
 text = "0"
@@ -403,9 +403,9 @@ align = 1
 valign = 1
 
 [node name="Time" type="Label" parent="Mant"]
-margin_left = 192.0
-margin_right = 240.0
-margin_bottom = 16.0
+offset_left = 192.0
+offset_right = 240.0
+offset_bottom = 16.0
 theme = ExtResource( 1 )
 custom_colors/font_color = Color( 0.160784, 0.678431, 1, 1 )
 text = "0:00"
@@ -417,9 +417,9 @@ position = Vector2( 8, 184 )
 species = "Slug"
 
 [node name="Ate" type="Label" parent="Slug"]
-margin_left = 32.0
-margin_right = 64.0
-margin_bottom = 16.0
+offset_left = 32.0
+offset_right = 64.0
+offset_bottom = 16.0
 theme = ExtResource( 1 )
 custom_colors/font_color = Color( 0.513726, 0.462745, 0.611765, 1 )
 text = "0"
@@ -427,9 +427,9 @@ align = 1
 valign = 1
 
 [node name="Fed" type="Label" parent="Slug"]
-margin_left = 72.0
-margin_right = 104.0
-margin_bottom = 16.0
+offset_left = 72.0
+offset_right = 104.0
+offset_bottom = 16.0
 theme = ExtResource( 1 )
 custom_colors/font_color = Color( 0.513726, 0.462745, 0.611765, 1 )
 text = "0"
@@ -437,9 +437,9 @@ align = 1
 valign = 1
 
 [node name="Won" type="Label" parent="Slug"]
-margin_left = 112.0
-margin_right = 144.0
-margin_bottom = 16.0
+offset_left = 112.0
+offset_right = 144.0
+offset_bottom = 16.0
 theme = ExtResource( 1 )
 custom_colors/font_color = Color( 0.513726, 0.462745, 0.611765, 1 )
 text = "0"
@@ -447,9 +447,9 @@ align = 1
 valign = 1
 
 [node name="Lost" type="Label" parent="Slug"]
-margin_left = 152.0
-margin_right = 184.0
-margin_bottom = 16.0
+offset_left = 152.0
+offset_right = 184.0
+offset_bottom = 16.0
 theme = ExtResource( 1 )
 custom_colors/font_color = Color( 0.513726, 0.462745, 0.611765, 1 )
 text = "0"
@@ -457,9 +457,9 @@ align = 1
 valign = 1
 
 [node name="Time" type="Label" parent="Slug"]
-margin_left = 192.0
-margin_right = 240.0
-margin_bottom = 16.0
+offset_left = 192.0
+offset_right = 240.0
+offset_bottom = 16.0
 theme = ExtResource( 1 )
 custom_colors/font_color = Color( 0.513726, 0.462745, 0.611765, 1 )
 text = "0:00"
@@ -471,9 +471,9 @@ position = Vector2( 8, 208 )
 species = "Spid"
 
 [node name="Ate" type="Label" parent="Spid"]
-margin_left = 32.0
-margin_right = 64.0
-margin_bottom = 16.0
+offset_left = 32.0
+offset_right = 64.0
+offset_bottom = 16.0
 theme = ExtResource( 1 )
 custom_colors/font_color = Color( 0.160784, 0.678431, 1, 1 )
 text = "0"
@@ -481,9 +481,9 @@ align = 1
 valign = 1
 
 [node name="Fed" type="Label" parent="Spid"]
-margin_left = 72.0
-margin_right = 104.0
-margin_bottom = 16.0
+offset_left = 72.0
+offset_right = 104.0
+offset_bottom = 16.0
 theme = ExtResource( 1 )
 custom_colors/font_color = Color( 0.160784, 0.678431, 1, 1 )
 text = "0"
@@ -491,9 +491,9 @@ align = 1
 valign = 1
 
 [node name="Won" type="Label" parent="Spid"]
-margin_left = 112.0
-margin_right = 144.0
-margin_bottom = 16.0
+offset_left = 112.0
+offset_right = 144.0
+offset_bottom = 16.0
 theme = ExtResource( 1 )
 custom_colors/font_color = Color( 0.160784, 0.678431, 1, 1 )
 text = "0"
@@ -501,9 +501,9 @@ align = 1
 valign = 1
 
 [node name="Lost" type="Label" parent="Spid"]
-margin_left = 152.0
-margin_right = 184.0
-margin_bottom = 16.0
+offset_left = 152.0
+offset_right = 184.0
+offset_bottom = 16.0
 theme = ExtResource( 1 )
 custom_colors/font_color = Color( 0.160784, 0.678431, 1, 1 )
 text = "0"
@@ -511,9 +511,9 @@ align = 1
 valign = 1
 
 [node name="Time" type="Label" parent="Spid"]
-margin_left = 192.0
-margin_right = 240.0
-margin_bottom = 16.0
+offset_left = 192.0
+offset_right = 240.0
+offset_bottom = 16.0
 theme = ExtResource( 1 )
 custom_colors/font_color = Color( 0.160784, 0.678431, 1, 1 )
 text = "0:00"
@@ -525,9 +525,9 @@ position = Vector2( 8, 232 )
 species = "Fungus"
 
 [node name="Ate" type="Label" parent="Fungus"]
-margin_left = 32.0
-margin_right = 64.0
-margin_bottom = 16.0
+offset_left = 32.0
+offset_right = 64.0
+offset_bottom = 16.0
 theme = ExtResource( 1 )
 custom_colors/font_color = Color( 0.160784, 0.678431, 1, 1 )
 text = "0"
@@ -535,9 +535,9 @@ align = 1
 valign = 1
 
 [node name="Fed" type="Label" parent="Fungus"]
-margin_left = 72.0
-margin_right = 104.0
-margin_bottom = 16.0
+offset_left = 72.0
+offset_right = 104.0
+offset_bottom = 16.0
 theme = ExtResource( 1 )
 custom_colors/font_color = Color( 0.160784, 0.678431, 1, 1 )
 text = "0"
@@ -545,9 +545,9 @@ align = 1
 valign = 1
 
 [node name="Won" type="Label" parent="Fungus"]
-margin_left = 112.0
-margin_right = 144.0
-margin_bottom = 16.0
+offset_left = 112.0
+offset_right = 144.0
+offset_bottom = 16.0
 theme = ExtResource( 1 )
 custom_colors/font_color = Color( 0.160784, 0.678431, 1, 1 )
 text = "0"
@@ -555,9 +555,9 @@ align = 1
 valign = 1
 
 [node name="Lost" type="Label" parent="Fungus"]
-margin_left = 152.0
-margin_right = 184.0
-margin_bottom = 16.0
+offset_left = 152.0
+offset_right = 184.0
+offset_bottom = 16.0
 theme = ExtResource( 1 )
 custom_colors/font_color = Color( 0.160784, 0.678431, 1, 1 )
 text = "0"
@@ -565,9 +565,9 @@ align = 1
 valign = 1
 
 [node name="Time" type="Label" parent="Fungus"]
-margin_left = 192.0
-margin_right = 240.0
-margin_bottom = 16.0
+offset_left = 192.0
+offset_right = 240.0
+offset_bottom = 16.0
 theme = ExtResource( 1 )
 custom_colors/font_color = Color( 0.160784, 0.678431, 1, 1 )
 text = "0:00"
@@ -585,9 +585,9 @@ one_shot = true
 autostart = true
 
 [node name="StartPrompt" type="Label" parent="."]
-margin_top = 248.0
-margin_right = 256.0
-margin_bottom = 256.0
+offset_top = 248.0
+offset_right = 256.0
+offset_bottom = 256.0
 theme = ExtResource( 1 )
 text = "Press any button to start"
 align = 1

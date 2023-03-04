@@ -1,13 +1,13 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=6 format=3 uid="uid://dhjqvrah655of"]
 
-[ext_resource path="res://main/MenuTheme.tres" type="Theme" id=1]
-[ext_resource path="res://screens/character_select/PlayerSelector.tscn" type="PackedScene" id=2]
-[ext_resource path="res://screens/Screen.tscn" type="PackedScene" id=3]
-[ext_resource path="res://screens/character_select/CharacterSelector.tscn" type="PackedScene" id=4]
-[ext_resource path="res://screens/character_select/CharacterSelect.gd" type="Script" id=5]
+[ext_resource type="Theme" uid="uid://c5qd48flt1q3i" path="res://main/MenuTheme.tres" id="1"]
+[ext_resource type="PackedScene" uid="uid://bja4kb50d7eyo" path="res://screens/character_select/PlayerSelector.tscn" id="2"]
+[ext_resource type="PackedScene" uid="uid://occ6juv34ted" path="res://screens/Screen.tscn" id="3"]
+[ext_resource type="PackedScene" uid="uid://de5lmjpwp7n3i" path="res://screens/character_select/CharacterSelector.tscn" id="4"]
+[ext_resource type="Script" path="res://screens/character_select/CharacterSelect.gd" id="5"]
 
-[node name="Screen" instance=ExtResource( 3 )]
-script = ExtResource( 5 )
+[node name="Screen" instance=ExtResource("3")]
+script = ExtResource("5")
 is_idle_screen = false
 
 [node name="ForceStartTimer" type="Timer" parent="." index="2"]
@@ -15,79 +15,74 @@ wait_time = 20.0
 one_shot = true
 
 [node name="ColorRect" type="ColorRect" parent="." index="3"]
-margin_right = 257.0
-margin_bottom = 258.0
-color = Color( 0.372549, 0.341176, 0.309804, 1 )
+offset_right = 257.0
+offset_bottom = 258.0
+color = Color(0.372549, 0.341176, 0.309804, 1)
 
-[node name="Selector1" parent="." index="4" instance=ExtResource( 4 )]
-position = Vector2( 48, 48 )
+[node name="Selector1" parent="." index="4" instance=ExtResource("4")]
+position = Vector2(48, 48)
 species = "Shrew"
 
-[node name="Selector2" parent="." index="5" instance=ExtResource( 4 )]
-position = Vector2( 112, 48 )
+[node name="Selector2" parent="." index="5" instance=ExtResource("4")]
+position = Vector2(112, 48)
 species = "Wasp"
 
-[node name="Selector3" parent="." index="6" instance=ExtResource( 4 )]
-position = Vector2( 176, 48 )
+[node name="Selector3" parent="." index="6" instance=ExtResource("4")]
+position = Vector2(176, 48)
 species = "Frog"
 
-[node name="Selector4" parent="." index="7" instance=ExtResource( 4 )]
-position = Vector2( 48, 112 )
+[node name="Selector4" parent="." index="7" instance=ExtResource("4")]
+position = Vector2(48, 112)
 species = "Slug"
 
-[node name="Selector5" parent="." index="8" instance=ExtResource( 4 )]
-position = Vector2( 112, 112 )
+[node name="Selector5" parent="." index="8" instance=ExtResource("4")]
+position = Vector2(112, 112)
 species = "Fungus"
 
-[node name="Selector6" parent="." index="9" instance=ExtResource( 4 )]
-position = Vector2( 176, 112 )
+[node name="Selector6" parent="." index="9" instance=ExtResource("4")]
+position = Vector2(176, 112)
 species = "Spid"
 
-[node name="Selector7" parent="." index="10" instance=ExtResource( 4 )]
-position = Vector2( 48, 176 )
+[node name="Selector7" parent="." index="10" instance=ExtResource("4")]
+position = Vector2(48, 176)
 species = "Bird"
 
-[node name="Selector8" parent="." index="11" instance=ExtResource( 4 )]
-position = Vector2( 112, 176 )
+[node name="Selector8" parent="." index="11" instance=ExtResource("4")]
+position = Vector2(112, 176)
 species = "Mant"
 
-[node name="Selector9" parent="." index="12" instance=ExtResource( 4 )]
-position = Vector2( 176, 176 )
+[node name="Selector9" parent="." index="12" instance=ExtResource("4")]
+position = Vector2(176, 176)
 species = "Turt"
 
 [node name="Title" type="Label" parent="." index="13"]
-margin_left = 83.0
-margin_top = 14.0
-margin_right = 175.0
-margin_bottom = 24.0
-theme = ExtResource( 1 )
-custom_colors/font_color = Color( 1, 0.639216, 0, 1 )
+offset_left = 83.0
+offset_top = 14.0
+offset_right = 175.0
+offset_bottom = 24.0
+theme = ExtResource("1")
 text = "Choose Your Aminal"
 
 [node name="Countdown" type="Label" parent="." index="14"]
-margin_left = 88.0
-margin_top = 24.0
-margin_right = 168.0
-margin_bottom = 38.0
-theme = ExtResource( 1 )
-custom_colors/font_color = Color( 1, 0, 0.301961, 1 )
-custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
-align = 1
-valign = 1
+offset_left = 88.0
+offset_top = 24.0
+offset_right = 168.0
+offset_bottom = 38.0
+theme = ExtResource("1")
 
-[node name="Player1Selector" parent="." index="15" instance=ExtResource( 2 )]
-position = Vector2( 8, 8 )
+[node name="Player1Selector" parent="." index="15" instance=ExtResource("2")]
+position = Vector2(8, 8)
 
-[node name="Player2Selector" parent="." index="16" instance=ExtResource( 2 )]
-position = Vector2( 216, 8 )
+[node name="Player2Selector" parent="." index="16" instance=ExtResource("2")]
+position = Vector2(216, 8)
 player_order = 2
 
-[node name="Player3Selector" parent="." index="17" instance=ExtResource( 2 )]
-position = Vector2( 8, 216 )
+[node name="Player3Selector" parent="." index="17" instance=ExtResource("2")]
+position = Vector2(8, 216)
 player_order = 3
 
-[node name="Player4Selector" parent="." index="18" instance=ExtResource( 2 )]
-position = Vector2( 216, 216 )
+[node name="Player4Selector" parent="." index="18" instance=ExtResource("2")]
+position = Vector2(216, 216)
 player_order = 4
 
 [connection signal="timeout" from="ForceStartTimer" to="." method="_on_ForceStartTimer_timeout"]

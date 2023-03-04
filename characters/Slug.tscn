@@ -4,7 +4,7 @@
 [ext_resource path="res://characters/Slug.gd" type="Script" id=2]
 [ext_resource path="res://main/PalletSwap.gdshader" type="Shader" id=4]
 [ext_resource path="res://main/PalletSwap.tres" type="Material" id=7]
-[ext_resource path="res://art/slug16.png" type="Texture" id=8]
+[ext_resource path="res://art/slug16.png" type="Texture2D" id=8]
 
 [sub_resource type="AtlasTexture" id=63]
 atlas = ExtResource( 8 )
@@ -123,29 +123,29 @@ resource_local_to_scene = true
 radius = 8.0
 
 [sub_resource type="RectangleShape2D" id=41]
-extents = Vector2( 8, 4 )
+size = Vector2( 8, 4 )
 
 [node name="Slug" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
 
-[node name="Spike1" type="Sprite" parent="." index="0"]
+[node name="Spike1" type="Sprite2D" parent="." index="0"]
 material = ExtResource( 7 )
 rotation = 1.5708
 texture = SubResource( 63 )
 offset = Vector2( 4, 0 )
 
-[node name="Spike2" type="Sprite" parent="." index="1"]
+[node name="Spike2" type="Sprite2D" parent="." index="1"]
 material = ExtResource( 7 )
 texture = SubResource( 45 )
 offset = Vector2( 0, 4 )
 
-[node name="Spike3" type="Sprite" parent="." index="2"]
+[node name="Spike3" type="Sprite2D" parent="." index="2"]
 material = ExtResource( 7 )
 texture = SubResource( 40 )
 offset = Vector2( 0, 4 )
 flip_h = true
 
-[node name="AnimatedSprite" parent="." index="3"]
+[node name="AnimatedSprite2D" parent="." index="3"]
 material = SubResource( 31 )
 frames = SubResource( 32 )
 frame = 0

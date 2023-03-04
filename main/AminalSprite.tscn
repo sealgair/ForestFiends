@@ -1,31 +1,37 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=8 format=3 uid="uid://cgcgx2hfd13kc"]
 
-[ext_resource path="res://main/PalletSwap.tres" type="Material" id=1]
-[ext_resource path="res://art/shru.png" type="Texture" id=2]
-[ext_resource path="res://main/AminalSprite.gd" type="Script" id=3]
+[ext_resource type="Material" path="res://main/PalletSwap.tres" id="1"]
+[ext_resource type="Texture2D" uid="uid://dho1xa67s6dgj" path="res://art/shru.png" id="2"]
+[ext_resource type="Script" path="res://main/AminalSprite.gd" id="3"]
 
-[sub_resource type="AtlasTexture" id=2]
-atlas = ExtResource( 2 )
-region = Rect2( 0, 16, 16, 16 )
+[sub_resource type="AtlasTexture" id="2"]
+atlas = ExtResource("2")
+region = Rect2(0, 16, 16, 16)
 
-[sub_resource type="AtlasTexture" id=3]
-atlas = ExtResource( 2 )
-region = Rect2( 32, 16, 16, 16 )
+[sub_resource type="AtlasTexture" id="3"]
+atlas = ExtResource("2")
+region = Rect2(32, 16, 16, 16)
 
-[sub_resource type="SpriteFrames" id=1]
+[sub_resource type="SpriteFrames" id="1"]
 resource_local_to_scene = true
-animations = [ {
-"frames": [ SubResource( 2 ), SubResource( 3 ) ],
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("2")
+}, {
+"duration": 1.0,
+"texture": SubResource("3")
+}],
 "loop": true,
-"name": "idle",
+"name": &"idle",
 "speed": 5.0
-} ]
+}]
 
-[sub_resource type="GDScript" id=4]
-script/source = "extends AnimatedSprite
+[sub_resource type="GDScript" id="4"]
+script/source = "extends AnimatedSprite2D
 
 
-export (String) var aminal = \"\"
+@export var aminal: String = \"\"
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -35,32 +41,29 @@ func _ready():
 
 func set_aminal(new_aminal):
 	aminal = new_aminal
-	var instance = Global.characters[aminal].instance()
-	var aminal_sprite = instance.get_node(\"AnimatedSprite\")
-	for f in range($AnimatedSprite.frames.get_frame_count(\"idle\")):
-		$AnimatedSprite.frames.remove_frame(\"idle\", f)
+	var instance = Global.characters[aminal].instantiate()
+	var aminal_sprite = instance.get_node(\"AnimatedSprite2D\")
+	for f in range($AnimatedSprite2D.frames.get_frame_count(\"idle\")):
+		$AnimatedSprite2D.frames.remove_frame(\"idle\", f)
 	for f in range(aminal_sprite.frames.get_frame_count(\"idle\")):
-		var frame = aminal_sprite.frames.get_frame(\"idle\", f)
-		$AnimatedSprite.frames.add_frame(\"idle\", frame)
+		var an_frame = aminal_sprite.frames.get_frame(\"idle\", f)
+		$AnimatedSprite2D.frames.add_frame(\"idle\", an_frame)
 "
 
 [node name="AminalSprite" type="Node2D"]
-script = ExtResource( 3 )
+script = ExtResource("3")
 
 [node name="ColorRect" type="ColorRect" parent="."]
-margin_left = -1.0
-margin_top = -1.0
-margin_right = 17.0
-margin_bottom = 17.0
-color = Color( 0.160784, 0.678431, 1, 1 )
-__meta__ = {
-"_edit_group_": true
-}
+offset_left = -1.0
+offset_top = -1.0
+offset_right = 17.0
+offset_bottom = 17.0
+color = Color(0.160784, 0.678431, 1, 1)
 
-[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 visible = false
-material = ExtResource( 1 )
-position = Vector2( 8, 8 )
-frames = SubResource( 1 )
-animation = "idle"
-script = SubResource( 4 )
+material = ExtResource("1")
+position = Vector2(8, 8)
+sprite_frames = SubResource("1")
+animation = &"idle"
+script = SubResource("4")

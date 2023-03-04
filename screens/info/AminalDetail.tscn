@@ -1,6 +1,6 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=2 format=3 uid="uid://cg44ngv4iupei"]
 
-[ext_resource path="res://screens/arena/Arena.tscn" type="PackedScene" id=1]
+[ext_resource type="PackedScene" uid="uid://bm5i7h0rddy07" path="res://screens/arena/Arena.tscn" id="1"]
 
-[node name="AminalDetail" instance=ExtResource( 1 )]
-scale = Vector2( 2, 2 )
+[node name="AminalDetail" instance=ExtResource("1")]
+scale = Vector2(2, 2)

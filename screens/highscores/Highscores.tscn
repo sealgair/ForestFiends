@@ -9,13 +9,13 @@ script = ExtResource( 3 )
 next_screen = "stats"
 
 [node name="ColorRect" type="ColorRect" parent="." index="2"]
-margin_right = 256.0
-margin_bottom = 256.0
+offset_right = 256.0
+offset_bottom = 256.0
 color = Color( 0, 0, 0, 1 )
 
 [node name="Title" type="Label" parent="." index="3"]
-margin_right = 256.0
-margin_bottom = 24.0
+offset_right = 256.0
+offset_bottom = 24.0
 theme = ExtResource( 1 )
 custom_colors/font_color = Color( 0, 0.894118, 0.211765, 1 )
 text = "High Scores"
@@ -23,6 +23,6 @@ align = 1
 valign = 1
 
 [node name="Line2D" type="Line2D" parent="." index="4"]
-points = PoolVector2Array( 0, 24, 256, 24 )
+points = PackedVector2Array( 0, 24, 256, 24 )
 width = 2.0
 default_color = Color( 0, 0.894118, 0.211765, 1 )

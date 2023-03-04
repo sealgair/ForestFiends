@@ -4,6 +4,7 @@ var defending = false
 var defend_cooldown = 1
 
 func _ready():
+	super()
 	run_speed = 60
 	accelerate = 6
 	attack_anim = "none"
@@ -21,12 +22,12 @@ func pronouns():
 func get_animation():
 	if defending:
 		return "defend"
-	return .get_animation()
+	return super.get_animation()
 
 func special_pressed():
 	if not defending and $DefendCooldown.time_left <= 0:
 		defending = true
-		$AnimatedSprite.play("defend")
+		$AnimatedSprite2D.play("defend")
 		$DefendTimer.start()
 
 func special_released():
@@ -40,28 +41,28 @@ func is_mobile():
 	return not defending
 
 func is_vulnerable():
-	return .is_vulnerable() and not defending
+	return super.is_vulnerable() and not defending
 
 func _process(delta):
-	._process(delta)
-	$AnimatedSprite/Head.flip_h = $AnimatedSprite.flip_h
+	super(delta)
+	$AnimatedSprite2D/Head.flip_h = $AnimatedSprite2D.flip_h
 	var an = attack_node.get_ref()
-	$AnimatedSprite/Head.visible = not defending and not dead
-	$AnimatedSprite/Head.animation = "idle"
+	$AnimatedSprite2D/Head.visible = not defending and not dead
+	$AnimatedSprite2D/Head.animation = "idle"
 	if axes_pressed().x != 0 or not is_on_floor():
-		$AnimatedSprite/Head.animation = "walk"
+		$AnimatedSprite2D/Head.animation = "walk"
 	if an:
 		var xoff = easeoutback(an.life/an.live) * 10
 		if xoff > 4:
-			$AnimatedSprite/Head.animation = "attack"
-		if not $AnimatedSprite/Head.flip_h:
+			$AnimatedSprite2D/Head.animation = "attack"
+		if not $AnimatedSprite2D/Head.flip_h:
 			xoff *= -1
-		$AnimatedSprite/Head.transform.origin.x = xoff
+		$AnimatedSprite2D/Head.transform.origin.x = xoff
 		an.transform.origin.x = xoff * 2.1
 	else:
-		$AnimatedSprite/Head.transform.origin.x = 0
+		$AnimatedSprite2D/Head.transform.origin.x = 0
 		if velocity.x == 0:
-			$AnimatedSprite/Head.animation = "idle"
+			$AnimatedSprite2D/Head.animation = "idle"
 
 func _on_DefendTimer_timeout():
 	defending = false

@@ -1,5 +1,19 @@
 extends Node
 
+# TODO: use this
+enum Species {
+	Shrew,
+	Bird,
+	Frog,
+	Turt,
+	Wasp,
+	Mant,
+	Slug,
+	Spid,
+	Fungus,
+}
+
+const INVALID_CELL = -1
 var statsfilename = "user://stats.save"
 var highscoresfilename = "user://highscores.save"
 var species = {
@@ -61,24 +75,24 @@ func add_player_stats(player):
 
 
 func save_stats():
-	var save_file = File.new()
-	save_file.open(statsfilename, File.WRITE)
-	save_file.store_string(to_json(stats))
+	var save_file = FileAccess.open(statsfilename, FileAccess.WRITE)
+	save_file.store_string(JSON.stringify(stats))
 	save_file.close()
 
 
 func load_stats():
 	var file_stats = {}
-	var save_file = File.new()
-	if save_file.file_exists(statsfilename):
-		save_file.open(statsfilename, File.READ)
-		var data = parse_json(save_file.get_as_text())
+	if FileAccess.file_exists(statsfilename):
+		var save_file = FileAccess.open(statsfilename, FileAccess.READ)
+		var test_json_conv = JSON.new()
+		test_json_conv.parse(save_file.get_as_text())
+		var data = test_json_conv.get_data()
 		if data:
 			file_stats = data
 		save_file.close()
-	for name in species.keys():
-		if not file_stats.has(name):
-			file_stats[name] = make_stats()
+	for species_name in species.keys():
+		if not file_stats.has(species_name):
+			file_stats[species_name] = make_stats()
 	return file_stats
 
 
@@ -89,12 +103,12 @@ func check_highscore(score):
 	return false
 
 
-func add_highscore(name, aminal, score):
+func add_highscore(species_name, aminal, score):
 	for i in range(highscores.size()):
 		var highscore = highscores[i]
 		if score > highscore['score']:
 			highscores.insert(i, {
-				'name': name,
+				'name': species_name,
 				'species': aminal,
 				'score': score,
 			})
@@ -104,18 +118,18 @@ func add_highscore(name, aminal, score):
 
 
 func save_highscores():
-	var save_file = File.new()
-	save_file.open(highscoresfilename, File.WRITE)
-	save_file.store_string(to_json(highscores))
+	var save_file = FileAccess.open(highscoresfilename, FileAccess.WRITE)
+	save_file.store_string(JSON.stringify(highscores))
 	save_file.close()
 
 
 func load_highscores():
 	var loaded_scores = []
-	var save_file = File.new()
-	if save_file.file_exists(highscoresfilename):
-		save_file.open(highscoresfilename, File.READ)
-		var data = parse_json(save_file.get_as_text())
+	if FileAccess.file_exists(highscoresfilename):
+		var save_file = FileAccess.open(highscoresfilename, FileAccess.READ)
+		var test_json_conv = JSON.new()
+		test_json_conv.parse(save_file.get_as_text())
+		var data = test_json_conv.get_data()
 		if data:
 			loaded_scores = data
 		save_file.close()
@@ -138,7 +152,7 @@ func center(points):
 	return sum / points.size()
 
 
-static func comma_sep(n: int) -> String:
+func comma_sep(n: int) -> String:
 	var result := ""
 	var i: int = abs(n)
 
@@ -148,11 +162,11 @@ static func comma_sep(n: int) -> String:
 
 	return "%s%s%s" % ["-" if n < 0 else "", i, result]
 
-static func rand_choice(list):
+func rand_choice(list):
 	var i = floor(randf() * list.size())
 	return list[i]
 
-static func weighted_rand_choice(choices):
+func weighted_rand_choice(choices):
 	var total = 0
 	for weight in choices.values():
 		total += weight
@@ -169,40 +183,40 @@ func perpendicular(vec2):
 func abs2(vec2):
 	return Vector2(abs(vec2.x), abs(vec2.y))
 
-static func floor2(vec2):
+func floor2(vec2):
 	return Vector2(
 		floor(vec2.x), 
 		floor(vec2.y)
 	)
 
-static func round2(vec2):
+func round2(vec2):
 	return Vector2(
 		int(round(vec2.x)), 
 		int(round(vec2.y))
 	)
 
-static func clamp2(val, low, high):
+func clamp2(val, low, high):
 	return Vector2(
 		clamp(val.x, low.x, high.x),
 		clamp(val.y, low.y, high.y)
 	)
 
-static func wrap2(val, low, high):
+func wrap2(val, low, high):
 	return Vector2(
 		wrapf(val.x, low.x, high.x),
 		wrapf(val.y, low.y, high.y)
 	)
 
-static func sign2(point):
+func sign2(point):
 	return Vector2(sign(point.x), sign(point.y))
 
-static func average(values):
+func average(values):
 	var sum = 0
 	for value in values:
 		sum += value
 	return sum / values.size()
 
-static func points_on_line(start, end):
+func points_on_line(start, end):
 	var points = []
 	if start != end:
 		var diff = end - start

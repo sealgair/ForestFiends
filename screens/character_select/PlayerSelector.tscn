@@ -1,39 +1,36 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=5 format=3 uid="uid://bja4kb50d7eyo"]
 
-[ext_resource path="res://screens/character_select/PlayerSelector.gd" type="Script" id=1]
-[ext_resource path="res://main/MenuTheme.tres" type="Theme" id=2]
-[ext_resource path="res://main/PalletSwap.tres" type="Material" id=3]
-[ext_resource path="res://main/AminalSprite.tscn" type="PackedScene" id=4]
+[ext_resource type="Script" path="res://screens/character_select/PlayerSelector.gd" id="1"]
+[ext_resource type="Theme" uid="uid://c5qd48flt1q3i" path="res://main/MenuTheme.tres" id="2"]
+[ext_resource type="Material" path="res://main/PalletSwap.tres" id="3"]
+[ext_resource type="PackedScene" path="res://main/AminalSprite.tscn" id="4"]
 
 [node name="PlayerSelector" type="Node2D"]
-script = ExtResource( 1 )
+script = ExtResource("1")
 
 [node name="Background" type="ColorRect" parent="."]
-margin_left = 2.0
-margin_top = 2.0
-margin_right = 30.0
-margin_bottom = 30.0
-color = Color( 0.494118, 0.145098, 0.32549, 1 )
+offset_left = 2.0
+offset_top = 2.0
+offset_right = 30.0
+offset_bottom = 30.0
+color = Color(0.494118, 0.145098, 0.32549, 1)
 
 [node name="Sky" type="ColorRect" parent="."]
 visible = false
-margin_left = 6.0
-margin_top = 6.0
-margin_right = 26.0
-margin_bottom = 26.0
-color = Color( 0.160784, 0.678431, 1, 1 )
+offset_left = 6.0
+offset_top = 6.0
+offset_right = 26.0
+offset_bottom = 26.0
+color = Color(0.160784, 0.678431, 1, 1)
 
 [node name="Label" type="Label" parent="."]
-margin_left = 8.0
-margin_top = 8.0
-margin_right = 24.0
-margin_bottom = 24.0
-theme = ExtResource( 2 )
-custom_colors/font_color = Color( 1, 0.945098, 0.909804, 1 )
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 24.0
+offset_bottom = 24.0
+theme = ExtResource("2")
 text = "0"
-align = 1
-valign = 1
 
-[node name="AminalSprite" parent="." instance=ExtResource( 4 )]
-material = ExtResource( 3 )
-position = Vector2( 8, 8 )
+[node name="AminalSprite" parent="." instance=ExtResource("4")]
+material = ExtResource("3")
+position = Vector2(8, 8)

@@ -1,7 +1,7 @@
 extends "res://screens/arena/Arena.gd"
 
 const PlayerInput = preload("res://main/PlayerInput.gd")
-export (String, "highscores", "stats", "info") var next_screen = "highscores"
+@export_enum("highscores", "stats", "info") var next_screen: String = "highscores"
 var inputs = []
 
 func _ready():
@@ -14,13 +14,14 @@ func _ready():
 		inputs.append(input)
 
 func _process(delta):
+	super(delta)
 	for input in inputs:
 		if input.is_any_just_pressed(["select", "cancel"]):
-			SceneSwitcher.change_scene("select", {}, ["f"])
+			SceneSwitcher.change_scene_to_file("select", {}, ["f"])
 
 func hit():
 	# don't track hits in demo mode
 	pass
 
 func _on_ContinueTimer_timeout():
-	SceneSwitcher.change_scene(next_screen)
+	SceneSwitcher.change_scene_to_file(next_screen)

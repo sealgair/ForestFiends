@@ -26,8 +26,8 @@ func is_pressed(action):
 func is_just_pressed(action):
 	return Input.is_action_just_pressed(actions[action])
 
-func is_any_just_pressed(actions):
-	for action in actions:
+func is_any_just_pressed(action_choices):
+	for action in action_choices:
 		if is_just_pressed(action):
 			return true
 	return false

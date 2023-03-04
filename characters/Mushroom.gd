@@ -1,47 +1,47 @@
-extends KinematicBody2D
+extends CharacterBody2D
 
 var grown = false
-var burst = false
+var has_burst = false
 var done = false
 var facing = Vector2(0, -1)
 var fungus = null
 
 # mock up player stuff
 var dead = false
-var hidden = false
+var hiding = false
 var poisoned_by = null
 var webs = []
 
-signal die(mushroom)
+signal remove_mushroom(mushroom)
 signal fed
 
 const texture = preload("res://art/fungus.png")
 
 func _ready():
-	$AnimatedSprite.play('grow')
+	$AnimatedSprite2D.play('grow')
 	$LifeTimer.wait_time = randf() * 10 + 10
 	$LifeTimer.start()
 
 func init(dir, palette=0):
 	facing = dir
-	$AnimatedSprite.material.set_shader_param("palette", palette)
-	$AnimatedSprite.rotation = dir.angle() + TAU/4
-	$AnimatedSprite.flip_h = dir.y > 0 or dir.x < 0
+	$AnimatedSprite2D.material.set_shader_parameter("palette", palette)
+	$AnimatedSprite2D.rotation = dir.angle() + TAU/4
+	$AnimatedSprite2D.flip_h = dir.y > 0 or dir.x < 0
 	$SporeArea.transform.origin += dir * $SporeArea/CollisionShape2D.shape.radius/2
 	$Spores.direction = dir
 	
 	# set particle color from palette
-	var image = texture.get_data()
-	image.lock()
+	var image = texture.get_image()
+	false # image.lock() # TODOConverter40, Image no longer requires locking, `false` helps to not break one line if/else, so it can freely be removed
 	$Spores.color = image.get_pixel(palette, 0)
-	image.unlock()
+	false # image.unlock() # TODOConverter40, Image no longer requires locking, `false` helps to not break one line if/else, so it can freely be removed
 
 func burst():
-	if grown and not burst and not dead:
+	if grown and not has_burst and not dead:
 		dead = true
-		$AnimatedSprite.play('burst')
+		$AnimatedSprite2D.play('burst')
 		$Spores.restart()
-		burst = true
+		has_burst = true
 		$DecayTimer.start()
 		$InfectTimer.start()
 		return true
@@ -54,25 +54,25 @@ func wrap_cell(cell):
 	return Global.wrap2(cell, Vector2(), Vector2(16,16))
 
 func spore_tile(tilemap):
-	var cell = Global.floor2(position / tilemap.cell_size)
+	var cell = Global.floor2(position / tilemap.tile_set.tile_size)
 	var d = 5 + facing.y
 	for i in range(d):
 		var check = wrap_cell(cell + facing * i)
-		if tilemap.get_cellv(check) != tilemap.INVALID_CELL:
+		if tilemap.get_cell_source_id(0, check) != tilemap.INVALID_CELL:
 			return check
 		for j in range(1, i+2):
 			var s = Global.perpendicular(facing) * j
 			if (facing * i + s).length() <= d:
 				for check_s in [wrap_cell(check + s), wrap_cell(check - s)]:
-					if tilemap.get_cellv(check_s) != tilemap.INVALID_CELL:
+					if tilemap.get_cell_source_id(0, check_s) != tilemap.INVALID_CELL:
 						return check_s
 	return null
 
 func is_vulnerable():
-	return $AnimatedSprite.animation == 'grow'
+	return $AnimatedSprite2D.animation == 'grow'
 
 func _process(delta):
-	if burst and $InfectTimer.time_left > 0:
+	if has_burst and $InfectTimer.time_left > 0:
 		for player in spore_bodies():
 			if player.has_method('infect'):
 				player.infect(fungus)
@@ -89,17 +89,16 @@ func infect(other):
 
 func die():
 	dead = true
-	$AnimatedSprite.play('die')
+	$AnimatedSprite2D.play('die')
 	emit_signal("fed")
 	$DecayTimer.start()
 
 func _on_AnimatedSprite_animation_finished():
-	if $AnimatedSprite.animation == 'grow':
+	if $AnimatedSprite2D.animation == 'grow':
 		grown = true
 
 func _on_DecayTimer_timeout():
-	emit_signal("die", self)
-
+	remove_mushroom.emit(self)
 
 func _on_LifeTimer_timeout():
 	burst()

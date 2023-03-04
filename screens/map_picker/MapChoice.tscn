@@ -8,17 +8,17 @@
 script = ExtResource( 3 )
 
 [node name="ColorRect" type="ColorRect" parent="."]
-margin_left = -2.0
-margin_top = -2.0
-margin_right = 34.0
-margin_bottom = 34.0
+offset_left = -2.0
+offset_top = -2.0
+offset_right = 34.0
+offset_bottom = 34.0
 color = Color( 0.494118, 0.145098, 0.32549, 1 )
 
 [node name="Label" type="Label" parent="."]
-margin_left = -16.0
-margin_top = -10.0
-margin_right = 48.0
-margin_bottom = -2.0
+offset_left = -16.0
+offset_top = -10.0
+offset_right = 48.0
+offset_bottom = -2.0
 theme = ExtResource( 2 )
 custom_colors/font_color = Color( 0.494118, 0.145098, 0.32549, 1 )
 text = "Title"

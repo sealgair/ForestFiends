@@ -10,7 +10,8 @@ func score_sorter(a, b):
 	return a.score > b.score
 
 func _ready():
-	players.sort_custom(self, 'score_sorter')
+	super()
+	players.sort_custom(Callable(self,'score_sorter'))
 	var prev = null
 	var place = 1
 	var awards
@@ -40,7 +41,7 @@ func _ready():
 		})
 		Global.add_player_stats(player)
 		if Global.check_highscore(0 if player.computer else player.score):
-			var enter = EnterScore.instance()
+			var enter = EnterScore.instantiate()
 			add_child(enter)
 			enter.set_player(player.order, player.get_species(), player.score)
 			enter_node = weakref(enter)
@@ -71,7 +72,7 @@ func least(arr):
 			id = i
 	return id
 
-func make_awards(players):
+func make_awards(award_players):
 	var empty = [0,0,0,0]
 	var hit_rates = empty.duplicate()
 	var distances = empty.duplicate()
@@ -81,8 +82,8 @@ func make_awards(players):
 	# no deaths
 	# no kills
 	var awards = {}
-	for p in range(players.size()):
-		var player = players[p]
+	for p in range(award_players.size()):
+		var player = award_players[p]
 		awards[p] = []
 		if player.attacks > 0:
 			hit_rates[p] = player.ate / player.attacks
@@ -113,18 +114,19 @@ func make_awards(players):
 
 
 func _process(delta):
+	super(delta)
 	$ContinueTimer.paused = enter_node.get_ref() != null
 	if enter_node.get_ref() == null:
 		for input in inputs:
 			if input.is_just_pressed('replay'):
-				SceneSwitcher.change_scene(
+				SceneSwitcher.change_scene_to_file(
 					'play',
 					{'start_data': player_data}, 
 					"circle",
 					Vector2(0,1)
 				)
 			if input.is_just_pressed('change'):
-				SceneSwitcher.change_scene(
+				SceneSwitcher.change_scene_to_file(
 					'select', {}, ["diagonal"]
 				)
 

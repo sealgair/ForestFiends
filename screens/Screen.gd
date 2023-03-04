@@ -2,10 +2,10 @@ extends Node2D
 
 const PlayerInput = preload("res://main/PlayerInput.gd")
 
-export (String, "highscores", "stats", "info", "demo") var next_screen = "highscores"
-export (bool) var is_idle_screen = true
-export (Array) var transitions = ["fall", "diagonal", "swipe"]
-export (Vector2) var transition_direction = Vector2(0,0)
+@export_enum("highscores", "stats", "info", "demo") var next_screen: String = "highscores"
+@export var is_idle_screen:bool = true
+@export var transitions: Array[String] = ["fall", "diagonal", "swipe"]
+@export var transition_direction: Vector2 = Vector2(0,0)
 var rows = []
 var inputs = []
 
@@ -19,7 +19,7 @@ func _ready():
 		inputs.append(input)
 	$StartPrompt.visible = is_idle_screen
 
-func _process(delta):
+func _process(_delta):
 	if rows:
 		var revealed = ($RevealTimer.time_left-1) / ($RevealTimer.wait_time-1)
 		revealed = 1 - revealed
@@ -30,12 +30,12 @@ func _process(delta):
 	if is_idle_screen:
 		for input in inputs:
 			if input.is_any_just_pressed(["select", "cancel"]):
-				change_scene("select")
+				change_scene_to_file("select")
 
 func _on_ContinueTimer_timeout():
-	change_scene()
+	change_scene_to_file()
 
-func change_scene(next=null, params={}):
+func change_scene_to_file(next=null, params={}):
 	if next == null:
 		next = next_screen
-	SceneSwitcher.change_scene(next, params, transitions, transition_direction)
+	SceneSwitcher.change_scene_to_file(next, params, transitions, transition_direction)

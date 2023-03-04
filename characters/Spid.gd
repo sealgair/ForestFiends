@@ -11,6 +11,7 @@ var WebTracker = preload("res://characters/WebTracker.gd")
 signal make_web(start, end, player)
 
 func _ready():
+	super()
 	sides = [$RightTouch, $LeftTouch, $TopTouch, $BottomTouch]
 	corners = [$ULCorner, $URCorner, $BLCorner, $BRCorner]
 
@@ -19,7 +20,7 @@ func init(start_pos, the_tilemap):
 	jump_dist = 3
 	jumping = true
 	PlayerPath = load("res://brain/WaspPath.gd")
-	.init(start_pos, the_tilemap)
+	super(start_pos, the_tilemap)
 
 func get_species():
 	return "Spid"
@@ -34,38 +35,38 @@ func get_animation():
 	var pressed = axes_pressed()
 	var side = side_dir()
 	
-	$AnimatedSprite.transform.origin = Vector2()
-	$AnimatedSprite.rotation_degrees = 0
+	$AnimatedSprite2D.transform.origin = Vector2()
+	$AnimatedSprite2D.rotation_degrees = 0
 	if side.x != 0:
-		$AnimatedSprite.rotation_degrees = 90
+		$AnimatedSprite2D.rotation_degrees = 90
 	
 	if is_attacking():
 		return "attack"
 	elif jumping:
-		$AnimatedSprite.flip_v = false
+		$AnimatedSprite2D.flip_v = false
 		return "jump"
 	elif in_corner():
 		if from_side.x != 0:
-			$AnimatedSprite.rotation_degrees = 90
-			$AnimatedSprite.flip_v = side.x > 0
-			$AnimatedSprite.flip_h = side.y > 0
+			$AnimatedSprite2D.rotation_degrees = 90
+			$AnimatedSprite2D.flip_v = side.x > 0
+			$AnimatedSprite2D.flip_h = side.y > 0
 		else:
-			$AnimatedSprite.rotation_degrees = 0
-			$AnimatedSprite.flip_h = side.x > 0
-			$AnimatedSprite.flip_v = side.y < 0
+			$AnimatedSprite2D.rotation_degrees = 0
+			$AnimatedSprite2D.flip_h = side.x > 0
+			$AnimatedSprite2D.flip_v = side.y < 0
 		return "corner"
 	elif on_edge():
 		var corner = corner_dir()
-		$AnimatedSprite.transform.origin = corner * 3
+		$AnimatedSprite2D.transform.origin = corner * 3
 		
 		if from_side.x == 0:
-			$AnimatedSprite.rotation_degrees = 90
-			$AnimatedSprite.flip_v = corner.x > 0
-			$AnimatedSprite.flip_h = corner.y > 0
+			$AnimatedSprite2D.rotation_degrees = 90
+			$AnimatedSprite2D.flip_v = corner.x > 0
+			$AnimatedSprite2D.flip_h = corner.y > 0
 		else:
-			$AnimatedSprite.rotation_degrees = 0
-			$AnimatedSprite.flip_h = corner.x > 0
-			$AnimatedSprite.flip_v = corner.y < 0
+			$AnimatedSprite2D.rotation_degrees = 0
+			$AnimatedSprite2D.flip_h = corner.x > 0
+			$AnimatedSprite2D.flip_v = corner.y < 0
 				
 		return "edge"
 	elif (pressed * flip(side)).length() != 0:
@@ -190,7 +191,7 @@ func update_web():
 		web.update(position, butt_offset())
 
 func wrap_screen(amount):
-	.wrap_screen(amount)
+	super.wrap_screen(amount)
 	if web_parts.size() > 0:
 		for web in web_parts.values():
 			web.end_transform -= amount
@@ -225,7 +226,7 @@ func up_dir():
 	if side.length() > 0:
 		return -side
 	else:
-		return .up_dir()
+		return super.up_dir()
 
 func move(dir):
 	var side = side_dir()
@@ -240,7 +241,7 @@ func move(dir):
 	
 	gravity = base_gravity
 	if jumping:
-		.move(dir)
+		super.move(dir)
 	else:
 		if in_corner():
 			gravity = Vector2()
@@ -251,31 +252,32 @@ func move(dir):
 		if side.x != 0:
 			to_velocity.y = dir.y * run_speed
 
-			$AnimatedSprite.flip_v = side.x > 0
+			$AnimatedSprite2D.flip_v = side.x > 0
 			if dir.y != 0:
-				$AnimatedSprite.flip_h = dir.y > 0
+				$AnimatedSprite2D.flip_h = dir.y > 0
 		
 		if side.y != 0:
 			to_velocity.x = dir.x * run_speed
 			
-			$AnimatedSprite.flip_v = side.y < 0
+			$AnimatedSprite2D.flip_v = side.y < 0
 			if dir.x != 0:
-				$AnimatedSprite.flip_h = dir.x > 0
+				$AnimatedSprite2D.flip_h = dir.x > 0
 		
 		if (side.x == 0 or side.y == 0) and corner_count() != 1:
 			from_side = side * 1 # copy
 
 func die():
-	.die()
-	$AnimatedSprite.flip_v = false
-	$AnimatedSprite.rotation_degrees = 0
+	super.die()
+	$AnimatedSprite2D.flip_v = false
+	$AnimatedSprite2D.rotation_degrees = 0
 	gravity = base_gravity
 
 func revive(new_pos):
-	.revive(new_pos)
+	super.revive(new_pos)
 	jumping = true
 
-func _process(_delta):
+func _process(delta):
+	super(delta)
 	update_web()
 
 func _on_Hit_body_entered(other):
@@ -283,12 +285,12 @@ func _on_Hit_body_entered(other):
 		hit(other)
 
 func track_distance(amount):
-	.track_distance(amount)
+	super.track_distance(amount)
 	if web_parts.size() == 0:
 		brain.web_dist -= amount
 
 func init_brain():
-	var data = .init_brain()
+	var data = super.init_brain()
 	data.attack_accuracy = 1 # gets offset other ways
 	data.web_dist = next_web_dist()
 	data.web_target = null
@@ -303,7 +305,7 @@ func opposing_surface():
 	var tile = Global.round2(position / tilemap.cell_size)
 	for d in range(1, jump_height+2):
 		var next = tile + -side_dir() * d
-		if tilemap.get_cellv(next) != tilemap.INVALID_CELL:
+		if tilemap.get_cell_source_id(0, next) != Global.INVALID_CELL:
 			return next
 	return null
 
@@ -319,7 +321,7 @@ func should_attack(enemy):
 			for point in points:
 				point = Global.wrap2(point, Vector2(), screen_size)
 				var tile = Global.round2(point / tilemap.cell_size)
-				if tilemap.get_cellv(tile) == tilemap.INVALID_CELL:
+				if tilemap.get_cell_source_id(0, tile) == Global.INVALID_CELL:
 					airs += 1
 					if airs >= 16:
 						return true
@@ -336,16 +338,16 @@ func should_jump(enemy, path=[]):
 		brain.will_jump = false
 		return true
 	else:
-		return .should_jump(enemy, path)
+		return super.should_jump(enemy, path)
 
 func can_be_target(enemy, filter_ops={}):
-	var can_be = .can_be_target(enemy)
+	var can_be = super.can_be_target(enemy)
 	if not filter_ops.get('safe', false):
 		can_be = can_be and enemy.webs.size() > 0
 	return can_be
 
 func target_position():
-	var target = .target_position()
+	var target = super.target_position()
 	if target == null:
 		target = safe_spot()
 	return target

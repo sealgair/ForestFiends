@@ -3,7 +3,7 @@ extends "res://brain/PlayerPath.gd"
 
 func connect_node(point):
 	# ground
-	.connect_node(point)
+	super.connect_node(point)
 	
 	var pos = get_point_position(point)
 	
@@ -20,3 +20,4 @@ func connect_node(point):
 	for x in [cell_size.x, -cell_size.x]:
 		var side_pos = pos + Vector2(x, 0)
 		var side = get_point_exact(side_pos)
+		# TODO?

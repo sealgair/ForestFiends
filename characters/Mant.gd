@@ -9,6 +9,7 @@ var fade_time = 0.3
 var died = false
 
 func _ready():
+	super()
 	special_wait = 1.5
 	attack_anim = "slash"
 
@@ -31,23 +32,23 @@ func attack_released():
 	if poised:
 		poised = false
 		if poise_timer <= 0:
-			hidden = false
-			.make_attack()
+			hiding = false
+			super.make_attack()
 			special_timeout = special_wait
 		poise_timer = 0
 
 func special_pressed():
 	if revive_countdown <= 0:
-		hidden = not hidden
+		hiding = not hiding
 
 func move(dir):
 	if poised:
 		to_velocity.x = 0
 		if dir.x != 0:
-			$AnimatedSprite.flip_h = dir.x > 0
+			$AnimatedSprite2D.flip_h = dir.x > 0
 	else:
-		.move(dir)
-		if hidden and velocity.x != 0:
+		super.move(dir)
+		if hiding and velocity.x != 0:
 			to_velocity.x *= 0.1
 	
 
@@ -57,30 +58,31 @@ func get_animation():
 			return "poised"
 		else:
 			return "poising"
-	return .get_animation()
+	return super.get_animation()
 
 func die():
-	.die()
+	super.die()
 	poise_timer = 0
-	hidden = false
+	hiding = false
 	poised = false
 	died = true
 
 func _process(delta):
-	if hidden:
+	super(delta)
+	if hiding:
 		var min_opacity = 0
 		if not poised and axes_pressed().x != 0:
 			min_opacity = 0.2
 		opacity = max(min_opacity, opacity - delta / fade_time)
 	else:
 		opacity = min(1, opacity + delta / fade_time)
-	$AnimatedSprite.modulate = Color(1,1,1,opacity)
+	$AnimatedSprite2D.modulate = Color(1,1,1,opacity)
 	
 	if poised:
 		poise_timer = max(0, poise_timer - delta)
 
 func init_brain():
-	var data = .init_brain()
+	var data = super.init_brain()
 	data.recon_time = 1
 	data.recon = data.recon_time
 	data.hide_time = 10
@@ -90,7 +92,7 @@ func init_brain():
 	return data
 
 func reset_brain():
-	.reset_brain()
+	super.reset_brain()
 	brain.recon = brain.recon_time
 	brain.tracked_tiles = {}
 	brain.hiding_spot = null
@@ -99,10 +101,10 @@ func reset_brain():
 func think(delta):
 	if not is_instance_valid(brain.target):
 		brain.target = null
-	var hide = false
+	var should_hide = false
 	if brain.recon > 0 or revive_countdown > 0:
 		for enemy in enemies:
-			var pos = Global.round2(enemy.position / tilemap.cell_size) * tilemap.cell_size
+			var pos = Global.round2(enemy.position / self.cell_size) * self.cell_size
 			var players = brain.tracked_tiles.get(pos, [])
 			players.append(enemy.order)
 			brain.tracked_tiles[pos] = players
@@ -112,7 +114,7 @@ func think(delta):
 			var path = pathfinder.path_between(position, safe)
 			follow_path(path)
 	else:
-		if not hidden:
+		if not hiding:
 			if poised:
 				input.release('attack')
 			if brain.hiding_spot == null:
@@ -126,7 +128,7 @@ func think(delta):
 			if brain.hiding_spot != null:
 				var path = pathfinder.path_between(position, brain.hiding_spot)
 				if pathfinder.path_distance(path) < 8:
-					hide = true
+					should_hide = true
 					brain.hiding = 0
 				else:
 					follow_path(path)
@@ -147,5 +149,5 @@ func think(delta):
 			if brain.hiding >= brain.hide_time:
 				input.release('attack')
 				reset_brain()
-	if hidden != hide:
+	if hiding != should_hide:
 		input.press('special')

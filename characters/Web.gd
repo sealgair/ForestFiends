@@ -15,10 +15,10 @@ func _ready():
 
 
 func set_palette(palette):
-	var image = texture.get_data()
-	image.lock()
+	var image = texture.get_image()
+	false # image.lock() # TODOConverter40, Image no longer requires locking, `false` helps to not break one line if/else, so it can freely be removed
 	$Line2D.default_color = image.get_pixel(palette, 3)
-	image.unlock()
+	false # image.unlock() # TODOConverter40, Image no longer requires locking, `false` helps to not break one line if/else, so it can freely be removed
 
 
 func start_decay(time=null):
@@ -39,7 +39,7 @@ func get_start():
 func set_start(point):
 	$Line2D.set_point_position(0, point)
 	$Collision.shape.a = point
-	$Debug.rect_position = point
+	$Debug.position = point
 
 func get_end():
 	return $Line2D.get_point_position(1)
@@ -70,7 +70,7 @@ func _process(delta):
 func intersection_center(center, radius=8):
 	var start = $Line2D.points[0]
 	var end = $Line2D.points[1]
-	var intersect = Geometry.segment_intersects_circle(start, end, center, radius)
+	var intersect = Geometry2D.segment_intersects_circle(start, end, center, radius)
 	if intersect == -1:
 		return null
 	else:

@@ -18,12 +18,12 @@ func init(start_pos, the_tilemap):
 	tilemap = the_tilemap
 	PlayerPath = load("res://brain/FungusPath.gd")
 	pathfinder = PlayerPath.new(self, tilemap)
-	start_pos += Vector2(0, tilemap.cell_size.y)
-	cursor_cell = Global.floor2(start_pos / tilemap.cell_size)
+	start_pos += Vector2(0, cell_size.y)
+	cursor_cell = Global.floor2(start_pos / cell_size)
 	add_myc(cursor_cell, Vector2(0, -1), 0.75)
 	$Cursor.position = start_pos
-	$Cursor.material.set_shader_param("palette", palette)
-	var myc_start = MyceliumTile.instance()
+	$Cursor.material.set_shader_parameter("palette", palette)
+	var myc_start = MyceliumTile.instantiate()
 
 func damage_myc(cell, amount=0.6):
 	if cursor_cell == cell:
@@ -42,22 +42,23 @@ func add_myc(cell, dir, growth=0):
 		if 'mycelium' in enemy and cell in enemy.mycelium:
 			enemy.damage_myc(cell)
 			return # occupied
-	var myc = MyceliumTile.instance()
+	var myc = MyceliumTile.instantiate()
 	myc.init(dir, growth, palette)
-	myc.position = cell * tilemap.cell_size
+	myc.position = cell * cell_size
 	mycelium[cell] = myc
 	add_child(myc)
 	move_child(myc, 0)
 
 func add_mushroom(cell, dir):
-	var mush = Mushroom.instance()
+	var mush = Mushroom.instantiate()
 	mush.init(dir, palette)
-	mush.position = cell * tilemap.cell_size
+	mush.position = cell * cell_size
 	mush.fungus = self
 	mushrooms[cell] = mush
 	add_child(mush)
-	mush.connect("die", self, "remove_mushroom")
-	mush.connect("fed", self, "die")
+	mush.remove_mushroom.connect(remove_mushroom)
+#	mush.connect("remove_mushroom", Callable(self,"remove_mushroom"))
+	mush.connect("fed", Callable(self,"die"))
 
 func remove_mushroom(mush):
 	for key in mushrooms.keys():
@@ -122,7 +123,7 @@ func handle_input(delta):
 			sprout()
 
 func ground_cell(cell):
-	return tilemap.get_cellv(cell) != tilemap.INVALID_CELL
+	return tilemap.get_cell_source_id(0, cell) != Global.INVALID_CELL
 
 func spread():
 	var myc = mycelium[cursor_cell]
@@ -177,15 +178,17 @@ func die():
 func do_draw():
 	pass
 
-func do_physics_process(delta):
+func _physics_process(delta):
+	# don't call super on purpose
 	if computer:
 		think(delta)
 	handle_input(delta)
 
-func do_process(delta):
+func _process(delta):
+	# don't call super on purpose
 	for myc in mycelium.values():
 		myc.grow(growth*delta)
-	var cursor_pos = cursor_cell * tilemap.cell_size
+	var cursor_pos = cursor_cell * cell_size
 	if cursor_pos != $Cursor.position and $Cursor.animation == "default":
 		$Cursor.play('leave')
 	for mpos in mushrooms.keys():
@@ -194,13 +197,13 @@ func do_process(delta):
 
 func _on_Cursor_animation_finished():
 	if $Cursor.animation == "leave": 
-		$Cursor.position = cursor_cell * tilemap.cell_size
+		$Cursor.position = cursor_cell * cell_size
 		$Cursor.play('enter')
 	elif $Cursor.animation == "enter": 
 		$Cursor.play('default')
 
 func think_position():
-	return cursor_cell * tilemap.cell_size + tilemap.cell_size/2
+	return cursor_cell * cell_size + cell_size/2
 
 func should_attack(enemy):
 	return false #TODO: can use mushroom
@@ -211,7 +214,7 @@ func should_special(enemy, path=[]):
 
 func move_toward_point(point):
 	var dir = point - think_position()
-	 # wrap around map
+	# wrap around map
 	if abs(dir.x) > 16*8:
 		dir.x *= -1
 	if abs(dir.y) > 16*8:

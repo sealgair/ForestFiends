@@ -7,9 +7,9 @@ var start_data = [
 	{'order': 4, 'species': "", 'palette': 0, 'computer': true},
 ]
 var players = []
-export (int) var score_limit = 30
-export (int) var max_computers = 4
-export (bool) var countdown = true
+@export var score_limit: int = 30
+@export var max_computers: int = 4
+@export var countdown: bool = true
 var score = 0
 
 var slime_scene = preload("res://characters/Slime.tscn")
@@ -24,12 +24,12 @@ func _ready():
 	else:
 		$Countdown.visible = false
 	if map_scene == null:
-		var map_name = Global.rand_choice(MapChoice.instance().map_choices)
+		var map_name = Global.rand_choice(MapChoice.instantiate().map_choices)
 		map_scene = load("res://maps/{name}.tscn".format({'name': map_name}))
-	set_map(map_scene.instance())
+	set_map(map_scene.instantiate())
 	
 	randomize()
-	$Map/HUD/Score.text = String(score_limit)
+	$Map/HUD/Score.text = str(score_limit)
 	var spawn_points = $Map.get_spawn_points()
 	var species_choices = {
 		'Shrew': 3,
@@ -75,7 +75,7 @@ func _ready():
 		if player_data.species:
 			var sp = spawn_points[randi() % spawn_points.size()]
 			spawn_points.erase(sp)
-			player_data.spawn_point = sp
+			player_data.spawn_point = Vector2(sp)
 			add_player(player_data)
 	
 	# populate enemies lists after all players are created
@@ -84,7 +84,7 @@ func _ready():
 		player.make_enemies(players)
 		
 
-func _process(delta):
+func _process(_delta):
 	var count = floor($CountdownTimer.time_left)
 	
 	if count > 0:
@@ -94,25 +94,25 @@ func _process(delta):
 	
 func set_map(new_map):
 	var old_map = $Map
-	var pos = old_map.get_position_in_parent()
+	var pos = old_map.get_index()
 	remove_child(old_map)
 	old_map.queue_free()
 	new_map.set_name("Map")
-	new_map.pause_mode = Node.PAUSE_MODE_STOP
+	new_map.process_mode = Node.PROCESS_MODE_PAUSABLE
 	add_child(new_map)
 	move_child(new_map, pos)
 
 func add_player(player_data):
-	var player = Global.species[player_data['species']].instance()
+	var player = Global.species[player_data['species']].instantiate()
 	player.order = player_data['order']
 	player.palette = player_data['palette']
 	player.computer = player_data['computer']
 	player.init(player_data['spawn_point'] * player.size, $Map/Background/TileMap)
 	$Map.add_child(player)
-	player.connect("respawn", self, "spawn")
-	player.connect("made_hit", self, "hit")
-	player.connect("make_slime", self, "make_slime")
-	player.connect("make_web", self, "make_web")
+	player.connect("respawn",Callable(self,"spawn"))
+	player.connect("made_hit",Callable(self,"hit"))
+	player.connect("make_slime",Callable(self,"do_make_slime"))
+	player.connect("make_web",Callable(self,"make_web"))
 	players.append(player)
 	return player
 
@@ -130,12 +130,12 @@ func hit():
 	if score >= score_limit:
 		$VictoryTimer.start()
 	else:
-		$Map/HUD/Score.text = String(score_limit - score)
+		$Map/HUD/Score.text = str(score_limit - score)
 
 func spawnpoint_distance(spawnpoint):
 	var distances = []
 	for player in players:
-		distances.append((player.position - spawnpoint).length())
+		distances.append((player.position - Vector2(spawnpoint)).length())
 	return Global.average(distances)
 
 func spawnpoint_sorter(a, b):
@@ -160,15 +160,15 @@ func spawn(player, spawn_point=null):
 					spawn_point = sp
 	player.revive(spawn_point)
 
-func make_slime(position, palette=0):
+func do_make_slime(slime_pos, palette=0):
 	if $Map != null:
-		var tile_pos = position / $Map.get_cell_size()
+		var tile_pos = slime_pos / Vector2($Map.get_cell_size())
 		tile_pos.x = round(tile_pos.x-0.1)
 		tile_pos.y = ceil(tile_pos.y)
-		var tile_id = $Map.get_cellv(tile_pos)
-		if tile_id != TileMap.INVALID_CELL:
-			var instance = slime_scene.instance()
-			instance.transform.origin = tile_pos * $Map.get_cell_size()
+		var tile_id = $Map.get_cell(tile_pos)
+		if tile_id != Global.INVALID_CELL:
+			var instance = slime_scene.instantiate()
+			instance.transform.origin = tile_pos * Vector2($Map.get_cell_size())
 			instance.set_palette(palette)
 			$Map.add_child(instance)
 
@@ -180,7 +180,7 @@ func get_webs():
 	return webs
 
 func make_web(start, end, player, decay=null):
-	var web = web_scene.instance()
+	var web = web_scene.instantiate()
 	web.spinner = player
 	$Map.add_child(web)
 	web.set_start(start)
@@ -202,13 +202,13 @@ func make_score(player):
 	kpc *= 1000
 	return ceil(kps + ktd + kpc) + player.ate * 100
 
-func end():
+func finish():
 	for player in players:
 		player.score = make_score(player)
-	SceneSwitcher.change_scene("victory", {'players': players}, ["circle"], Vector2(0,1))
+	SceneSwitcher.change_scene_to_file("victory", {'players': players}, ["circle"], Vector2(0,1))
 
 func _on_VictoryTimer_timeout():
-	end()
+	finish()
 
 func _on_CountdownTimer_timeout():
 	$Countdown.visible = false

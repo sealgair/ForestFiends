@@ -13,7 +13,7 @@ var screens = {
 
 
 func load_screen(screen_name, parameters={}):
-	var screen = screens[screen_name].instance()
+	var screen = screens[screen_name].instantiate()
 	for prop in parameters:
 		screen.set(prop, parameters[prop])
 	

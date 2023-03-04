@@ -8,7 +8,7 @@ func init(start_pos, the_tilemap):
 	attack_wait = 1.5
 	attack_anim = "peck"
 	PlayerPath = load("res://brain/WaspPath.gd")
-	.init(start_pos, the_tilemap)
+	super.init(start_pos, the_tilemap)
 
 func get_species():
 	return "Wasp"
@@ -18,27 +18,27 @@ func pronouns():
 
 func hit(other):
 	if other.poisoned_by == self:
-		.hit(other)
+		super.hit(other)
 	else:
 		other.poison(self)
 
 func move(dir):
-	.move(dir)
+	super.move(dir)
 	to_velocity.y = dir.y * run_speed
 
-func can_be_target(enemy, filter_ops={}):
-	return .can_be_target(enemy) and enemy.poisoned_by != self
+func can_be_target(enemy, _filter_ops={}):
+	return super.can_be_target(enemy) and enemy.poisoned_by != self
 
 func move_toward_point(point):
 	var dir = point - position
-	 # wrap around map
+	# wrap around map
 	if abs(dir.x) > 16*8:
 		dir.x *= -1
 	if abs(dir.y) > 16*8:
 		dir.y *= -1
 	input.press_axis(dir)
 
-func do_process(delta):
-	.do_process(delta)
-	$AnimatedSprite/Wings.visible = not dead
-	$AnimatedSprite/Wings.flip_h = $AnimatedSprite.flip_h
+func _process(delta):
+	super(delta)
+	$AnimatedSprite2D/Wings.visible = not dead
+	$AnimatedSprite2D/Wings.flip_h = $AnimatedSprite2D.flip_h
