@@ -18,18 +18,11 @@ const animations = {
 	'swipe': 4,
 }
 
-signal transition_ready
-
 static func asign(v):
 	if v >= 0: return 1
 	else: return -1
 
-func play_transition(animation_options=[], direction=Vector2()):
-	# copy existing screen
-	var screenshot = get_tree().get_root().get_texture().get_image()
-	var screentext = ImageTexture.new()
-	screentext.create_from_image(screenshot)
-	
+func start_transition(animation_options=[], direction=Vector2i()):
 	if animation_options == []:
 		animation_options = animations.keys()
 	var animation = Global.rand_choice(animation_options)
@@ -37,6 +30,10 @@ func play_transition(animation_options=[], direction=Vector2()):
 		direction.x = asign(randf()-.5)
 	if direction.y == 0:
 		direction.y = asign(randf()-.5)
+		
+	# copy existing screen
+	var screenshot = get_tree().get_root().get_texture().get_image()
+	var screentext = ImageTexture.create_from_image(screenshot)
 	
 	$Interstitial.texture = screentext
 	$Interstitial.material.set_shader_parameter("time", 0)
@@ -44,15 +41,14 @@ func play_transition(animation_options=[], direction=Vector2()):
 	$Interstitial.material.set_shader_parameter("direction", direction)
 	$Interstitial.visible = true
 	
-	# TODO: make sure this works
-	transition_ready.emit()
-	
+func end_transition():
 	$AnimationPlayer.play("shade")
 	await $AnimationPlayer.animation_finished
 	$Interstitial.visible = false
+	$AnimationPlayer.play("RESET")
 
-func change_scene_to_file(screen_name, parameters={}, animation_options=[], direction=Vector2()):
-#	var player = await play_transition(animation_options, direction)
+func change_to_scene(screen_name, parameters={}, animation_options=[], direction=Vector2()):
+	start_transition(animation_options, direction)
 	var screen = screens[screen_name].instantiate()
 	for prop in parameters:
 		screen.set(prop, parameters[prop])
@@ -60,5 +56,6 @@ func change_scene_to_file(screen_name, parameters={}, animation_options=[], dire
 	var root = get_tree().get_root()
 	var current_scene = root.get_child(root.get_child_count() - 1)
 	root.add_child(screen)
+	root.remove_child(current_scene)
 	current_scene.queue_free()
-#	player.resume()
+	end_transition()

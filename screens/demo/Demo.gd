@@ -17,11 +17,11 @@ func _process(delta):
 	super(delta)
 	for input in inputs:
 		if input.is_any_just_pressed(["select", "cancel"]):
-			SceneSwitcher.change_scene_to_file("select", {}, ["f"])
+			SceneSwitcher.change_to_scene("select", {}, ["f"])
 
 func hit():
 	# don't track hits in demo mode
 	pass
 
 func _on_ContinueTimer_timeout():
-	SceneSwitcher.change_scene_to_file(next_screen)
+	SceneSwitcher.change_to_scene(next_screen)

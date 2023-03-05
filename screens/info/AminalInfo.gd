@@ -216,8 +216,8 @@ func set_aminal(aminal_type):
 func _on_ContinueTimer_timeout():
 	aminal_index += 1
 	if aminal_index < orders.size():
-		var player = await SceneSwitcher.play_transition(transitions, transition_direction)
+		SceneSwitcher.start_transition(transitions, transition_direction)
 		set_aminal(orders[aminal_index])
-		player.resume()
+		SceneSwitcher.end_transition()
 	else:
 		change_scene_to_file()

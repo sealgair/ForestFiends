@@ -31,6 +31,7 @@ func _process(_delta):
 		for input in inputs:
 			if input.is_any_just_pressed(["select", "cancel"]):
 				change_scene_to_file("select")
+				break
 
 func _on_ContinueTimer_timeout():
 	change_scene_to_file()
@@ -38,4 +39,4 @@ func _on_ContinueTimer_timeout():
 func change_scene_to_file(next=null, params={}):
 	if next == null:
 		next = next_screen
-	SceneSwitcher.change_scene_to_file(next, params, transitions, transition_direction)
+	SceneSwitcher.change_to_scene(next, params, transitions, transition_direction)

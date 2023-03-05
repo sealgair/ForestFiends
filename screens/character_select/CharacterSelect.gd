@@ -114,7 +114,7 @@ func start_game():
 		existing_palettes[player_data['species']] = palettes
 		start_players.append(player_data)
 	
-	SceneSwitcher.change_scene_to_file("choose_map", {
+	SceneSwitcher.change_to_scene("choose_map", {
 		"start_players": start_players
 	}, ["quad"])
 

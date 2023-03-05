@@ -320,7 +320,7 @@ func should_attack(enemy):
 			var points = Global.points_on_line(start, end)
 			for point in points:
 				point = Global.wrap2(point, Vector2(), screen_size)
-				var tile = Global.round2(point / tilemap.cell_size)
+				var tile = Global.round2(point / cell_size)
 				if tilemap.get_cell_source_id(0, tile) == Global.INVALID_CELL:
 					airs += 1
 					if airs >= 16:

@@ -119,14 +119,14 @@ func _process(delta):
 	if enter_node.get_ref() == null:
 		for input in inputs:
 			if input.is_just_pressed('replay'):
-				SceneSwitcher.change_scene_to_file(
+				SceneSwitcher.change_to_scene(
 					'play',
 					{'start_data': player_data}, 
 					"circle",
 					Vector2(0,1)
 				)
 			if input.is_just_pressed('change'):
-				SceneSwitcher.change_scene_to_file(
+				SceneSwitcher.change_to_scene(
 					'select', {}, ["diagonal"]
 				)
 

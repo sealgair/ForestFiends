@@ -205,7 +205,7 @@ func make_score(player):
 func finish():
 	for player in players:
 		player.score = make_score(player)
-	SceneSwitcher.change_scene_to_file("victory", {'players': players}, ["circle"], Vector2(0,1))
+	SceneSwitcher.change_to_scene("victory", {'players': players}, ["circle"], Vector2(0,1))
 
 func _on_VictoryTimer_timeout():
 	finish()
