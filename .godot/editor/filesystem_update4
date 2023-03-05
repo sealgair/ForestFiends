@@ -7,3 +7,7 @@ res://characters/Turt.tscn
 res://characters/Shrew.tscn
 res://main/SceneSwitcher.gd
 res://characters/Attack.tscn
+res://screens/highscores/Highscores.tscn
+res://screens/highscores/ScoreRow.tscn
+res://screens/stats/Stats.tscn
+res://screens/highscores/Highscores.gd

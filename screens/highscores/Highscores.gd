@@ -10,6 +10,6 @@ func _ready():
 		var score_row = ScoreRow.instantiate()
 		score_row.load_score(i+1, score)
 		add_child(score_row)
-		score_row.transform.origin.y = 24 + i * score_row.size.y
+		score_row.transform.origin.y = 14 + i * score_row.size.y
 		rows.append(score_row)
 
