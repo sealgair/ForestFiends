@@ -6,3 +6,4 @@ res://screens/Screen.tscn
 res://characters/Turt.tscn
 res://characters/Shrew.tscn
 res://main/SceneSwitcher.gd
+res://characters/Attack.tscn
