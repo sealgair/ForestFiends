@@ -11,3 +11,9 @@ res://screens/highscores/Highscores.tscn
 res://screens/highscores/ScoreRow.tscn
 res://screens/stats/Stats.tscn
 res://screens/highscores/Highscores.gd
+res://characters/Spid.tscn
+res://screens/arena/Arena.tscn
+res://screens/arena/Arena.gd
+res://screens/victory/PlayerVictory.tscn
+res://screens/victory/Victory.tscn
+res://screens/victory/EnterScore.tscn

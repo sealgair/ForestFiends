@@ -128,7 +128,9 @@ func hit():
 		score += player.ate
 	
 	if score >= score_limit:
-		$VictoryTimer.start()
+		$Map/HUD/Score.text = "0"
+		finish()
+		# TODO: $VictoryTimer
 	else:
 		$Map/HUD/Score.text = str(score_limit - score)
 

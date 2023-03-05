@@ -1,82 +1,91 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=10 format=3 uid="uid://cha4s51au2412"]
 
-[ext_resource path="res://art/medals.png" type="Texture2D" id=1]
-[ext_resource path="res://main/MenuTheme.tres" type="Theme" id=2]
-[ext_resource path="res://screens/victory/PlayerVictory.gd" type="Script" id=3]
-[ext_resource path="res://main/AminalSprite.tscn" type="PackedScene" id=4]
+[ext_resource type="Texture2D" uid="uid://nibcwpmvg8ri" path="res://art/medals.png" id="1"]
+[ext_resource type="Theme" uid="uid://c5qd48flt1q3i" path="res://main/MenuTheme.tres" id="2"]
+[ext_resource type="Script" path="res://screens/victory/PlayerVictory.gd" id="3"]
+[ext_resource type="PackedScene" uid="uid://cgcgx2hfd13kc" path="res://main/AminalSprite.tscn" id="4"]
 
-[sub_resource type="AtlasTexture" id=4]
-atlas = ExtResource( 1 )
-region = Rect2( 0, 42, 42, 42 )
+[sub_resource type="AtlasTexture" id="4"]
+atlas = ExtResource("1")
+region = Rect2(0, 42, 42, 42)
 
-[sub_resource type="AtlasTexture" id=3]
-atlas = ExtResource( 1 )
-region = Rect2( 0, 0, 42, 42 )
+[sub_resource type="AtlasTexture" id="3"]
+atlas = ExtResource("1")
+region = Rect2(0, 0, 42, 42)
 
-[sub_resource type="AtlasTexture" id=6]
-atlas = ExtResource( 1 )
-region = Rect2( 42, 42, 42, 42 )
+[sub_resource type="AtlasTexture" id="6"]
+atlas = ExtResource("1")
+region = Rect2(42, 42, 42, 42)
 
-[sub_resource type="AtlasTexture" id=5]
-atlas = ExtResource( 1 )
-region = Rect2( 42, 0, 42, 42 )
+[sub_resource type="AtlasTexture" id="5"]
+atlas = ExtResource("1")
+region = Rect2(42, 0, 42, 42)
 
-[sub_resource type="SpriteFrames" id=2]
-animations = [ {
-"frames": [ SubResource( 4 ) ],
+[sub_resource type="SpriteFrames" id="2"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("4")
+}],
 "loop": true,
-"name": "bronze",
+"name": &"bronze",
 "speed": 5.0
 }, {
-"frames": [ SubResource( 3 ) ],
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("3")
+}],
 "loop": true,
-"name": "gold",
+"name": &"gold",
 "speed": 5.0
 }, {
-"frames": [ SubResource( 6 ) ],
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("6")
+}],
 "loop": true,
-"name": "lead",
+"name": &"lead",
 "speed": 5.0
 }, {
-"frames": [ SubResource( 5 ) ],
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("5")
+}],
 "loop": true,
-"name": "silver",
+"name": &"silver",
 "speed": 5.0
-} ]
+}]
 
 [node name="PlayerVictory" type="Node2D"]
-script = ExtResource( 3 )
+script = ExtResource("3")
 
 [node name="Player" type="Label" parent="."]
 offset_left = -48.0
 offset_top = -16.0
 offset_right = -24.0
-theme = ExtResource( 2 )
+theme = ExtResource("2")
 text = "CPU1"
-align = 1
-valign = 1
+vertical_alignment = 1
 
 [node name="Place" type="Label" parent="."]
 offset_left = -48.0
 offset_right = -24.0
 offset_bottom = 16.0
-theme = ExtResource( 2 )
+theme = ExtResource("2")
 text = "1st"
-align = 1
-valign = 1
+vertical_alignment = 1
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-scale = Vector2( 0.944444, 0.944444 )
-frames = SubResource( 2 )
-animation = "gold"
+scale = Vector2(0.944444, 0.944444)
+sprite_frames = SubResource("2")
+animation = &"gold"
 
 [node name="Ate" type="Label" parent="."]
 offset_left = 24.0
 offset_top = -17.0
 offset_right = 88.0
 offset_bottom = -7.0
-theme = ExtResource( 2 )
-custom_colors/font_color = Color( 1, 0, 0.301961, 1 )
+theme = ExtResource("2")
 text = "Ate: 100"
 
 [node name="Fed" type="Label" parent="."]
@@ -84,8 +93,7 @@ offset_left = 24.0
 offset_top = -2.0
 offset_right = 88.0
 offset_bottom = 8.0
-theme = ExtResource( 2 )
-custom_colors/font_color = Color( 0.494118, 0.145098, 0.32549, 1 )
+theme = ExtResource("2")
 text = "Fed: 100"
 
 [node name="Points" type="Label" parent="."]
@@ -93,23 +101,20 @@ offset_left = 24.0
 offset_top = 13.0
 offset_right = 72.0
 offset_bottom = 32.0
-theme = ExtResource( 2 )
-custom_colors/font_color = Color( 1, 0.92549, 0.152941, 1 )
+theme = ExtResource("2")
 text = "Pts: 10,000,000
 "
-autowrap = true
 clip_text = true
 
-[node name="AminalSprite" parent="." instance=ExtResource( 4 )]
-position = Vector2( -8, -8 )
+[node name="AminalSprite" parent="." instance=ExtResource("4")]
+position = Vector2(-8, -8)
 
 [node name="Quip" type="Label" parent="."]
 offset_left = 76.0
 offset_top = -21.0
 offset_right = 192.0
 offset_bottom = 24.0
-theme = ExtResource( 2 )
-custom_colors/font_color = Color( 1, 0.945098, 0.909804, 1 )
+theme = ExtResource("2")
 text = "And I guess a quip goes here or something"
-valign = 1
-autowrap = true
+vertical_alignment = 1
+autowrap_mode = 3
