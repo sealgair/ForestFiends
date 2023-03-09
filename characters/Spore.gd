@@ -36,10 +36,10 @@ func _on_GrowTimer_timeout():
 	$LifeTimer.start()
 
 func _on_LifeTimer_timeout():
-	emit_signal("release")
-	release()
+	release.emit()
+	burst()
 
-func release():
+func burst():
 	$Fungus.play("release")
 	$Fungus/CPUParticles2D.restart()
 	releasing = true

@@ -20,3 +20,9 @@ res://screens/victory/EnterScore.tscn
 res://brain/PlayerPath.gd
 res://characters/Player.tscn
 res://characters/Slug.tscn
+res://characters/Fungus.gd
+res://characters/Fungus.tscn
+res://characters/Mushroom.gd
+res://characters/Spore.tscn
+res://characters/Spore.gd
+res://characters/Player.gd

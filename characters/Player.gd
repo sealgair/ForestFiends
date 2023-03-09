@@ -200,13 +200,13 @@ func infected_move(dir):
 		if infected_target:
 			var path = pathfinder.path_between(position, infected_target.position)
 			var next = point_on_path(path)
-			if not next:
+			if next != null:
 				next = infected_target.position
-			var ndir = Global.sign2(next - position)
-			if not spore.grown:
-				ndir *= -1
-			var ir = infect_rate()
-			dir = ndir * ir + dir * (1-ir)
+				var ndir = Global.sign2(next - position)
+				if not spore.grown:
+					ndir *= -1
+				var ir = infect_rate()
+				dir = ndir * ir + dir * (1-ir)
 	return dir
 
 func move(dir):
@@ -375,7 +375,7 @@ func make_score(other):
 func hit(other):
 	if 'spore' in other and other.spore and other.spore.grown:
 		other.spore.fungus.make_score(other)
-		other.spore.release()
+		other.spore.burst()
 	else:
 		make_score(other)
 	other.die()

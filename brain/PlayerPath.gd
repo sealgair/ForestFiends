@@ -153,6 +153,8 @@ func path_to_enemy(enemy):
 	if point_b:
 		point_b = ground_below(point_b)
 		return get_point_path(point_a, point_b)
+	else:
+		return []
 
 func distance_to_enemy(enemy):
 	return path_distance(path_to_enemy(enemy))

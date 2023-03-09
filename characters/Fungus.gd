@@ -16,6 +16,7 @@ func get_species():
 
 func init(start_pos, the_tilemap):
 	tilemap = the_tilemap
+	cell_size = Vector2(tilemap.tile_set.tile_size)
 	PlayerPath = load("res://brain/FungusPath.gd")
 	pathfinder = PlayerPath.new(self, tilemap)
 	start_pos += Vector2(0, cell_size.y)
@@ -185,6 +186,8 @@ func _physics_process(delta):
 	handle_input(delta)
 
 func _process(delta):
+	if not dead:
+		time += delta
 	# don't call super on purpose
 	for myc in mycelium.values():
 		myc.grow(growth*delta)

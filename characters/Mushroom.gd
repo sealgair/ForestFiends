@@ -54,17 +54,18 @@ func wrap_cell(cell):
 	return Global.wrap2(cell, Vector2(), Vector2(16,16))
 
 func spore_tile(tilemap):
-	var cell = Global.floor2(position / tilemap.tile_set.tile_size)
+	var cell_size = Vector2(tilemap.tile_set.tile_size)
+	var cell = Global.floor2(position / cell_size)
 	var d = 5 + facing.y
 	for i in range(d):
 		var check = wrap_cell(cell + facing * i)
-		if tilemap.get_cell_source_id(0, check) != tilemap.INVALID_CELL:
+		if tilemap.get_cell_source_id(0, check) != Global.INVALID_CELL:
 			return check
 		for j in range(1, i+2):
 			var s = Global.perpendicular(facing) * j
 			if (facing * i + s).length() <= d:
 				for check_s in [wrap_cell(check + s), wrap_cell(check - s)]:
-					if tilemap.get_cell_source_id(0, check_s) != tilemap.INVALID_CELL:
+					if tilemap.get_cell_source_id(0, check_s) != Global.INVALID_CELL:
 						return check_s
 	return null
 

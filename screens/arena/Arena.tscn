@@ -8,7 +8,7 @@
 [node name="Arena" type="Node2D"]
 process_mode = 2
 script = ExtResource("3")
-score_limit = 5
+score_limit = 10
 
 [node name="Map" parent="." instance=ExtResource("1")]
 process_mode = 1
@@ -31,6 +31,7 @@ one_shot = true
 autostart = true
 
 [node name="Countdown" type="Label" parent="."]
+z_index = 5
 offset_left = 48.0
 offset_top = 24.0
 offset_right = 208.0
