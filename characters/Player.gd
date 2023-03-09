@@ -30,7 +30,7 @@ var jump_height = 0
 var jump_dist = 0
 var attack_range = 8
 
-var attack_wait = 1
+var attack_wait = 0.1
 var attack_timeout = 0
 var attack_offset = Vector2(16,0)
 var revive_countdown = 0
@@ -452,6 +452,7 @@ func init_brain():
 		'wander': 0,
 		'direction': 1,
 		'target': null,
+		'path': null,
 		'attack_accuracy': 0.5,
 		'special_accuracy': 0.5,
 		'state': 'attack',
@@ -461,6 +462,7 @@ func init_brain():
 
 func reset_brain():
 	brain.target = null
+	brain.path = null
 	brain.safe_spot = null
 
 func should_attack(enemy):
@@ -541,43 +543,40 @@ func target_position():
 		return brain.target.position
 	return null
 
+func target_path():
+	pass
+
 func think_position():
 	return position
+
+func path_in_sync(path, target):
+	if path.size() < 1:
+		return false
+	return (path[path.size()-1] - target.position).length() <= 16
 
 func think(delta):
 	if not is_instance_valid(brain.target):
 		brain.target = null
+		brain.path = null
 	var target = target_position()
 	if target != null:
-		var path
-		if brain.seek_ground:
-			path = pathfinder.path_between(think_position(), pathfinder.ground_below_pos(target))
-		else:
-			path = pathfinder.path_between(think_position(), target)
-		if not follow_path(path):
+		if brain.path == null or not path_in_sync(brain.path, brain.target):
+			if brain.seek_ground:
+				# TODO: only go up so far
+				brain.path = pathfinder.path_between(think_position(), pathfinder.ground_below_pos(target))
+			else:
+				brain.path = pathfinder.path_between(think_position(), target)
+		if not follow_path(brain.path):
 			# too close for paths
 			move_toward_point(target)
-		if randf() <= brain.special_accuracy * delta and should_special(brain.target, path):
+		if randf() <= brain.special_accuracy * delta and should_special(brain.target, brain.path):
 			input.press('special')
 		if should_attack(brain.target):
 			brain.attack_cooldown = 0.5
 			if randf() <= brain.attack_accuracy:
 				input.press('attack')
 			brain.target = null
-	else:
-		return # TODO: less aggro state?
-		if is_on_wall():
-			brain.direction *= -1
-		if brain.wander > 0:
-			brain.wander = max(brain.wander-1, 0)
-		if brain.wander < 0: 
-			brain.wander = min(brain.wander+1, 0)
-		if brain.wander == 0:
-			# come up with a new direction
-			brain.wander = 1 + randf() * 10
-			brain.wander *= sign(randf() - 0.5)
-		if abs(brain.wander) > 1:
-			input.press_axis(Vector2(brain.direction, 0))
+#	else:# TODO: less aggro state?
 
 func follow_path(path):
 	var next = point_on_path(path)
