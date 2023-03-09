@@ -150,8 +150,9 @@ func player_position():
 func path_to_enemy(enemy):
 	var point_a = get_closest_point(player_position())
 	var point_b = get_closest_point(enemy.position)
-	point_b = ground_below(point_b)
-	return get_point_path(point_a, point_b)
+	if point_b:
+		point_b = ground_below(point_b)
+		return get_point_path(point_a, point_b)
 
 func distance_to_enemy(enemy):
 	return path_distance(path_to_enemy(enemy))

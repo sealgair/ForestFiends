@@ -86,6 +86,7 @@ offset_top = -17.0
 offset_right = 88.0
 offset_bottom = -7.0
 theme = ExtResource("2")
+theme_override_colors/font_color = Color(1, 0.945098, 0.909804, 1)
 text = "Ate: 100"
 
 [node name="Fed" type="Label" parent="."]
@@ -94,6 +95,7 @@ offset_top = -2.0
 offset_right = 88.0
 offset_bottom = 8.0
 theme = ExtResource("2")
+theme_override_colors/font_color = Color(1, 0.945098, 0.909804, 1)
 text = "Fed: 100"
 
 [node name="Points" type="Label" parent="."]
@@ -102,6 +104,7 @@ offset_top = 13.0
 offset_right = 72.0
 offset_bottom = 32.0
 theme = ExtResource("2")
+theme_override_colors/font_color = Color(1, 0.945098, 0.909804, 1)
 text = "Pts: 10,000,000
 "
 clip_text = true
@@ -115,6 +118,7 @@ offset_top = -21.0
 offset_right = 192.0
 offset_bottom = 24.0
 theme = ExtResource("2")
+theme_override_colors/font_color = Color(1, 0.945098, 0.909804, 1)
 text = "And I guess a quip goes here or something"
 vertical_alignment = 1
 autowrap_mode = 3
