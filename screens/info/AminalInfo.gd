@@ -56,7 +56,7 @@ var descriptions = {
 }
 var description = ""
 
-static func script_step(start, action, time=0.1):
+func script_step(start, action, time=0.1):
 	return {'start': start, 'action': action, 'time': time, 'done': false}
 
 func basic_script():
@@ -169,7 +169,7 @@ var orders
 var aminal_index = 0
 var input
 
-static func join(lines):
+func join(lines):
 	var result = ""
 	for line in lines:
 		result += line + "\n"

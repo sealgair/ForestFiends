@@ -83,26 +83,32 @@ func _process(delta):
 
 func init_brain():
 	var data = super.init_brain()
+	data.state = 'recon'
+	data.attack_accuracy = 1
 	data.recon_time = 1
 	data.recon = data.recon_time
-	data.hide_time = 10
+	data.hide_time = randf() * 8 + 3
 	data.hiding = 0
 	data.tracked_tiles = {}
 	data.hiding_spot = null
 	return data
 
 func reset_brain():
-	super.reset_brain()
+	super()
+	brain.target = null
 	brain.recon = brain.recon_time
 	brain.tracked_tiles = {}
+	brain.hide_time = randf() * 10 + 10
 	brain.hiding_spot = null
 	brain.hiding = 0
 
 func think(delta):
-	if not is_instance_valid(brain.target):
-		brain.target = null
+	if not is_instance_valid(brain.target) or (brain.target and brain.target.dead):
+		brain.target = closest_enemy()
+		brain.path = null
+		
 	var should_hide = false
-	if brain.recon > 0 or revive_countdown > 0:
+	if brain.recon > 0:
 		for enemy in enemies:
 			var pos = Global.round2(enemy.position / self.cell_size) * self.cell_size
 			var players = brain.tracked_tiles.get(pos, [])
@@ -113,7 +119,9 @@ func think(delta):
 		if safe:
 			var path = pathfinder.path_between(position, safe)
 			follow_path(path)
+		wander(delta)
 	else:
+		brain.wander = 0 # always start fresh
 		if not hiding:
 			if poised:
 				input.release('attack')
@@ -133,21 +141,25 @@ func think(delta):
 				else:
 					follow_path(path)
 		else:
-			if brain.target == null or brain.target.dead:
-				brain.target = closest_enemy()
+			should_hide = true # keep hiding
+			# if we've stopped somewhere slightly off of our hiding spot, let's stick around
+			brain.hiding_spot == position
+			brain.target = closest_enemy()
 			if brain.target:
 				var target_dir = brain.target.position - position
-				if poise_timer > 0 and should_attack(brain.target):
+				if sign(target_dir.x) != facing():
+					input.press_axis(Vector2(sign(target_dir.x), 0))
+				if poise_timer <= 0 and should_attack(brain.target):
 					if randf() <= brain.attack_accuracy:
 						input.release('attack')
-					reset_brain()
+						reset_brain()
+						should_hide = false
 				else:
 					input.hold('attack')
-					if sign(target_dir.x) != facing():
-						input.press_axis(Vector2(sign(target_dir.x), 0))
 			brain.hiding += delta
 			if brain.hiding >= brain.hide_time:
 				input.release('attack')
 				reset_brain()
+				should_hide = false
 	if hiding != should_hide:
 		input.press('special')

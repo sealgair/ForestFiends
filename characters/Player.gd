@@ -28,7 +28,7 @@ var decelerate = 20
 
 var jump_height = 0
 var jump_dist = 0
-var attack_range = 8
+var attack_range = 12
 
 var attack_wait = 0.1
 var attack_timeout = 0
@@ -43,6 +43,8 @@ var screen_size: Vector2
 var cell_size: Vector2
 signal made_hit
 signal respawn(player)
+signal make_slime(position, palette)
+signal make_web(start, end, player)
 
 var to_velocity = Vector2()
 var jumping = false
@@ -116,7 +118,7 @@ func get_long_name():
 func pronouns():
 	return ['they', 'them', 'their', 'theirs']
 
-func do_make_slime(position, palette=0):
+func do_make_slime(_position, _palette=0):
 	pass # to implement in slug
 
 func set_computer(is_computer):
@@ -217,7 +219,7 @@ func move(dir):
 		$AnimatedSprite2D.flip_h = dir.x > 0
 
 # warning-ignore:unused_argument
-func moved(delta):
+func moved(_delta):
 	pass
 
 func infect_rate():
@@ -450,7 +452,7 @@ var brain = init_brain()
 func init_brain():
 	return {
 		'wander': 0,
-		'direction': 1,
+		'direction': Vector2i(1, 0),
 		'target': null,
 		'path': null,
 		'attack_accuracy': 0.5,
@@ -469,10 +471,10 @@ func should_attack(enemy):
 	var diff = enemy.position - position
 	return abs(diff.y) < size.y/2 and abs(diff.x) < attack_range
 
-func should_special(enemy, path=[]):
+func should_special(_enemy, _path=[]):
 	return false
 
-func should_jump(enemy, path=[]):
+func should_jump(_enemy, path=[]):
 	if path.size() == 0:
 		return false
 	if jump_dist > 0:
@@ -537,7 +539,7 @@ func safe_spot():
 func target_position():
 	if not can_be_target(brain.target):
 		brain.target = null
-	if not brain.target:
+	if brain.target == null:
 		brain.target = closest_enemy()
 	if brain.target:
 		return brain.target.position
@@ -555,11 +557,11 @@ func path_in_sync(path, target):
 	return (path[path.size()-1] - target.position).length() <= 16
 
 func think(delta):
-	if not is_instance_valid(brain.target):
-		brain.target = null
+	if not is_instance_valid(brain.target) or (brain.target and brain.target.dead):
+		brain.target = closest_enemy()
 		brain.path = null
 	var target = target_position()
-	if target != null:
+	if brain.target != null and target != null:
 		if brain.path == null or not path_in_sync(brain.path, brain.target):
 			if brain.seek_ground:
 				# TODO: only go up so far
@@ -577,6 +579,17 @@ func think(delta):
 				input.press('attack')
 			brain.target = null
 #	else:# TODO: less aggro state?
+
+func wander(delta):
+	brain.wander -= delta
+	#TODO: turn around if you're getting close to an enemy
+	if brain.wander <= 0:
+		brain.wander = randf() * 10 + 5
+		if randf() > 0.3:
+			brain.direction.x *= -1
+	elif self.is_on_wall():
+		brain.direction.x *= -1
+	input.press_axis(brain.direction)
 
 func follow_path(path):
 	var next = point_on_path(path)

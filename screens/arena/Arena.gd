@@ -55,7 +55,7 @@ func _ready():
 		if player_data.computer and computers < max_computers:
 			computers += 1
 			var overrides = {
-#				1: 'Fungus',
+#				1: 'Mant',
 #				2: 'Wasp',
 #				3: 'Frog',
 #				4: 'Bird',

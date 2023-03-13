@@ -8,8 +8,6 @@ var web_parts = {}
 var top_web = null
 var WebTracker = preload("res://characters/WebTracker.gd")
 
-signal make_web(start, end, player)
-
 func _ready():
 	super()
 	sides = [$RightTouch, $LeftTouch, $TopTouch, $BottomTouch]

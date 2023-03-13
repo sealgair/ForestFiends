@@ -1,7 +1,5 @@
 extends "Player.gd"
 
-signal make_slime(position, palette)
-
 var spikes
 var max_hold = 1.5
 var holding = 0

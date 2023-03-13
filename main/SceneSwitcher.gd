@@ -18,7 +18,7 @@ const animations = {
 	'swipe': 4,
 }
 
-static func asign(v):
+func asign(v):
 	if v >= 0: return 1
 	else: return -1
 

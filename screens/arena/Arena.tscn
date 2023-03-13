@@ -8,7 +8,6 @@
 [node name="Arena" type="Node2D"]
 process_mode = 2
 script = ExtResource("3")
-score_limit = 10
 
 [node name="Map" parent="." instance=ExtResource("1")]
 process_mode = 1
