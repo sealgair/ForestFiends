@@ -49,13 +49,13 @@ func _ready():
 			var palettes = existing_palettes.get(player_data.species, [])
 			palettes.append(player_data.palette)
 			existing_palettes[player_data.species] = palettes
-		
+	
 	var computers = 0
 	for player_data in start_data:
 		if player_data.computer and computers < max_computers:
 			computers += 1
 			var overrides = {
-#				1: 'Mant',
+				1: 'Spid',
 #				2: 'Wasp',
 #				3: 'Frog',
 #				4: 'Bird',

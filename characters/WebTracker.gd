@@ -21,6 +21,9 @@ func update(position, butt_offset=Vector2()):
 		web.set_start(start - position + offset + start_transform)
 		web.set_end(butt_offset + end_transform)
 
-func queue_free():
+func queue_free() -> void:
 	web.queue_free()
 	web = null
+
+func length() -> float:
+	return (web.get_end() - web.get_start()).length()

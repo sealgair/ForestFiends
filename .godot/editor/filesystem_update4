@@ -21,3 +21,5 @@ res://screens/victory/PlayerVictory.tscn
 res://characters/Turt.tscn
 res://characters/Wasp.tscn
 res://characters/Attack.tscn
+res://characters/WebTracker.gd
+res://characters/Web.gd

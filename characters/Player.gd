@@ -15,6 +15,7 @@ var fed = 0
 var score = 0
 var time = 0
 var distance = 0
+var distance_delta = 0
 var attacks = 0
 var specials = 0
 
@@ -256,6 +257,7 @@ func handle_input(delta):
 			attack_released()
 
 func track_distance(amount):
+	distance_delta = amount
 	distance += amount
 
 func up_dir():
@@ -452,7 +454,7 @@ var brain = init_brain()
 func init_brain():
 	return {
 		'wander': 0,
-		'direction': Vector2i(1, 0),
+		'direction': Vector2(1, 0),
 		'target': null,
 		'path': null,
 		'attack_accuracy': 0.5,
@@ -560,6 +562,11 @@ func think(delta):
 	if not is_instance_valid(brain.target) or (brain.target and brain.target.dead):
 		brain.target = closest_enemy()
 		brain.path = null
+	
+	attack(delta)
+	# TODO: less aggro state?
+
+func attack(delta):
 	var target = target_position()
 	if brain.target != null and target != null:
 		if brain.path == null or not path_in_sync(brain.path, brain.target):
@@ -578,7 +585,11 @@ func think(delta):
 			if randf() <= brain.attack_accuracy:
 				input.press('attack')
 			brain.target = null
-#	else:# TODO: less aggro state?
+
+func wander_wall():
+	# i said maaaaaaybe
+	if self.is_on_wall():
+		brain.direction.x *= -1
 
 func wander(delta):
 	brain.wander -= delta
@@ -586,9 +597,9 @@ func wander(delta):
 	if brain.wander <= 0:
 		brain.wander = randf() * 10 + 5
 		if randf() > 0.3:
-			brain.direction.x *= -1
-	elif self.is_on_wall():
-		brain.direction.x *= -1
+			brain.direction *= -1
+	else:
+		wander_wall()
 	input.press_axis(brain.direction)
 
 func follow_path(path):

@@ -4,9 +4,9 @@ var sides
 var corners
 var from_side = Vector2(0, 1)
 var edge_grab = 3
-var web_parts = {}
 var top_web = null
 var WebTracker = preload("res://characters/WebTracker.gd")
+var web_parts = {}
 
 func _ready():
 	super()
@@ -88,7 +88,7 @@ func side_dir():
 		if side.get_overlapping_bodies().size() > 0:
 			touches += side.get_node("CollisionShape2D").transform.origin
 	return unitize(touches)
-
+	
 func corner_count():
 	var count = 0
 	for corner in corners:
@@ -220,11 +220,11 @@ func special_pressed():
 		velocity += jump_vel * jump_speed
 
 func up_dir():
-	var side = side_dir()
-	if side.length() > 0:
-		return -side
+	var corner = corner_dir()
+	if corner.length() > 0:
+		return -corner
 	else:
-		return super.up_dir()
+		return -side_dir()
 
 func move(dir):
 	var side = side_dir()
@@ -243,6 +243,8 @@ func move(dir):
 	else:
 		if in_corner():
 			gravity = Vector2()
+		elif corner_count() == 1:
+			gravity = base_gravity.length() * corner
 		else:
 			gravity = base_gravity.length() * side
 	
@@ -293,19 +295,65 @@ func init_brain():
 	data.web_dist = next_web_dist()
 	data.web_target = null
 	data.will_jump = false
+	data.cornering = false
 	return data
+
+func reset_brain():
+	super()
+	brain.web_dist = next_web_dist()
+	brain.web_target = null
+	brain.will_jump = false
+	brain.cornering = false
+	brain.direction = Vector2(1,0)
 
 func next_web_dist():
 	return 16 + randf() * 16*4
 
-func opposing_surface():
-	var surface = null
-	var tile = Global.round2(position / tilemap.cell_size)
-	for d in range(1, jump_height+2):
-		var next = tile + -side_dir() * d
-		if tilemap.get_cell_source_id(0, next) != Global.INVALID_CELL:
-			return next
-	return null
+func think(delta):
+	if brain.target and not can_be_target(brain.target):
+		brain.target = null
+	if brain.target == null:
+		brain.target = closest_enemy()
+	if brain.target == null:
+		wander(delta)
+		if should_attack(null):
+			input.press('attack')
+	else:
+		attack(delta)
+
+func wander_wall():
+	var collision = get_last_slide_collision()
+	var normal = Vector2()
+	if collision:
+		normal = Global.sign2(collision.get_normal())
+	var corner = corner_dir()
+	var sides = side_dir()
+	
+	var prior_dir = brain.direction
+	var rnd = sign(.5-randf())
+	
+	if corner.length() > 1:
+		# on edge
+		if brain.direction.x == 0:
+			brain.direction.x = corner.x
+		if brain.direction.y == 0:
+			brain.direction.y = corner.y
+	elif sides.length() > 1:
+		# in corner
+		if brain.direction.x == 0:
+			brain.direction.x = -sides.x
+		if brain.direction.y == 0:
+			brain.direction.y = -sides.y
+	elif sides.x != 0:
+		brain.direction.x = 0
+	elif sides.y != 0:
+		brain.direction.y = 0
+		
+	# TODO: make sure you don't get stuck
+	if distance_delta == 0:
+		pass
+	
+	$Debug.text = str(brain.direction)
 
 func should_attack(enemy):
 	if not jumping:
@@ -323,7 +371,6 @@ func should_attack(enemy):
 					airs += 1
 					if airs >= 16:
 						return true
-			
 		else:
 			brain.web_target = null
 			if brain.web_dist <= 0:
@@ -332,11 +379,11 @@ func should_attack(enemy):
 	return false
 
 func should_jump(enemy, path=[]):
-	if brain.will_jump:
-		brain.will_jump = false
-		return true
-	else:
-		return super.should_jump(enemy, path)
+	if not jumping and web_parts.size() > 0:
+		var web = web_parts[Vector2()]
+		if web.length() < 16:
+			return true
+	return false
 
 func can_be_target(enemy, filter_ops={}):
 	var can_be = super.can_be_target(enemy)
