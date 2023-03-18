@@ -318,6 +318,8 @@ func think(delta):
 		wander(delta)
 		if should_attack(null):
 			input.press('attack')
+		if should_jump(null):
+			input.press('special')
 	else:
 		attack(delta)
 

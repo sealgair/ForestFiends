@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://cbp41dvmlvxw0"]
+[gd_scene load_steps=28 format=3 uid="uid://cbp41dvmlvxw0"]
 
 [ext_resource type="Texture2D" uid="uid://de54kofl0u6m1" path="res://art/fungus.png" id="1"]
 [ext_resource type="Script" path="res://characters/Mushroom.gd" id="2"]
@@ -67,6 +67,26 @@ region = Rect2(80, 16, 16, 16)
 [sub_resource type="AtlasTexture" id="7"]
 atlas = ExtResource("1")
 region = Rect2(96, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7dc4f"]
+atlas = ExtResource("1")
+region = Rect2(16, 80, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_di3iw"]
+atlas = ExtResource("1")
+region = Rect2(32, 80, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vuhg8"]
+atlas = ExtResource("1")
+region = Rect2(48, 80, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_iaqpx"]
+atlas = ExtResource("1")
+region = Rect2(64, 80, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5aka6"]
+atlas = ExtResource("1")
+region = Rect2(80, 80, 16, 16)
 
 [sub_resource type="SpriteFrames" id="8"]
 animations = [{
@@ -144,6 +164,35 @@ animations = [{
 "loop": false,
 "name": &"grow",
 "speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7dc4f")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_di3iw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vuhg8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_iaqpx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5aka6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7dc4f")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7dc4f")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7dc4f")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
 }]
 
 [sub_resource type="RectangleShape2D" id="15"]
@@ -161,7 +210,7 @@ script = ExtResource("2")
 material = ExtResource("3")
 position = Vector2(8, 8)
 sprite_frames = SubResource("8")
-animation = &"die"
+animation = &"idle"
 
 [node name="Spores" type="CPUParticles2D" parent="."]
 position = Vector2(8, 7)

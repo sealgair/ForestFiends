@@ -97,6 +97,7 @@ func die():
 func _on_AnimatedSprite_animation_finished():
 	if $AnimatedSprite2D.animation == 'grow':
 		grown = true
+		$AnimatedSprite2D.play('idle')
 
 func _on_DecayTimer_timeout():
 	remove_mushroom.emit(self)
