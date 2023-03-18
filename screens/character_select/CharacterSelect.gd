@@ -96,7 +96,7 @@ func _process(delta):
 	
 	$Countdown.text = ""
 	if $ForceStartTimer.time_left <= 5 and not $ForceStartTimer.paused:
-		$Countdown.text = String(ceil($ForceStartTimer.time_left))
+		$Countdown.text = str(ceil($ForceStartTimer.time_left))
 		
 
 func start_game():

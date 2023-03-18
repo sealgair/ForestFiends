@@ -354,8 +354,6 @@ func wander_wall():
 	# TODO: make sure you don't get stuck
 	if distance_delta == 0:
 		pass
-	
-	$Debug.text = str(brain.direction)
 
 func should_attack(enemy):
 	if not jumping:
@@ -399,7 +397,7 @@ func target_position():
 		target = safe_spot()
 	return target
 
-func move_toward_point(point):
+func move_toward_point(point, final=false):
 	var dir = point - position
 	if dir.length() > 4:
 		# wrap around map

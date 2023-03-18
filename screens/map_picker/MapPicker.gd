@@ -49,7 +49,7 @@ func _process(delta):
 	
 	$Countdown.text = ""
 	if $ContinueTimer.time_left <= 5 and not $ContinueTimer.paused:
-		$Countdown.text = String(ceil($ContinueTimer.time_left))
+		$Countdown.text = str(ceil($ContinueTimer.time_left))
 
 func start_game():
 	var chosen = map_choices[cursor.x][cursor.y]

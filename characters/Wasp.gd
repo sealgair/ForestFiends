@@ -29,13 +29,18 @@ func move(dir):
 func can_be_target(enemy, _filter_ops={}):
 	return super.can_be_target(enemy) and enemy.poisoned_by != self
 
-func move_toward_point(point):
+func move_toward_point(point, final=false):
 	var dir = point - position
 	# wrap around map
 	if abs(dir.x) > 16*8:
 		dir.x *= -1
 	if abs(dir.y) > 16*8:
 		dir.y *= -1
+	if final: 
+		# aim just above and before target
+		if abs(dir.x) > size.x/2:
+			dir.x -= size.x/2 * sign(dir.x)
+		dir.y -= size.y/2
 	input.press_axis(dir)
 
 func _process(delta):

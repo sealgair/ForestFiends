@@ -30,6 +30,7 @@ var decelerate = 20
 var jump_height = 0
 var jump_dist = 0
 var attack_range = 12
+var attack_range_v = 8
 
 var attack_wait = 0.1
 var attack_timeout = 0
@@ -460,7 +461,7 @@ func init_brain():
 		'attack_accuracy': 0.5,
 		'special_accuracy': 0.5,
 		'state': 'attack',
-		'seek_ground': true,
+		'seek_ground': false,
 		'safe_spot': null,
 	}
 
@@ -471,7 +472,7 @@ func reset_brain():
 
 func should_attack(enemy):
 	var diff = enemy.position - position
-	return abs(diff.y) < size.y/2 and abs(diff.x) < attack_range
+	return abs(diff.y) < attack_range_v and abs(diff.x) < attack_range
 
 func should_special(_enemy, _path=[]):
 	return false
@@ -503,16 +504,26 @@ func can_be_target(enemy, filter_ops={}):
 			return false
 	return enemy != null and not enemy.dead and not enemy.hiding
 
-func closest_enemy(filter_ops={}):
-	var closest = null
-	var target = null
+func closest_enemies(filter_ops={}):
+	var sorted_enemies = []
+	var distances = {}
 	for enemy in get_enemies():
 		if can_be_target(enemy, filter_ops):
-			var dist = pathfinder.distance_to_enemy(enemy)
-			if closest == null or (dist != 0 and closest > dist):
-				target = enemy
-				closest = dist
-	return target
+			distances[enemy] = pathfinder.distance_to_enemy(enemy)
+			var i = 0
+			for other in sorted_enemies:
+				if distances[other] > distances[enemy]:
+					break
+				i += 1
+			sorted_enemies.insert(i, enemy)
+	return sorted_enemies
+
+func closest_enemy(filter_ops={}):
+	var nmes = closest_enemies(filter_ops)
+	if nmes.size() > 0:
+		return nmes[0]
+	else:
+		return null
 
 func can_stand(x, y):
 	return tilemap.get_cell(x, y) == Global.INVALID_CELL \
@@ -542,7 +553,11 @@ func target_position():
 	if not can_be_target(brain.target):
 		brain.target = null
 	if brain.target == null:
-		brain.target = closest_enemy()
+		brain.path = null
+		for enemy in closest_enemies():
+			if pathfinder.path_between(think_position(), enemy.position):
+				brain.target = closest_enemy()
+				break
 	if brain.target:
 		return brain.target.position
 	return null
@@ -564,7 +579,9 @@ func think(delta):
 		brain.path = null
 	
 	attack(delta)
-	# TODO: less aggro state?
+	
+	if brain.target == null:
+		wander(delta)
 
 func attack(delta):
 	var target = target_position()
@@ -575,9 +592,9 @@ func attack(delta):
 				brain.path = pathfinder.path_between(think_position(), pathfinder.ground_below_pos(target))
 			else:
 				brain.path = pathfinder.path_between(think_position(), target)
-		if not follow_path(brain.path):
+		if brain.path and not follow_path(brain.path):
 			# too close for paths
-			move_toward_point(target)
+			move_toward_point(target, true)
 		if randf() <= brain.special_accuracy * delta and should_special(brain.target, brain.path):
 			input.press('special')
 		if should_attack(brain.target):
@@ -628,11 +645,14 @@ func point_on_path(path):
 				$PathVis.add_point(point - position)
 			return next
 
-func move_toward_point(point):
+func move_toward_point(point, final=false):
 	var dir = point - think_position()
+	if final and abs(dir.x) > size.x/2:
+		# move to attack range, not overlap
+		dir.x -= size.x/2 * sign(dir.x)
 	if abs(dir.x) > 16*8:
 		dir.x *= -1 # wrap around map
-	if abs(dir.x) > 6 or (dir.y > 2 and is_on_floor()):
+	if not final or (abs(dir.x) > 8 or abs(dir.y) > 8):
 		# don't spin in place
 		input.press_axis(Vector2(dir.x, 0))
 

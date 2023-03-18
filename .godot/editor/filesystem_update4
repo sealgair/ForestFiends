@@ -6,3 +6,16 @@ res://characters/Spid.tscn
 res://characters/Player.tscn
 res://characters/Spid.gd
 res://screens/Showoff.tscn
+res://maps/Jungle.tscn
+res://screens/arena/Arena.gd
+res://characters/Player.gd
+res://characters/Fungus.tscn
+res://main/AminalSprite.tscn
+res://screens/character_select/CharacterSelect.gd
+res://screens/map_picker/MapPicker.gd
+res://characters/Frog.tscn
+res://characters/Frog.gd
+res://characters/Turt.tscn
+res://characters/Fungus.gd
+res://characters/Wasp.gd
+res://characters/Wasp.tscn

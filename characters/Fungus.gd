@@ -215,7 +215,7 @@ func should_special(enemy, path=[]):
 	var myc = mycelium[cursor_cell]
 	return myc.can_spread()
 
-func move_toward_point(point):
+func move_toward_point(point, final=false):
 	var dir = point - think_position()
 	# wrap around map
 	if abs(dir.x) > 16*8:

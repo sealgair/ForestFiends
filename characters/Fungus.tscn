@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://deoymce6mukub"]
+[gd_scene load_steps=27 format=3 uid="uid://deoymce6mukub"]
 
 [ext_resource type="Script" path="res://characters/Fungus.gd" id="1"]
 [ext_resource type="Texture2D" uid="uid://de54kofl0u6m1" path="res://art/fungus.png" id="2"]
@@ -132,11 +132,52 @@ animations = [{
 atlas = ExtResource("2")
 region = Rect2(96, 16, 16, 16)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_jody1"]
+atlas = ExtResource("2")
+region = Rect2(16, 80, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_31crm"]
+atlas = ExtResource("2")
+region = Rect2(32, 80, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fpf5a"]
+atlas = ExtResource("2")
+region = Rect2(48, 80, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8ks0g"]
+atlas = ExtResource("2")
+region = Rect2(64, 80, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dem3w"]
+atlas = ExtResource("2")
+region = Rect2(80, 80, 16, 16)
+
 [sub_resource type="SpriteFrames" id="3"]
 animations = [{
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("4")
+}, {
+"duration": 1.0,
+"texture": SubResource("4")
+}, {
+"duration": 1.0,
+"texture": SubResource("4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jody1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_31crm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fpf5a")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8ks0g")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dem3w")
 }],
 "loop": true,
 "name": &"idle",

@@ -56,7 +56,7 @@ func _ready():
 			computers += 1
 			var overrides = {
 				1: 'Spid',
-#				2: 'Wasp',
+				2: 'Wasp',
 #				3: 'Frog',
 #				4: 'Bird',
 			}

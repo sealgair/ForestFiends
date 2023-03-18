@@ -342,8 +342,7 @@ script = ExtResource("6")
 [node name="AnimatedSprite2D" parent="." index="0"]
 material = SubResource("22")
 sprite_frames = SubResource("29")
-animation = &"defend"
-frame = 3
+animation = &"walk"
 
 [node name="Head" type="AnimatedSprite2D" parent="AnimatedSprite2D" index="0"]
 show_behind_parent = true

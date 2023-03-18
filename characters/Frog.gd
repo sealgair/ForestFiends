@@ -10,6 +10,7 @@ func init(start_pos, the_tilemap):
 	run_speed = 150
 	jump_speed = -60
 	attack_range = 16
+	attack_range_v = 16
 	jump_height = 3
 	jump_dist = 3
 	super.init(start_pos, the_tilemap)
@@ -82,7 +83,7 @@ func should_attack(enemy):
 	if abs(angle) < TAU/8:
 		return dist.length() < attack_range
 
-func move_toward_point(point):
+func move_toward_point(point, final=false):
 	super.move_toward_point(point)
 	if position.y - point.y > 0 or is_on_ceiling():
 		# let go of jump if we need to go down, or our head touched the roof
