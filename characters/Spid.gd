@@ -223,8 +223,10 @@ func up_dir():
 	var corner = corner_dir()
 	if corner.length() > 0:
 		return -corner
-	else:
+	elif side_dir().length() > 0:
 		return -side_dir()
+	else:
+		return super()
 
 func move(dir):
 	var side = side_dir()
@@ -340,6 +342,12 @@ func wander_wall():
 			brain.direction.x = corner.x
 		if brain.direction.y == 0:
 			brain.direction.y = corner.y
+		if brain.direction == corner || brain.direction == -corner:
+			brain.direction = from_side
+			if brain.direction.x == 0:
+				brain.direction.x = -corner.x
+			if brain.direction.y == 0:
+				brain.direction.y = -corner.y
 	elif sides.length() > 1:
 		# in corner
 		if brain.direction.x == 0:
@@ -351,9 +359,9 @@ func wander_wall():
 	elif sides.y != 0:
 		brain.direction.y = 0
 		
-	# TODO: make sure you don't get stuck
-	if distance_delta == 0:
-		pass
+	# make sure you don't get stuck
+	if brain.direction == Vector2():
+		brain.direction.x = sign(randf()-0.5)
 
 func should_attack(enemy):
 	if not jumping:
@@ -407,10 +415,10 @@ func move_toward_point(point, final=false):
 			dir.x = 0
 		if abs(dir.y) > 16*8:
 			dir.y *= -1
-		input.press_axis(dir)
 		
 		var sides = side_dir()
 		if sides.x == 0 and abs(dir.y) > 8:
 			input.press("special")
 		if sides.y == 0 and abs(dir.x) > 8:
 			input.press("special")
+	input.press_axis(dir)

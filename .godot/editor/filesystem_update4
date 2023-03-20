@@ -19,3 +19,5 @@ res://characters/Turt.tscn
 res://characters/Fungus.gd
 res://characters/Wasp.gd
 res://characters/Wasp.tscn
+res://maps/Plains.tscn
+res://characters/Spore.tscn

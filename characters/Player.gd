@@ -337,6 +337,11 @@ func _draw():
 	do_draw()
 
 func _process(delta):
+	$PathVis.clear_points()
+	if brain.path:
+		for point in brain.path:
+			$PathVis.add_point(point - position)
+	
 	if not dead:
 		time += delta
 	if not is_attacking():
@@ -390,7 +395,7 @@ func infect(other):
 		spore = Spore.instantiate()
 		spore.fungus = other
 		spore.set_palette(other.palette)
-		spore.connect("release",Callable(self,"die"))
+		spore.release.connect(burst)
 		add_child(spore)
 		move_child(spore, 0)
 
@@ -412,6 +417,9 @@ func ensnare(web):
 func desnare(web):
 	web_points.erase(web.get_instance_id())
 	webs.erase(web)
+
+func burst():
+	die()
 
 func die():
 	fed += 1
@@ -457,6 +465,8 @@ func init_brain():
 		'wander': 0,
 		'direction': Vector2(1, 0),
 		'target': null,
+		'target_age': 0,
+		'max_target_age': 8,
 		'path': null,
 		'attack_accuracy': 0.5,
 		'special_accuracy': 0.5,
@@ -467,6 +477,7 @@ func init_brain():
 
 func reset_brain():
 	brain.target = null
+	brain.target_age = 0
 	brain.path = null
 	brain.safe_spot = null
 
@@ -571,7 +582,11 @@ func think_position():
 func path_in_sync(path, target):
 	if path.size() < 1:
 		return false
-	return (path[path.size()-1] - target.position).length() <= 16
+	if (path[path.size()-1] - target.position).length() <= 16:
+		return true
+	if (path[0] - position).length() <= 16:
+		return true
+	return false
 
 func think(delta):
 	if not is_instance_valid(brain.target) or (brain.target and brain.target.dead):
@@ -582,6 +597,13 @@ func think(delta):
 	
 	if brain.target == null:
 		wander(delta)
+		brain.target_age = 0
+	else:
+		brain.target_age += 1
+		if brain.target_age > brain.max_target_age:
+			brain.target = null
+			brain.path = null
+			brain.target_age = 0
 
 func attack(delta):
 	var target = target_position()
@@ -632,18 +654,18 @@ func point_on_path(path):
 	var next = null
 	if path.size() > 1:
 		next = path[0]
-		while abs(next.y - think_position().y) < 16 and abs(next.x - think_position().x) < 8:
+		var dy = abs(next.y - think_position().y)
+		var dx = abs(next.x - think_position().x)
+		while dy < 16 and dx < 8:
 			path.remove_at(0)
 			if path.size() > 0:
 				next = path[0]
+				dy = abs(next.y - think_position().y)
+				dx = abs(next.x - think_position().x)
 			else:
 				next = null
 				break
-		if next:
-			$PathVis.clear_points()
-			for point in path:
-				$PathVis.add_point(point - position)
-			return next
+	return next
 
 func move_toward_point(point, final=false):
 	var dir = point - think_position()
