@@ -1,10 +1,12 @@
 extends Node2D
 
 @export var title: String = "Map"
+@export var show_score: bool = true
 
 func _ready():
 	$Background.clip_contents = true
 	$Background/RespawnTiles.visible = false
+	$HUD.visible = show_score
 
 
 func get_spawn_points():

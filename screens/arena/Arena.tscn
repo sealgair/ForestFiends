@@ -6,7 +6,7 @@
 [ext_resource type="Theme" uid="uid://c5qd48flt1q3i" path="res://main/MenuTheme.tres" id="4"]
 
 [node name="Arena" type="Node2D"]
-process_mode = 2
+process_mode = 3
 script = ExtResource("3")
 
 [node name="Map" parent="." instance=ExtResource("1")]

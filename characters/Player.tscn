@@ -190,6 +190,7 @@ wait_time = 3.0
 one_shot = true
 
 [node name="PathVis" type="Line2D" parent="."]
+visible = false
 modulate = Color(1, 1, 1, 0.501961)
 width = 2.0
 default_color = Color(0.4, 0.501961, 1, 1)

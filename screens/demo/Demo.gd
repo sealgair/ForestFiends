@@ -5,6 +5,7 @@ const PlayerInput = preload("res://main/PlayerInput.gd")
 var inputs = []
 
 func _ready():
+	super()
 	for i in range(4):
 		var input = PlayerInput.new(i+1)
 		input.set_mappings({
