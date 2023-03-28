@@ -1,6 +1,7 @@
 extends Node2D
 
 const PlayerInput = preload("res://main/PlayerInput.gd")
+const PauseMenu = preload("res://main/PauseMenu.tscn")
 
 @export_enum("highscores", "stats", "info", "demo") var next_screen: String = "highscores"
 @export var is_idle_screen:bool = true
@@ -20,6 +21,10 @@ func _ready():
 	$StartPrompt.visible = is_idle_screen
 
 func _process(_delta):
+	if Input.is_action_just_pressed("pause"):
+		var pause = PauseMenu.instantiate()
+		add_child(pause)
+	
 	if rows:
 		var revealed = ($RevealTimer.time_left-1) / ($RevealTimer.wait_time-1)
 		revealed = 1 - revealed
@@ -31,7 +36,7 @@ func _process(_delta):
 		for input in inputs:
 			if input.is_any_just_pressed(["select", "cancel"]):
 				change_scene_to_file("select")
-				break
+				
 
 func _on_ContinueTimer_timeout():
 	change_scene_to_file()

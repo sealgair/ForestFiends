@@ -1,0 +1,95 @@
+[gd_scene load_steps=4 format=3 uid="uid://dvpdet1tv1fkd"]
+
+[ext_resource type="Script" path="res://main/pause_menu.gd" id="1_yl0ee"]
+[ext_resource type="Theme" uid="uid://bwnssayact5as" path="res://main/HeaderTheme.tres" id="2_s8hiq"]
+[ext_resource type="Theme" uid="uid://c5qd48flt1q3i" path="res://main/MenuTheme.tres" id="3_k5va8"]
+
+[node name="PauseMenu" type="CanvasLayer"]
+process_mode = 2
+script = ExtResource("1_yl0ee")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_right = 256.0
+offset_bottom = 256.0
+color = Color(0, 0, 0, 0.321569)
+
+[node name="Label" type="Label" parent="."]
+offset_left = 64.0
+offset_top = 24.0
+offset_right = 192.0
+offset_bottom = 63.0
+theme = ExtResource("2_s8hiq")
+theme_override_colors/font_color = Color(1, 0, 0.301961, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+text = "PAUSED"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Resume" type="Label" parent="."]
+offset_left = 72.0
+offset_top = 72.0
+offset_right = 184.0
+offset_bottom = 88.0
+theme = ExtResource("3_k5va8")
+theme_override_colors/font_color = Color(0.513726, 0.462745, 0.611765, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+text = "Resume
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Quit" type="Label" parent="."]
+offset_left = 72.0
+offset_top = 88.0
+offset_right = 184.0
+offset_bottom = 104.0
+theme = ExtResource("3_k5va8")
+theme_override_colors/font_color = Color(0.513726, 0.462745, 0.611765, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+text = "Quit to Title"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Exit" type="Label" parent="."]
+offset_left = 72.0
+offset_top = 104.0
+offset_right = 184.0
+offset_bottom = 120.0
+theme = ExtResource("3_k5va8")
+theme_override_colors/font_color = Color(0.513726, 0.462745, 0.611765, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+text = "Exit Game"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Settings" type="Label" parent="."]
+visible = false
+offset_left = 72.0
+offset_top = 120.0
+offset_right = 184.0
+offset_bottom = 136.0
+theme = ExtResource("3_k5va8")
+theme_override_colors/font_color = Color(0.513726, 0.462745, 0.611765, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+text = "Settings"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Credits" type="Label" parent="."]
+visible = false
+offset_left = 72.0
+offset_top = 136.0
+offset_right = 184.0
+offset_bottom = 152.0
+theme = ExtResource("3_k5va8")
+theme_override_colors/font_color = Color(0.513726, 0.462745, 0.611765, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+text = "Credits"
+horizontal_alignment = 1
+vertical_alignment = 1

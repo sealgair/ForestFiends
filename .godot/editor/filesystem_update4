@@ -10,3 +10,11 @@ res://screens/demo/Demo.tscn
 res://screens/demo/Demo.gd
 res://maps/Basic.tscn
 res://maps/Map.gd
+res://screens/info/AminalInfo.tscn
+res://main/pause_menu.tscn
+res://main/pause_menu.gd
+res://screens/Screen.tscn
+res://main/PauseMenu.tscn
+res://screens/Screen.gd
+res://main/SceneSwitcher.tscn
+res://screens/info/AminalDetail.tscn

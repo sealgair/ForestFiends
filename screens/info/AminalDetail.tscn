@@ -3,4 +3,5 @@
 [ext_resource type="PackedScene" uid="uid://bm5i7h0rddy07" path="res://screens/arena/Arena.tscn" id="1"]
 
 [node name="AminalDetail" instance=ExtResource("1")]
+process_mode = 1
 scale = Vector2(2, 2)
