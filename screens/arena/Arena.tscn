@@ -8,6 +8,7 @@
 [node name="Arena" type="Node2D"]
 process_mode = 3
 script = ExtResource("3")
+max_computers = 0
 
 [node name="Map" parent="." instance=ExtResource("1")]
 process_mode = 1
@@ -42,6 +43,48 @@ theme_override_constants/outline_size = 8
 text = "START!"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="LeftWrap" type="SubViewportContainer" parent="."]
+offset_right = 32.0
+offset_bottom = 256.0
+
+[node name="Viewport" type="SubViewport" parent="LeftWrap"]
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(32, 256)
+render_target_update_mode = 4
+
+[node name="RightWrap" type="SubViewportContainer" parent="."]
+offset_left = 224.0
+offset_right = 256.0
+offset_bottom = 256.0
+
+[node name="Viewport" type="SubViewport" parent="RightWrap"]
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(32, 256)
+render_target_update_mode = 4
+
+[node name="TopWrap" type="SubViewportContainer" parent="."]
+offset_right = 256.0
+offset_bottom = 32.0
+
+[node name="Viewport" type="SubViewport" parent="TopWrap"]
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(256, 32)
+render_target_update_mode = 4
+
+[node name="BottomWrap" type="SubViewportContainer" parent="."]
+offset_top = 224.0
+offset_right = 256.0
+offset_bottom = 256.0
+
+[node name="Viewport" type="SubViewport" parent="BottomWrap"]
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(256, 32)
+render_target_update_mode = 4
 
 [connection signal="timeout" from="VictoryTimer" to="." method="_on_VictoryTimer_timeout"]
 [connection signal="timeout" from="CountdownTimer" to="." method="_on_CountdownTimer_timeout"]

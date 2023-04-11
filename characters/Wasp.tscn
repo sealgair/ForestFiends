@@ -175,6 +175,9 @@ animations = [{
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("36")
+}, {
+"duration": 1.0,
+"texture": null
 }],
 "loop": true,
 "name": &"idle",

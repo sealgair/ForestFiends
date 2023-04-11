@@ -19,6 +19,16 @@ var map_scene = null
 const MapChoice = preload("res://screens/map_picker/MapChoice.tscn")
 
 func _ready():
+	var root_vp = get_tree().get_root()
+	$LeftWrap/Viewport.world_2d = root_vp.world_2d
+	$LeftWrap/Viewport.canvas_transform.origin.x = -256
+	$RightWrap/Viewport.world_2d = root_vp.world_2d
+	$RightWrap/Viewport.canvas_transform.origin.x = 32
+	$TopWrap/Viewport.world_2d = root_vp.world_2d
+	$TopWrap/Viewport.canvas_transform.origin.y = -256
+	$BottomWrap/Viewport.world_2d = root_vp.world_2d
+	$BottomWrap/Viewport.canvas_transform.origin.y = 32
+	root_vp.transparent_bg = true
 	if countdown:
 		get_tree().paused = true
 	else:

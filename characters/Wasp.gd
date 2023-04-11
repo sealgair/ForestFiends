@@ -10,6 +10,10 @@ func init(start_pos, the_tilemap):
 	PlayerPath = load("res://brain/WaspPath.gd")
 	super.init(start_pos, the_tilemap)
 
+func _ready():
+	super()
+	$AnimatedSprite2D/Wings.play("idle")
+
 func get_species():
 	return "Wasp"
 
