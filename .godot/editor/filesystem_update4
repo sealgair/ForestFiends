@@ -1,8 +1,0 @@
-res://default_env.tres
-res://screens/arena/Arena.tscn
-res://main/MenuTheme.tres
-res://main/HeaderTheme.tres
-res://screens/arena/Arena.gd
-res://characters/Player.tscn
-res://characters/Wasp.tscn
-res://characters/Wasp.gd
