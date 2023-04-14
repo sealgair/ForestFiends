@@ -311,7 +311,7 @@ default_color = Color(1, 0, 0.301961, 1)
 [node name="AnimatedSprite2D" parent="." index="1"]
 material = SubResource("22")
 sprite_frames = SubResource("23")
-animation = &"walk"
+animation = &"dead"
 
 [node name="CollisionShape2D" parent="." index="2"]
 shape = SubResource("CircleShape2D_paenc")

@@ -2,6 +2,7 @@ extends Node2D
 
 var player_order = 1
 var actions = {}
+var enabled = true
 
 func _init(player):
 	player_order = player

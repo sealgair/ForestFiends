@@ -11,12 +11,20 @@ var players = []
 @export var max_computers: int = 4
 @export var countdown: bool = true
 var score = 0
+var victory_time = 0
+var victory_time_max = 15
+var victory_sprites = []
+var victory_dead = []
+var victory_scores = []
+var victory_ate = []
+var victory_fed = []
 
 var slime_scene = preload("res://characters/Slime.tscn")
 var web_scene = preload("res://characters/Web.tscn")
 var map_scene = null
 
 const MapChoice = preload("res://screens/map_picker/MapChoice.tscn")
+const NullInput = preload("res://main/NullInput.gd")
 
 func _ready():
 	var root_vp = get_tree().get_root()
@@ -29,6 +37,59 @@ func _ready():
 	$BottomWrap/Viewport.world_2d = root_vp.world_2d
 	$BottomWrap/Viewport.canvas_transform.origin.y = 32
 	root_vp.transparent_bg = true
+	
+	$VictoryOverlay.visible = false
+	victory_sprites = [
+		$VictoryOverlay/Player1,
+		$VictoryOverlay/Player2,
+		$VictoryOverlay/Player3,
+		$VictoryOverlay/Player4,
+	]
+	victory_dead = [
+		$VictoryOverlay/Death1,
+		$VictoryOverlay/Death2,
+		$VictoryOverlay/Death3,
+		$VictoryOverlay/Death4,
+	]
+	victory_scores = [
+		[
+			$VictoryOverlay/Score11,
+			$VictoryOverlay/Score21,
+			$VictoryOverlay/Score31,
+			$VictoryOverlay/Score41,
+		],
+		[
+			$VictoryOverlay/Score12,
+			$VictoryOverlay/Score22,
+			$VictoryOverlay/Score32,
+			$VictoryOverlay/Score42,
+		],
+		[
+			$VictoryOverlay/Score13,
+			$VictoryOverlay/Score23,
+			$VictoryOverlay/Score33,
+			$VictoryOverlay/Score43,
+		],
+		[
+			$VictoryOverlay/Score14,
+			$VictoryOverlay/Score24,
+			$VictoryOverlay/Score34,
+			$VictoryOverlay/Score44,
+		],
+	]
+	victory_ate = [
+		$VictoryOverlay/Ate1,
+		$VictoryOverlay/Ate2,
+		$VictoryOverlay/Ate3,
+		$VictoryOverlay/Ate4,
+	]
+	victory_fed = [
+		$VictoryOverlay/Fed1,
+		$VictoryOverlay/Fed2,
+		$VictoryOverlay/Fed3,
+		$VictoryOverlay/Fed4,
+	]
+	
 	if countdown:
 		get_tree().paused = true
 	else:
@@ -94,13 +155,25 @@ func _ready():
 		player.make_enemies(players)
 		
 
-func _process(_delta):
+func _process(delta):
 	var count = floor($CountdownTimer.time_left)
 	
 	if count > 0:
 		$Countdown.text = "%d..." % count
 	else:
 		$Countdown.text = "START!"
+		
+	if victory_time > 0:
+		Engine.time_scale = victory_time / victory_time_max
+		# unscale time for timer so it still counts in real time
+		victory_time -= delta / Engine.time_scale
+		if victory_time <= 0:
+			Engine.time_scale = 1
+			next_scene()
+		var opacity = min(victory_time_max - victory_time, 1)
+		$VictoryOverlay.modulate = Color(1,1,1,opacity)
+	else:
+		Engine.time_scale = 1
 	
 func set_map(new_map):
 	var old_map = $Map
@@ -119,10 +192,10 @@ func add_player(player_data):
 	player.computer = player_data['computer']
 	player.init(player_data['spawn_point'] * player.size, $Map/Background/TileMap)
 	$Map.add_child(player)
-	player.connect("respawn",Callable(self,"spawn"))
-	player.connect("made_hit",Callable(self,"hit"))
-	player.connect("make_slime",Callable(self,"do_make_slime"))
-	player.connect("make_web",Callable(self,"make_web"))
+	player.respawn.connect(spawn)
+	player.made_hit.connect(hit)
+	player.make_slime.connect(do_make_slime)
+	player.make_web.connect(make_web)
 	players.append(player)
 	return player
 
@@ -140,7 +213,6 @@ func hit():
 	if score >= score_limit:
 		$Map/HUD/Score.text = "0"
 		finish()
-		# TODO: $VictoryTimer
 	else:
 		$Map/HUD/Score.text = str(score_limit - score)
 
@@ -154,6 +226,8 @@ func spawnpoint_sorter(a, b):
 	return spawnpoint_distance(a) > spawnpoint_distance(b)
 
 func spawn(player, spawn_point=null):
+	if victory_time > 0:
+		return # game is ending, don't respawn
 	var webs = get_webs()
 	if spawn_point == null:
 		var furthest = null
@@ -215,12 +289,30 @@ func make_score(player):
 	return ceil(kps + ktd + kpc) + player.ate * 100
 
 func finish():
+	victory_time = victory_time_max
+	
+	# disable input
+	for p in range(players.size()):
+		var player = players[p]
+		player.computer = false
+		player.set_input(NullInput.new(null))
+		
+		# set up overlay
+		victory_sprites[p].set_aminal(player)
+		victory_dead[p].set_aminal(player, "dead")
+		victory_ate[p].text = str(player.ate)
+		victory_fed[p].text = str(player.fed)
+		for o in range(players.size()):
+			victory_scores[o][p].text = str(player.ate_player[o])
+	
+	# show overlay
+	$VictoryOverlay.visible = true
+	
+
+func next_scene():
 	for player in players:
 		player.score = make_score(player)
 	SceneSwitcher.change_to_scene("victory", {'players': players}, ["circle"], Vector2(0,1))
-
-func _on_VictoryTimer_timeout():
-	finish()
 
 func _on_CountdownTimer_timeout():
 	$Countdown.visible = false

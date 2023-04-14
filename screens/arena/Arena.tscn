@@ -1,21 +1,18 @@
-[gd_scene load_steps=5 format=3 uid="uid://bm5i7h0rddy07"]
+[gd_scene load_steps=6 format=3 uid="uid://bm5i7h0rddy07"]
 
 [ext_resource type="PackedScene" uid="uid://pi5tk6cg2cxm" path="res://maps/Basic.tscn" id="1"]
 [ext_resource type="Theme" uid="uid://bwnssayact5as" path="res://main/HeaderTheme.tres" id="2"]
 [ext_resource type="Script" path="res://screens/arena/Arena.gd" id="3"]
 [ext_resource type="Theme" uid="uid://c5qd48flt1q3i" path="res://main/MenuTheme.tres" id="4"]
+[ext_resource type="PackedScene" uid="uid://cgcgx2hfd13kc" path="res://main/AminalSprite.tscn" id="5_wmu7c"]
 
 [node name="Arena" type="Node2D"]
 process_mode = 3
 script = ExtResource("3")
-max_computers = 0
+score_limit = 4
 
 [node name="Map" parent="." instance=ExtResource("1")]
 process_mode = 1
-
-[node name="VictoryTimer" type="Timer" parent="."]
-wait_time = 0.3
-one_shot = true
 
 [node name="StartPrompt" type="Label" parent="."]
 visible = false
@@ -51,6 +48,7 @@ offset_bottom = 256.0
 [node name="Viewport" type="SubViewport" parent="LeftWrap"]
 transparent_bg = true
 handle_input_locally = false
+canvas_item_default_texture_filter = 0
 size = Vector2i(32, 256)
 render_target_update_mode = 4
 
@@ -62,6 +60,7 @@ offset_bottom = 256.0
 [node name="Viewport" type="SubViewport" parent="RightWrap"]
 transparent_bg = true
 handle_input_locally = false
+canvas_item_default_texture_filter = 0
 size = Vector2i(32, 256)
 render_target_update_mode = 4
 
@@ -72,6 +71,7 @@ offset_bottom = 32.0
 [node name="Viewport" type="SubViewport" parent="TopWrap"]
 transparent_bg = true
 handle_input_locally = false
+canvas_item_default_texture_filter = 0
 size = Vector2i(256, 32)
 render_target_update_mode = 4
 
@@ -83,8 +83,380 @@ offset_bottom = 256.0
 [node name="Viewport" type="SubViewport" parent="BottomWrap"]
 transparent_bg = true
 handle_input_locally = false
+canvas_item_default_texture_filter = 0
 size = Vector2i(256, 32)
 render_target_update_mode = 4
 
-[connection signal="timeout" from="VictoryTimer" to="." method="_on_VictoryTimer_timeout"]
+[node name="VictoryOverlay" type="ColorRect" parent="."]
+z_index = 5
+offset_right = 256.0
+offset_bottom = 256.0
+color = Color(0, 0, 0, 0.694118)
+
+[node name="Label" type="Label" parent="VictoryOverlay"]
+layout_mode = 0
+offset_left = 64.0
+offset_top = 32.0
+offset_right = 192.0
+offset_bottom = 64.0
+theme = ExtResource("2")
+theme_override_colors/font_color = Color(1, 0.92549, 0.152941, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
+text = "Victory!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Player1" parent="VictoryOverlay" instance=ExtResource("5_wmu7c")]
+position = Vector2(72, 88)
+
+[node name="Player2" parent="VictoryOverlay" instance=ExtResource("5_wmu7c")]
+position = Vector2(104, 88)
+
+[node name="Player3" parent="VictoryOverlay" instance=ExtResource("5_wmu7c")]
+position = Vector2(136, 88)
+
+[node name="Player4" parent="VictoryOverlay" instance=ExtResource("5_wmu7c")]
+position = Vector2(168, 88)
+
+[node name="Death1" parent="VictoryOverlay" instance=ExtResource("5_wmu7c")]
+position = Vector2(48, 112)
+
+[node name="Death2" parent="VictoryOverlay" instance=ExtResource("5_wmu7c")]
+position = Vector2(48, 136)
+
+[node name="Death3" parent="VictoryOverlay" instance=ExtResource("5_wmu7c")]
+position = Vector2(48, 160)
+
+[node name="Death4" parent="VictoryOverlay" instance=ExtResource("5_wmu7c")]
+position = Vector2(48, 184)
+
+[node name="Score11" type="Label" parent="VictoryOverlay"]
+layout_mode = 0
+offset_left = 72.0
+offset_top = 112.0
+offset_right = 88.0
+offset_bottom = 128.0
+theme = ExtResource("4")
+theme_override_colors/font_color = Color(1, 0.92549, 0.152941, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Score21" type="Label" parent="VictoryOverlay"]
+layout_mode = 0
+offset_left = 104.0
+offset_top = 112.0
+offset_right = 120.0
+offset_bottom = 128.0
+theme = ExtResource("4")
+theme_override_colors/font_color = Color(1, 0.92549, 0.152941, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Score31" type="Label" parent="VictoryOverlay"]
+layout_mode = 0
+offset_left = 136.0
+offset_top = 112.0
+offset_right = 152.0
+offset_bottom = 128.0
+theme = ExtResource("4")
+theme_override_colors/font_color = Color(1, 0.92549, 0.152941, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Score41" type="Label" parent="VictoryOverlay"]
+layout_mode = 0
+offset_left = 168.0
+offset_top = 112.0
+offset_right = 184.0
+offset_bottom = 128.0
+theme = ExtResource("4")
+theme_override_colors/font_color = Color(1, 0.92549, 0.152941, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Score12" type="Label" parent="VictoryOverlay"]
+layout_mode = 0
+offset_left = 72.0
+offset_top = 136.0
+offset_right = 88.0
+offset_bottom = 152.0
+theme = ExtResource("4")
+theme_override_colors/font_color = Color(1, 0.92549, 0.152941, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Score22" type="Label" parent="VictoryOverlay"]
+layout_mode = 0
+offset_left = 104.0
+offset_top = 136.0
+offset_right = 120.0
+offset_bottom = 152.0
+theme = ExtResource("4")
+theme_override_colors/font_color = Color(1, 0.92549, 0.152941, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Score32" type="Label" parent="VictoryOverlay"]
+layout_mode = 0
+offset_left = 136.0
+offset_top = 136.0
+offset_right = 152.0
+offset_bottom = 152.0
+theme = ExtResource("4")
+theme_override_colors/font_color = Color(1, 0.92549, 0.152941, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Score42" type="Label" parent="VictoryOverlay"]
+layout_mode = 0
+offset_left = 168.0
+offset_top = 136.0
+offset_right = 184.0
+offset_bottom = 152.0
+theme = ExtResource("4")
+theme_override_colors/font_color = Color(1, 0.92549, 0.152941, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Score13" type="Label" parent="VictoryOverlay"]
+layout_mode = 0
+offset_left = 72.0
+offset_top = 160.0
+offset_right = 88.0
+offset_bottom = 176.0
+theme = ExtResource("4")
+theme_override_colors/font_color = Color(1, 0.92549, 0.152941, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Score23" type="Label" parent="VictoryOverlay"]
+layout_mode = 0
+offset_left = 104.0
+offset_top = 160.0
+offset_right = 120.0
+offset_bottom = 176.0
+theme = ExtResource("4")
+theme_override_colors/font_color = Color(1, 0.92549, 0.152941, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Score33" type="Label" parent="VictoryOverlay"]
+layout_mode = 0
+offset_left = 136.0
+offset_top = 160.0
+offset_right = 152.0
+offset_bottom = 176.0
+theme = ExtResource("4")
+theme_override_colors/font_color = Color(1, 0.92549, 0.152941, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Score43" type="Label" parent="VictoryOverlay"]
+layout_mode = 0
+offset_left = 168.0
+offset_top = 160.0
+offset_right = 184.0
+offset_bottom = 176.0
+theme = ExtResource("4")
+theme_override_colors/font_color = Color(1, 0.92549, 0.152941, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Score14" type="Label" parent="VictoryOverlay"]
+layout_mode = 0
+offset_left = 72.0
+offset_top = 184.0
+offset_right = 88.0
+offset_bottom = 200.0
+theme = ExtResource("4")
+theme_override_colors/font_color = Color(1, 0.92549, 0.152941, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Score24" type="Label" parent="VictoryOverlay"]
+layout_mode = 0
+offset_left = 104.0
+offset_top = 184.0
+offset_right = 120.0
+offset_bottom = 200.0
+theme = ExtResource("4")
+theme_override_colors/font_color = Color(1, 0.92549, 0.152941, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Score34" type="Label" parent="VictoryOverlay"]
+layout_mode = 0
+offset_left = 136.0
+offset_top = 184.0
+offset_right = 152.0
+offset_bottom = 200.0
+theme = ExtResource("4")
+theme_override_colors/font_color = Color(1, 0.92549, 0.152941, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Score44" type="Label" parent="VictoryOverlay"]
+layout_mode = 0
+offset_left = 168.0
+offset_top = 184.0
+offset_right = 184.0
+offset_bottom = 200.0
+theme = ExtResource("4")
+theme_override_colors/font_color = Color(1, 0.92549, 0.152941, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Fed1" type="Label" parent="VictoryOverlay"]
+offset_left = 192.0
+offset_top = 112.0
+offset_right = 208.0
+offset_bottom = 128.0
+theme = ExtResource("4")
+theme_override_colors/font_color = Color(0.760784, 0.764706, 0.780392, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Fed2" type="Label" parent="VictoryOverlay"]
+offset_left = 192.0
+offset_top = 136.0
+offset_right = 208.0
+offset_bottom = 152.0
+theme = ExtResource("4")
+theme_override_colors/font_color = Color(0.760784, 0.764706, 0.780392, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Fed3" type="Label" parent="VictoryOverlay"]
+offset_left = 192.0
+offset_top = 160.0
+offset_right = 208.0
+offset_bottom = 176.0
+theme = ExtResource("4")
+theme_override_colors/font_color = Color(0.760784, 0.764706, 0.780392, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Fed4" type="Label" parent="VictoryOverlay"]
+offset_left = 192.0
+offset_top = 184.0
+offset_right = 208.0
+offset_bottom = 200.0
+theme = ExtResource("4")
+theme_override_colors/font_color = Color(0.760784, 0.764706, 0.780392, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Ate1" type="Label" parent="VictoryOverlay"]
+offset_left = 72.0
+offset_top = 208.0
+offset_right = 88.0
+offset_bottom = 224.0
+theme = ExtResource("4")
+theme_override_colors/font_color = Color(1, 0, 0.301961, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Ate2" type="Label" parent="VictoryOverlay"]
+offset_left = 104.0
+offset_top = 208.0
+offset_right = 120.0
+offset_bottom = 224.0
+theme = ExtResource("4")
+theme_override_colors/font_color = Color(1, 0, 0.301961, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Ate3" type="Label" parent="VictoryOverlay"]
+offset_left = 136.0
+offset_top = 208.0
+offset_right = 152.0
+offset_bottom = 224.0
+theme = ExtResource("4")
+theme_override_colors/font_color = Color(1, 0, 0.301961, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Ate4" type="Label" parent="VictoryOverlay"]
+offset_left = 168.0
+offset_top = 208.0
+offset_right = 184.0
+offset_bottom = 224.0
+theme = ExtResource("4")
+theme_override_colors/font_color = Color(1, 0, 0.301961, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [connection signal="timeout" from="CountdownTimer" to="." method="_on_CountdownTimer_timeout"]

@@ -15,7 +15,7 @@ func set_species(new_species):
 		instance.palette = palette
 		set_aminal(instance)
 
-func set_aminal(instance):
+func set_aminal(instance, anim="idle"):
 	if aminal_sprite != null:
 		remove_child(aminal_sprite)
 		aminal_sprite.queue_free()
@@ -31,10 +31,11 @@ func set_aminal(instance):
 	aminal_sprite.position = Vector2(8,8)
 	add_child(aminal_sprite)
 	aminal_sprite.visible = true
-	aminal_sprite.play("idle")
+	aminal_sprite.play(anim)
 	for child in aminal_sprite.get_children():
+		child.offset = Vector2()
 		if child.has_method('play'):
-			child.play("idle")
+			child.play(anim)
 
 func set_palette(new_palette):
 	palette = new_palette

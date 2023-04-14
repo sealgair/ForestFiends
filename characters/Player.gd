@@ -11,6 +11,7 @@ var PlayerPath = preload("res://brain/PlayerPath.gd")
 @export var computer: bool = false
 
 var ate = 0
+var ate_player = [0,0,0,0]
 var fed = 0
 var score = 0
 var time = 0
@@ -378,6 +379,7 @@ func is_vulnerable():
 
 func make_score(other):
 	ate += 1
+	ate_player[other.order-1] += 1
 	emit_signal("made_hit")
 	if other == poisoned_by:
 		poisoned_by = null
@@ -538,7 +540,7 @@ func closest_enemy(filter_ops={}):
 
 func can_stand(x, y):
 	return tilemap.get_cell(x, y) == Global.INVALID_CELL \
-			and tilemap.get_cell(x, y+1) != Global.INVALID_CELL
+		and tilemap.get_cell(x, y+1) != Global.INVALID_CELL
 
 func safe_spot():
 	if brain.safe_spot == null:
@@ -557,7 +559,7 @@ func safe_spot():
 		while tilemap.get_cell_source_id(0, Global.round2(spot / cell_size)) != Global.INVALID_CELL:
 			spot += Vector2(0, cell_size.y)
 			spot.y = wrapf(spot.y, 0, screen_size.y)
-		brain.safe_spot = pathfinder.ground_below_pos(spot) 
+		brain.safe_spot = pathfinder.ground_below_pos(spot)
 	return brain.safe_spot
 
 func target_position():
